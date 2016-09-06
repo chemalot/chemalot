@@ -79,7 +79,7 @@
   <target name='jar' depends='compile'
     description='pack class files'>
       <delete><fileset dir='lib'><include name='chemalot_*.jar'/></fileset></delete>
-      <jar destfile='lib/chemalot_${date}.jar'>
+      <jar destfile='chemalot_${date}.jar'>
          <fileset dir='${build}'/>
       </jar>
    </target>
@@ -114,7 +114,7 @@
      </exec>
   </target>
 
-  <target name="distribution" depends='clean,jar,doc'
+  <target name="distribution" depends='clean,doc'
           description="Create zip fiel for open source distribution">
   <echo message='build=${build} docDir=${docDir}'/>
   <!-- convert markdown to html -->

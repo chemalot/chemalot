@@ -13,9 +13,9 @@ The package provides a comprehensive collection of tools for processing files wi
 * Analysis of strain in conformation of small molecules in crystal structures [[6](#6)]
 * Compilation of project data files for SAR analysis [[7]](#7)
 
-The package complements command line tools released in other packages, notably [Aestel](https://sourceforge.net/projects/aestel/) and [autocorrelator](https://github.com/bgobbi/autocorrelator). The tools integrate well with command line tools from other open source projects such as [Open Babel](http://openbabel.org) and [RDKit](http://www.rdkit.org/) as well as with command line tools from commercial software such as [OpenEye](http://www.eyesopen.com/) and [CCG](https://www.chemcomp.com/).
+The package complements command line tools released in other packages, notably [Aestel](https://sourceforge.net/projects/aestel/) and [autocorrelator](../autocorrelator). The tools integrate well with command line tools from other open source projects such as [Open Babel](http://openbabel.org) and [RDKit](http://www.rdkit.org/) as well as with command line tools from commercial software such as [OpenEye](http://www.eyesopen.com/) and [CCG](https://www.chemcomp.com/).
 
-For graphical programming and debugging of UNIX command tools that process SDF files on UNIX pipes the [chemalot_knime](??) package can be used.
+For graphical programming and debugging of UNIX command tools that process SDF files on UNIX pipes the [chemalot_knime](../chemalot_knime/) package can be used.
 
 This software is released under the "Apache License Version 2.0". 
 
@@ -66,7 +66,7 @@ autocorrelator.jar
   The classes in autocorrelator.jar are not linked to any code in the
   chemalot package.  
   More information including the autocorrelator is available at:  
-  [https://github.com/bgobbi/autocorrelator](https://github.com/bgobbi/autocorrelator)
+  [https://github.com/chemalot/autocorrelator](../autocorrelator)
 
 OEChem Java library:  
 > *THE OPENEYE OECHEM JAR FILE IS NOT INCLUDED IN THIS PACKAGE*  
