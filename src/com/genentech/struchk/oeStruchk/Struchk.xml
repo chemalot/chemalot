@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2008-2015 Genentech Inc.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+-->
+<StructureRules oechemVersion='20160209'>
+
+   <atomLabelCheck id='atomLabelCheck'>
+      <!-- This check is performed on the molfile not the molecule object -->
+      <description>Generate error if atom labels (eg. Ac) where used.
+      This check works only if a molfile is supplied.</description>
+   </atomLabelCheck>
+
+   <thickBondCheck id='thickBondCheck'>
+      <!-- This check is performed on the cdxml file and looks for the string
+            'Display="Bold"'
+      -->
+      <description>Generate error if a thick bond was used.
+      This check works only if a cdxml file is supplied.</description>
+   </thickBondCheck>
+
+   <flagNonChiralAtoms id='flagNonChiralAtoms'>
+      <!--  strained bicyclic ring system can have only a limited combination of parities on the 
+            stereo centers. Here we need to list one example for each ring systems.
+            Atom types are disregarded and hydrogens here are only used to specify stereo. -->
+      <!--  smallest is 3 -->
+      <strainedBicycle>C1[C@H]2[C@@H]1C2</strainedBicycle>  <!-- 0  -->
+      <strainedBicycle>C1C[C@H]2[C@@H]1C2</strainedBicycle><!-- 1 -->
+      <strainedBicycle>C1C[C@H]2C[C@H]2C1</strainedBicycle><!-- 2 -->
+
+      <!--  smallest is 4, annealed -->
+      <strainedBicycle>C1C[C@@H]2[C@H]1CC2</strainedBicycle><!-- 3 -->
+      <strainedBicycle>C1C[C@H]2CC[C@H]2C1</strainedBicycle><!-- 4 -->
+
+      <!--  smallest is 4, bridged -->
+      <strainedBicycle>C1[C@@H]2C[C@H]1C2</strainedBicycle><!-- 5 -->
+      <strainedBicycle>C1C[C@H]2C[C@@H]1C2</strainedBicycle><!-- 6 -->
+      <strainedBicycle>C1C[C@H]2C[C@@H](C1)C2</strainedBicycle><!-- 7 -->
+      <strainedBicycle>C1CC[C@H]2C[C@@H](C1)C2</strainedBicycle><!-- 8 -->
+      <strainedBicycle>[C@@H]1(C2)C[C@H]2CCCCC1</strainedBicycle><!-- 9 -->
+
+      <!--  smallest is 5, annealed (no strained rings) -->
+      <!--  smallest is 5, bridged -->
+      <strainedBicycle>C1C[C@H]2CC[C@@H]1C2</strainedBicycle> <!-- 10  -->
+      <strainedBicycle>[C@H]1(C2)CC[C@@H]2CCC1</strainedBicycle><!-- 11  -->
+      <strainedBicycle>[C@H]1(CCCC2)CC[C@@H]2C1</strainedBicycle><!-- 12  -->
+
+      <!--  smallest is 6, 1,3 bridged -->
+      <strainedBicycle>[C@H]1(CCC2)C[C@@H]2CCC1</strainedBicycle><!-- 13  -->
+
+
+      <!--  smallest is 6, 1,4 bridged -->
+      <strainedBicycle>[C@H]12CC[C@2H](CC2)CC1</strainedBicycle> <!-- 14 -->
+      <strainedBicycle>C1C[C@@H]2CC[C@H](C1)CC2</strainedBicycle><!-- 15 -->
+      <strainedBicycle>[C@H]12CCCC[C@@H](CC2)CC1</strainedBicycle><!-- 16 -->
+
+      <!-- Cages -->
+      <strainedBicycle>[C@2H]12C[C@H]3C[C@2H](C1)C[C@2H](C2)C3</strainedBicycle><!-- 17 -->
+
+      <message>Unexpected error</message>
+      <description>This rule recognizes stereogenic center which are not recognized.
+          By Oechem eg. trans cyclohexyl. or pseudochiral center. 
+          It also analyses ring systems and finds strained bridge heads, which
+          can lead to non chiral situations due to constraints on which centers can be
+          inverted independently.
+      </description>   
+   </flagNonChiralAtoms>
+   <wigglyBondCheck id='wigglyBondCheck'>
+      <!-- This check is performed on the mol file string only if the applyRules
+           method is used which passes the molfile
+      -->
+      <description>Generate an error if the molecule contains a wiggly bond.
+      This check works only if a molfile is supplied.</description>
+      <example><![CDATA[test
+  ChemDraw05121015182D
+
+  6  5  0  0  0  0  0  0  0  0999 V2000
+   -1.4289   -0.6188    0.0000 C   0
+   -0.7145   -0.2062    0.0000 C   0
+    0.0000   -0.6188    0.0000 C   0
+    0.7145   -0.2062    0.0000 C   0
+    1.4289   -0.6188    0.0000 C   0
+    0.7145    0.6188    0.0000 F   0
+  1  2  1  4
+  2  3  2  0
+  3  4  1  0
+  4  5  1  4
+  4  6  1  0
+M  END]]></example>
+   </wigglyBondCheck>
+
+   <!-- If this is active it will be done before the other checks because calling:
+        OEMDLPerceiveBondStereo will clean up some errors -->
+   <checkChiral id='chiralCheck'>
+      <description>Check for invalid stereochemistry on atoms (invalid wedges).</description>
+   </checkChiral>
+
+   <!-- The minimum distance is given in % of the average bond length -->
+    <closeAtomsCheck id='closeAtomCheck' minDistance='16'>
+      <description>Check for atoms which have been drawn very close.
+                   This might indicate that a user miss-clicked and thinks they
+                   are connected.
+      </description>
+      <example>CC</example>
+   </closeAtomsCheck>
+
+   <twoDCheck id='twoDCheck'>
+      <description>Check that molecule has only 2D coordinates not 3D.</description>
+      <example><![CDATA[test
+  ChemDraw05121015182D
+
+  2  1  0  0  0  0  0  0  0  0999 V2000
+   -1.4289   -0.6188    0.5000 C   0
+   -0.7145   -0.2062   -0.5000 C   0
+    0.0000   -0.6188    0.0000 C   0
+    0.7145   -0.2062    0.0000 C   0
+    1.4289   -0.6188    0.0000 C   0
+    0.7145    0.6188    0.0000 F   0
+  1  2  1  0
+M  END]]></example>
+   </twoDCheck>
+
+   <cleanReactionCenter id='cleanReactionCenter'>
+      <description>Check that molecule has no atoms marked as being part of reaction.</description>
+      <example><![CDATA[test
+  ChemDraw05121015182D
+
+  2  1  0  0  0  0  0  0  0  0999 V2000
+    0.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  2  0  0  0  0
+    1.0000    0.0000    0.0000 C   0  0  0  0  0  0  0  2  0  0  0  0
+  1  2  1  0        0
+M  END]]></example>
+   </cleanReactionCenter>
+
+   <clearBondStereo id='clearAmidineStereo'>
+        C=[NH]
+       <message>Discarding cis/trans stereochemistry on C=NH.</message>
+       <description>Discarding cis/trans stereo chemistry on C=NH.</description>
+   </clearBondStereo>
+
+   <removeHydrogens id='removeHydrogens'>
+      <!--  stereo relevant hydrogens are not removed -->
+      <description>Remove hydrogen atoms.</description>
+   </removeHydrogens>
+
+   <checkDoubleBond id='checkDoubleBond'>
+      <description>Check for invalid stereochemistry on a double bond eg. linear outgoing bond.</description>
+   </checkDoubleBond>
+
+   <checkAtomtypes id='checkAtomTypes'>
+      <example>C[R1]</example>
+      <description>Check for invalid atom types eg. Ac</description>
+   </checkAtomtypes>
+
+   <!-- All transformation operations will remove explicit hydrogens in the end -->
+   <transform id='separateAlkaliMetals'>
+      [O,#7,#6,S,#15:1]-[Li,Na,K,Mg,Ca;+0:2]>>[*:1][H].[*;+1:2]
+      <example>CN[Na]</example>
+      <message>Alkali Metal bonds separated.</message>
+      <description>Alkali metals are always charged in organic molecules.</description>
+   </transform>
+
+   <transform id='chargeAlkaliMetals'>
+      [Li,Na,K,Rb,Cs;+0;D0;H0,H1:1]>>[*h0+1:1]
+      <example>CC.[NaH]</example>
+      <message>Alkali Metal should be charged.</message>
+      <description>Alkali metals are always charged in organic molecules.</description>
+   </transform>
+
+   <transform  id='separateEarthAlkaliMetals'>
+      [O,#7,#6,S,#15:1]-[Mg,Ca;+1:2]>>[*:1][H].[*;+2:2]
+      <example>CO[Mg+].[Br-]</example>
+      <message>Alkaline earth Metal bonds separated.</message>
+      <description>Alkaline earth metals are always charged in organic molecules.</description>
+   </transform>
+
+   <transform  id='chargeEarthAlkaliMetals'>
+      [Mg,Ca,Sr,Ba;+0;D0;H0,H1,H2:1]>>[*+2h0:1]
+      <example>[Mg]</example>
+      <message>Alkaline earth should be charged.</message>
+      <description>Alkaline earth metals are always charged in organic molecules.</description>
+   </transform>
+
+   <transform id='amoniumHalides'>
+      [Nv4+:1]-[Cl,Br:2]>>[N+0:1].[*-:2]
+      <example>C[N+](C)(C)[Br-]</example>
+      <message>Breaking halogen bond on ammonium nitrogen.</message>
+      <description>Breaking halogen bond on ammonium nitrogen.</description>
+   </transform>
+
+   <transform id='sulfoxide' recheckExoCyclicBonds='true'>
+      [Sv3+:1]-[Ov1-:2]>>[S+0:1]=[O-0:2]
+      <example>C[S+](C)[O-]</example>
+      <message>Sulfoxide group normalized.</message>
+      <description>Transform charged sulfoxide group into uncharged.</description>
+   </transform>
+
+   <transform id='protonateOS'>
+      [O,S;-1;!$(O[#7+]):1]>>[*+0:1][H]
+      <example>C[O-]</example>
+      <message>Protonated negative O,S.</message>
+      <description>Protonate negative O,S.</description>
+   </transform>
+
+   <transform id='protonateHalogen'>
+      [F,Cl,Br,I;v0-:1]>>[*+0:1][H]
+      <example>[Br-]</example>
+      <message>Protonated halogen counter ion.</message>
+      <description>Protonate halogen counter ion.</description>
+   </transform>
+
+   <transform id='deprotonateN'  HExplicit='true' >
+      [#7,#15;+1:1][H]>>[*;+0:1]
+      <example>CC[NH3+]</example>
+      <message>Positive N,P deprotonated.</message>
+      <description>Positive N,P deprotonated.</description>
+   </transform>
+
+   <transform id='nitro'>
+      [N:1](=[O:2])(=[O:3])-[*:4]>>[N+:1](-[O-:2])(=[O:3])-[*:4]
+      <example>CN(=O)=O</example>
+      <message>Nitro-group normalized.</message>
+      <description>Transform pentavalent nitro group to charged group.</description>
+   </transform>
+
+   <transform id='nitricAcid'>
+      [N+:1](=[O:2])(-[O-:3])-[O-:4]>>[N+:1](=[O:2])(-[O-:3])-[O+0:4][H]
+      <example>O=[N+]([O-])[O-]</example>
+      <message>Nitric Acid normalized.</message>
+      <description>Protonate Nitric Acid.</description>
+   </transform>
+
+   <transform id='noxide'>
+      [n:1](=[O:2])>>[N+:1]-[O-:2]
+      <example>c1ccccn1=O</example>
+      <message>Pyridine oxide normalized.</message>
+      <description>Transform pyridine oxide to charged form.</description>
+   </transform>
+
+   <transform id='azide'>
+      [Nv2-:1]-[Nv4+:2]#[Nv3:3]>>[N+0:1]=[N+1:2]=[N-1:3]
+      <example>C[N-][N+]#N</example>
+      <message>Azide group normalized.</message>
+      <description>Transform azide group to double bonded form.</description>
+   </transform>
+
+   <transform id='thiocyanate'>
+      [SD1;-1,h1:1][CX2:2]#[NX1:3]>>[Nh1:3]=[C:2]=[Sh0-0:1]
+      <example>C(#N)S</example>
+      <message>thiocyanate normalized</message>
+      <description>Transform thiocyanate group to double bonded form.</description>
+   </transform>
+
+   <transform id='sulforousAcid'>
+      [SH:1]([OH:2])(=[O:3])=[O:4]>>[OH:2][Sh0:1](-[OH:3])=[O:4]
+      <example>OS(=O)=O</example>
+      <message>sulforous acid normalized</message>
+      <description>Transform sulforous acid.</description>
+   </transform>
+
+   <transform id='perchloricAcid'>
+      [Cl-:1](=[O:2])(=[O:3])(=[O:4])=[O:5]>>[Cl-0:1](-[Oh:2])(=[O:3])(=[O:4])=[O:5]
+      <example>[Cl-](=O)(=O)(=O)=O</example>
+      <message>Perchloric Acid normalized</message>
+      <description>Transform Perchloric Acid.</description>
+   </transform>
+
+  <transform id='ketoEnol' HExplicit='true' recheckExoCyclicBonds='true'>
+      [C:1]=[C:2]-[Ov2:3][H:4]>>[H:4]-[C:1]-[C:2]=[O:3]
+      <example>C=CO</example>
+      <message>Enol converted to Keton.</message>
+      <description>Transform Enol to Keton.</description>
+   </transform>
+
+   <badSubstructure id='checkAromaticTautomer'>
+      [O,S]=C1-[C,N]=[C,N]-[C,N]=[C,N]-[C!H0]1
+      <example>O=C1C=CC=CC1</example>
+      <message>Invalid exocyclic double bond.</message>
+      <description>Check for existence of aromatic tautomers.</description>
+   </badSubstructure>
+
+<!--  <badSubstructure id='checkAH_Nitroso'>
+      O=[NX2]-[CHX4]
+      <example>CCN=O</example>
+      <message>This nitroso compound should be drawn as oxime.</message>
+      <description>Oxime is the more stable tautomer to an alpha-H nitroso structure.</description>
+   </badSubstructure>
+
+   <badSubstructure id='checkAH_Iminer'>
+     do not enforce   to many factors    [N;!$(N[#7,#8,#16])]=C[CHX4]
+      <example>CCC=N</example>
+      <message>This imine has an alpha hydrogen and should be drawn as enamine.</message>
+      <description>Enamine is the more stable tautomer to an alpha-H imine structure.</description>
+   </badSubstructure>
+-->
+   <!-- to retrieve salt definitions from a database table:
+        - enter the correct sql query in the <saltSql> element
+        - activate this element by renaming the id from
+          testComponentNormalizer to dbComponentNormalizer
+        - deactivate the componentNormalizer below by renaming the id from
+          dbComponentNormalizer to testComponentNormalizer
+    -->
+   <componentNormalizer id='testComponentNormalizer'
+      substanceKeeperName='substance' allowMixtures='n' saltDefinition='db'>
+      <description>Remove any component which is present more than once.
+          Remove salts.
+          Check that if this is a mixture it is a mixture of isomers.
+      </description>
+      <!-- Parent salt code has empty smiles -->
+      <!-- This should come from the database in the end -->
+      <saltSql>
+         select sc.salt_code_pk, sc.isomeric_smiles,  sc.name
+         from salt_table sc
+      </saltSql>
+      <solvent smiles='O' name='Hydrate'/>
+      <solvent smiles='CO' name='Methanol'/>
+      <solvent smiles='CI' name='Methyl iodide'/>
+      <solvent smiles='CCO' name='Ethanol'/>
+      <solvent smiles='S=C' name='methanethial'/>
+      <solvent smiles='OCCO' name='Ethylenglycol'/>
+      <solvent smiles='NCCO' name='2-aminoethanol'/>
+      <solvent smiles='CC=C' name='propen'/>
+      <solvent smiles='CC#N' name='Acetonitrile'/>
+      <solvent smiles='CCOCC' name='etherate'/>
+      <solvent smiles='O=COC' name='methyl formate'/>
+      <solvent smiles='OCCOC' name='2-methoxyethanol'/>
+      <solvent smiles='ClCCl' name='methylen chloride'/>
+      <solvent smiles='ClCCCl' name='ethylen chloride'/>
+      <solvent smiles='CCCCCC' name='Hexane'/>
+      <solvent smiles='CC(O)C' name='isopropanol'/>
+      <solvent smiles='FB(F)F' name='Boron trifluoride'/>
+      <solvent smiles='CC(C)=O' name='Acetone'/>
+      <solvent smiles='C1OCCC1' name='THF'/>
+      <solvent smiles='CS(=O)C' name='DMSO'/>
+      <solvent smiles='OC(CO)CO' name='Glycerin'/>
+      <solvent smiles='CCC(C)=O' name='Butanone'/>
+      <solvent smiles='c1ccccc1' name='Benzene'/>
+      <solvent smiles='c1ncccc1' name='Pyridine'/>
+      <solvent smiles='C1OCCOC1' name='Dioxane'/>
+      <solvent smiles='ClB(Cl)Cl' name='Boron trichloride'/>
+      <solvent smiles='CCOC(C)=O' name='ethyl acetate'/>
+      <solvent smiles='Cc1ncccc1' name='o Methylpyridine'/>
+      <solvent smiles='c1[nH]cnc1' name='imidazole'/>
+      <solvent smiles='C(=O)N(C)C' name='DMF'/>
+      <solvent smiles='C(Cl)(Cl)Cl' name='Chloroform'/>
+      <solvent smiles='CN(C)C(=O)C' name='dimethylacetamide'/>
+      <solvent smiles='c1ccccc1C#N' name='Benzonitrile'/>
+      <solvent smiles='CC(C(OC)=O)C' name='methyl isobutyrate'/>
+      <solvent smiles='NC(=O)c1cnccc1' name='Nicotinamide'/>
+      <solvent smiles='c1cc(c(cc1)Cl)Cl' name='o Dichlorobenzene'/>
+      <solvent smiles='c1cc2cc[nH]c2cc1' name='Indole'/>
+      <solvent smiles='N#CNc1nc(C)cc(C)n1' name='N-(4,6-dimethylpyrimidin-2-yl)cyanamide'/>
+      <solvent smiles='Cc1[n+]([O-])c(C)ccc1' name='2,6-dimethylpyridine-1-oxide'/>
+      <example>CCCCCC(=O)[O-].[Na+].[F-].[Na+].[H]O[H].O=C=O</example>
+   </componentNormalizer>
+
+   <componentNormalizer id='dbComponentNormalizer' allowMixtures='n'  saltDefinition='xml' >
+      <description>Remove any component which is present more than once.
+          Remove salts.
+          Check that if this is a mixture it is a mixture of isomers.
+      </description>
+      <!-- Parent salt code has empty smiles -->
+      <!-- This should come from the database in the end -->
+      <salt code='prnt' smiles=''/>
+      <salt code='Mix' smiles='*'/>
+      <salt code='HCl' smiles='Cl'/>
+      <salt code='HBr' smiles='Br'/>
+      <salt code='HI' smiles='I'/>
+      <salt code='HF' smiles='F'/>
+      <salt code='Sulforic Acid' smiles='OS(=O)(=O)O'/>
+      <salt code='Nitric Acid' smiles='[N+](=O)([O-])O'/>
+      <salt code='Percloric Acid' smiles='Cl(=O)(=O)(=O)O'/>
+
+      <salt code='Tetrafluoroacetic Acid' smiles='FC(F)(F)C(=O)O'/>
+      <salt code='Formic Acid' smiles='O=CO'/>
+      <salt code='Maleic Acid' smiles='OC(=O)\C=C/C(=O)O'/>
+      <salt code='Fumaric Acid' smiles='OC(=O)/C=C/C(=O)O'/>
+      <salt code='Succinic Acid' smiles='OC(=O)CCC(=O)O'/>
+      <salt code='Tartaric Acid' smiles='C(C(O)C(O)C(=O)O)(=O)O'/>
+      <salt code='Citric Acid' smiles='C(CC(O)(C(=O)O)CC(=O)O)(=O)O'/>
+      <salt code='Oxalic Acid' smiles='OC(=O)C(=O)O'/>
+      <salt code='Acetic Acid' smiles='CC(=O)O'/>
+      <salt code='Hydroxyacetic Acid' smiles='C(C(O)=O)O'/>
+      <salt code='Lactic Acid' smiles='CC(C(O)=O)O'/>
+      <salt code='Palmitic Acid' smiles='CCCCCCCCCCCCCCCC(O)=O'/>
+      <salt code='Stearic Acid' smiles='CCCCCCCCCCCCCCCCCC(O)=O'/>
+      <salt code='Gluconic Acid' smiles='OC[C@@H](O)[C@@H](O)[C@H](O)[C@@H](O)C(O)=O'/>
+      <salt code='Heptafluorobutyric Acid' smiles='FC(F)(F)C(F)(F)C(F)(F)C(O)=O'/>
+      <salt code='L-Camphorsulfonic Acid' smiles='C1(C[C@@H]2CC[C@]1(C2(C)C)CS(O)(=O)=O)=O'/>
+      <salt code='D-Camphorsulfonic Acid' smiles='C1(C[C@H]2CC[C@@]1(C2(C)C)CS(O)(=O)=O)=O'/>
+      <salt code='DL-Camphorsulfonic Acid' smiles='C1(CC2CCC1(C2(C)C)CS(O)(=O)=O)=O'/>
+
+      <salt code='Benzoic Acid'   smiles='c1ccccc1C(O)=O'/>
+      <salt code='Mandelic Acid'  smiles='c1cccc(c1)C(C(O)=O)O'/>
+      <salt code='Salicylic Acid' smiles='c1cccc(c1C(=O)O)O'/>
+      <salt code='Picric Acid'    smiles='c1c(cc(c(c1[N+](=O)[O-])O)[N+](=O)[O-])[N+](=O)[O-]'/>
+      <salt code='p-Chlorobenzoic Acid' smiles='Clc1ccc(cc1)C(=O)O'/>
+
+      <salt code='Ethanesulfonic Acid'  smiles='CCS(=O)(=O)O'/>
+      <salt code='Methylsulfonic Acid'  smiles='CS(=O)(=O)O'/>
+      <salt code='Trifluoromethanesulfonic Acid' smiles='C(S(=O)(=O)O)(F)(F)F'/>
+      <salt code='2,4,6-Trimethylphenylsulfonic Acid' smiles='c1c(cc(c(c1C)S(=O)(=O)[O-])C)C'/>
+      <salt code='p-Toluenesulfonic Acid' smiles='OS(=O)(=O)c1ccc(C)cc1'/>
+      <salt code='Benzenesulfonic Acid' smiles='c1ccccc1S(=O)(=O)O'/>
+
+      <salt code='Phosphoric Acid'      smiles='OP(=O)(O)O'/>
+
+      <salt code='Tetrafluoroborate' smiles='[B-](F)(F)(F)F'/>
+      <salt code='Tetraphenylborate' smiles='c1ccc(cc1)[B-](c1ccccc1)(c1ccccc1)c1ccccc1'/>
+
+      <salt code='Na' smiles='[Na+]'/>
+      <salt code='Li' smiles='[Li+]'/>
+      <salt code='K' smiles='[K+]'/>
+      <salt code='Mg' smiles='[Mg++]'/>
+      <salt code='Ca' smiles='[Ca++]'/>
+      <salt code='Ammonia' smiles='N'/>
+      <salt code='Triethylamine' smiles='CC[NH](CC)CC'/>
+      <salt code='Tetra methyl ammonium' smiles='C[N+](C)(C)C'/>
+      <salt code='Tetra phenyl ammonium' smiles='c1ccccc1[N+](c1ccccc1)(c1ccccc1)c1ccccc1'/>
+
+      <solvent smiles='NC(=O)c1ncccc1'/>
+      <solvent smiles='CCO'/>
+      <solvent smiles='O'/>
+      <solvent smiles='CS(=O)C'/>
+      <example>CCCCCC(=O)[O-].[Na+].[F-].[Na+].[H]O[H].O=C=O</example>
+   </componentNormalizer>
+
+   <valenceCheck id='valenceCheck'>
+      <description>List of valid valences for atoms on which a valence check is to be performed.
+      Checked atoms include H,C,Si,N,P,O,S,F,Cl,I,Br,Li,Na,K,Mg,Ca,B.</description>
+      <acceptableFragments>
+         <fragment name='Nitro'>[N+v4](=[Ov2])-[O-v1]</fragment>
+         <fragment name='isocyanate'>[Nv4+]#[Cv3-]</fragment>
+         <fragment name='azide'>[Nv3+0]=[Nv4+]=[Nv2-]</fragment>
+         <fragment name='diazo'>[Cv4+0]=[Nv4+]=[Nv2-]</fragment>
+         <fragment name='pyridineOxide'>[n+]-[O-v1]</fragment>
+         <fragment name='AmineOxide'>[$([O-v1][N+]([#6])([#6])[#6])]</fragment>
+         <fragment name='AmineOxide'>[$([O-v1][#7+](=[#6])[#6])]</fragment>
+         <fragment name='AmineOxide'>[$([O-v1][N+](#[#6]))]</fragment>
+         <fragment name='AmineOxide'>[$([O-v1][#7+v4](=,~[#6])[#7,#8])]</fragment>
+      </acceptableFragments>
+      <atom symbol="H">
+         <valence charge='0' values="1"/>
+      </atom>
+
+      <atom symbol="Li">
+         <valence charge='0'  values="0"/>
+         <valence charge='1'  values="0"/>
+      </atom>
+      <atom symbol="Na">
+         <valence charge='0'  values="0"/>
+         <valence charge='1'  values="0"/>
+      </atom>
+      <atom symbol="K">
+         <valence charge='0'  values="0"/>
+         <valence charge='1'  values="0"/>
+      </atom>
+
+      <atom symbol="Mg">
+         <valence charge='0' values="0 2"/>
+         <valence charge='1' values="1"/>
+         <valence charge='2' values="0"/>
+      </atom>
+      <atom symbol="Ca">
+         <valence charge='0'  values="0 2"/>
+         <valence charge='1' values="1"/>
+         <valence charge='2' values="0"/>
+      </atom>
+
+      <atom symbol="B">
+         <valence charge='0'  values="0 3"/>
+         <valence charge='-1'  values="4"/>
+      </atom>
+
+      <atom symbol="C">
+         <valence charge='0'  values="0 4"/>
+      </atom>
+      <atom symbol="Si">
+         <valence charge='0'  values="0 4 6"/>
+      </atom>
+
+      <atom symbol="N">
+         <valence charge='0'  values="3"/>
+         <valence charge='1'  values="4"/>
+      </atom>
+      <atom symbol="P">
+         <valence charge='0'  values="3 5 "/>
+         <valence charge='1'  values="4"/>
+      </atom>
+
+      <atom symbol="O">
+         <valence charge='0'  values="2"/>
+      </atom>
+      <atom symbol="S">
+         <valence charge='0'  values="0 2 4 6"/>
+      </atom>
+      <atom symbol="Se">
+         <valence charge='0'  values="0 2 4 6"/>
+      </atom>
+
+      <atom symbol="F">
+         <valence charge='0'  values="1"/>
+      </atom>
+      <atom symbol="Cl">
+         <valence charge='0'  values="1 3 5 7"/>
+      </atom>
+      <atom symbol="Br">
+         <valence charge='0'  values="1 3 5 7"/>
+      </atom>
+      <atom symbol="I">
+         <valence charge='0'  values="1 3 5 7"/>
+      </atom>
+      <example>[CH5]</example>
+   </valenceCheck>
+
+   <keepStructure id='keepAllStereo' name='parentAllStereo'>
+      <description>Keep a copy of the parent substance before stereo transforms.</description>
+   </keepStructure>
+
+   <assignStructFlag id='assignStructFlag'/>
+
+   <checkStructFlag  id='checkStructFlag' />
+
+   <keepStructure id='keepParent' name='parent'>
+      <description>Keep a copy of the parent substance.</description>
+   </keepStructure>
+
+   <tautomerize id='tautomerize' >
+      <example>Cc1[nH]nc(CC)c1</example>
+      <description>Generate canonical tautomer using quacpac.</description>
+   </tautomerize>
+
+   <keepStructure id='keepTautomer' name='tautomer'>
+      <description>Keep a copy of the normalized tautomer.</description>
+   </keepStructure>
+</StructureRules>

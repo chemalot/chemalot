@@ -1,0 +1,8 @@
+<tests>
+
+<test in="in/56_3d_confs.sdf" out="out/100.out.sdf">
+    sdfRMSDSphereExclusion.csh -in .sdf -out .sdf -radius 1.0 -mirror
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

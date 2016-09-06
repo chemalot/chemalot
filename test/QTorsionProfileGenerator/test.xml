@@ -1,0 +1,12 @@
+<tests>
+
+<test workDir="out"
+      in="../inp/diol.sdf" out="core.sdf">
+    QTorsionProfileGenerator.csh -in .sdf -bondFile ../inp/bfile.sdf \
+        -core .sdf -nCPU 3 -template ../../../bin/data/gaussian/hf_mp2.opt.g \
+        -nSteps 10 -startTorsion 0 -torsionIncrement 36 \
+        -outNameTag demoId
+    <diffDir refDir='../ref' outDir='.' opts='--exclude="core.err"'/>
+</test>
+
+</tests>

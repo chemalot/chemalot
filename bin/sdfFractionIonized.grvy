@@ -1,0 +1,105 @@
+#!/usr/bin/env sdfGroovy.csh
+import groovy.transform.Field;
+import com.aestel.utility.DataFormat;
+import java.util.regex.*;
+
+/* static fields for tag names for given properties */
+@Field static final String c_pKaTag = "c_pKa";;
+@Field static final String c_ChargeTag = "Charge";;
+
+/** Print Help message if executed with -h or without options */
+static void help()
+{  System.err.println("\nsdfVss.grvy -in .sdf -out .sdf");
+   System.err.println("  Will compute fraction ionized at different pH values");
+   System.err.println("  Expects the 'Charge' and 'c_pKa' fields in the input\n");
+}
+
+/** initialize scripts with command line arguments */
+static void init(String[] args)
+{  if( $args.length != 0 )
+   {  help();
+      System.exit(1);
+   }
+}
+
+
+/////// the rest is executed for each record in the sdf file
+String cpKaStr =  tVal($mol,c_pKaTag)
+String chargeStr =  tVal($mol,c_ChargeTag)
+if(chargeStr.length() == 0)
+{  System.err.println("No charge field found\n");
+   return;
+}
+double charge = f(chargeStr)
+String[] pKaline;
+def acidpKa = [14.0,14.0]
+def basicpKa = [0.0,0.0]
+
+cpKaStr.splitEachLine(',') 
+{  pKaLine -> for(int i=0; i<pKaLine.size(); i++)
+   {  String line = pKaLine[i].trim();
+      String polished = line.substring(2);
+      double number = Double.valueOf(polished)
+      if(line.startsWith("a"))
+      {  // line starts with "a" we have an acidic group
+         acidpKa << number;
+      } else
+      {  // this is a basic pKa
+         basicpKa << number;
+      }         
+   }
+}
+
+double pkb1 = basicpKa.sort{-it}[0];
+double pkb2 = basicpKa.sort{-it}[1];
+double pka1 = acidpKa.sort{it}[0];
+double pka2 = acidpKa.sort{it}[1];
+
+// fraction ionized at various pH
+double fi74 = 0.0;
+double fi7 = 0.0;
+double fi9 = 0.0;
+double fi6 = 0.0;
+double fi20 = 0.0;
+
+if((pkb2 == 0 && pka2 == 14) || (pkb2 != 0 && pka2 != 14))
+{  // Zwitterions, monoprotic acid or base
+   fi74 = 1/(1+(1/(Math.pow(10D, (7.4-pka1))+Math.pow(10D, pkb1-7.4)+Math.pow(10D, pkb1-pka1))));
+   fi7 = 1/(1+(1/(Math.pow(10D, (7.0-pka1))+Math.pow(10D, pkb1-7.0)+Math.pow(10D, pkb1-pka1))));
+   fi9 = 1/(1+(1/(Math.pow(10D, (9.0-pka1))+Math.pow(10D, pkb1-9.0)+Math.pow(10D, pkb1-pka1))));
+   fi6 = 1/(1+(1/(Math.pow(10D, (6.0-pka1))+Math.pow(10D, pkb1-6.0)+Math.pow(10D, pkb1-pka1))));
+   fi20 = 1/(1+(1/(Math.pow(10D, (2.0-pka1))+Math.pow(10D, pkb1-2.0)+Math.pow(10D, pkb1-pka1))));
+} else if(pkb2 == 0)
+{  // Diprotic acid
+   fi74 = 1/(1+(1/(Math.pow(10D, (7.4-pka1))+Math.pow(10D, 7.4-pka2)+Math.pow(10D, 7.4+7.4-pka1-pka2))));
+   fi7 = 1/(1+(1/(Math.pow(10D, (7-pka1))+Math.pow(10D, 7-pka2)+Math.pow(10D, 7+7-pka1-pka2))));
+   fi9 = 1/(1+(1/(Math.pow(10D, (9-pka1))+Math.pow(10D, 9-pka2)+Math.pow(10D, 9+9-pka1-pka2))));
+   fi6 = 1/(1+(1/(Math.pow(10D, (6-pka1))+Math.pow(10D, 6-pka2)+Math.pow(10D, 6+6-pka1-pka2))));
+   fi20 = 1/(1+(1/(Math.pow(10D, (2.0-pka1))+Math.pow(10D, 2.0-pka2)+Math.pow(10D, 2.0+2.0-pka1-pka2))));
+} else if (pka2 == 14)
+{  // Diprotic base
+   fi74 = 1/(1+(1/(Math.pow(10D, (pkb1-7.4))+Math.pow(10D, pkb2-7.4)+Math.pow(10D, pkb1+pkb2-7.4-7.4))));
+   fi7 = 1/(1+(1/(Math.pow(10D, (pkb1-7))+Math.pow(10D, pkb2-7)+Math.pow(10D, pkb1+pkb2-7-7))));
+   fi9 = 1/(1+(1/(Math.pow(10D, (pkb1-9))+Math.pow(10D, pkb2-9)+Math.pow(10D, pkb1+pkb2-9-9))));
+   fi6 = 1/(1+(1/(Math.pow(10D, (pkb1-6))+Math.pow(10D, pkb2-6)+Math.pow(10D, pkb1+pkb2-6-6))));
+   fi20 = 1/(1+(1/(Math.pow(10D, (pkb1-2.0))+Math.pow(10D, pkb2-2.0)+Math.pow(10D, pkb1+pkb2-2.0-2.0))));
+} 
+
+   
+// no basic groups but charge present eg. quarternary N 
+if (pkb1 == 0 && pkb2 == 0 && charge > 0)
+{  fi74 = 1.0
+   fi7 = 1.0
+   fi6 = 1.0
+   fi9 = 1.0
+   fi20 = 1.0
+}
+double ionFactor = (1D-fi74)/(1D-fi7)
+
+// DataFormat.formatNumber(fi74,"si2") would givwe us 2 significant digits
+setVal($mol,"cFI7.4", DataFormat.formatNumber(fi74,"r1"));
+setVal($mol,"cFI7.0", DataFormat.formatNumber(fi7, "r1"));
+setVal($mol,"cFI9.0", DataFormat.formatNumber(fi9, "r1"));
+setVal($mol,"cFI6.0", DataFormat.formatNumber(fi6, "r1"));
+setVal($mol,"cFI2.0", DataFormat.formatNumber(fi20,"r1"));
+setVal($mol,"cIF", DataFormat.formatNumber(ionFactor, "r2"));

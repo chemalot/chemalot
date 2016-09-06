@@ -1,0 +1,13 @@
+<tests>
+
+<test in="../inp/t.gout" out="out.sdf" workDir="out">
+    g2sdf.pl -outFinal
+    <diff ref='$dir/ref/out.refout.sdf'/>
+</test>
+
+<test in="../inp/t2.gout" out="out2.sdf" workDir="out">
+    g2sdf.pl -outOptimized
+    <diff ref='$dir/ref/out2.refout.sdf'/>
+</test>
+
+</tests>

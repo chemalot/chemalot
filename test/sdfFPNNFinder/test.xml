@@ -1,0 +1,11 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+   sdfCFP.csh -in .sdf -out .sdf -level 2 \
+   | sdfFPNNFinder.csh -in .sdf -out .sdf -fpTag AFP2 \
+                      -maxNeighbors 10 -maxTanimoto -printAll \
+                      -countSimilarAbove 0.7 -minSimilarity 0.4 
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

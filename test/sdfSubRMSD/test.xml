@@ -1,0 +1,8 @@
+<tests>
+
+<test in="../inputFiles/propandiol.3d.sdf" out="out/propandiol.3d.out.sdf">
+    sdfSubRMSD.csh -in .sdf -out .sdf -fragFile ../inputFiles/propandiol.3d.sdf
+    <diff ref="propandiol.3d.outref.sdf"/>
+</test>
+
+</tests>

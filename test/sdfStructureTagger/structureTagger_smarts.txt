@@ -1,0 +1,6 @@
+# Example SMARTS file for sdfStructureTagger tests		
+# SMARTS	Tag name	Set name
+Nc1ccnc(N)n1	diamino pyrimidine	Set_01
+Nc1ccncn1	amino pyrimidine	Set_01
+Nc1ccncc1	amino pyridine	Set_01
+[*]S[*]	aliphatic sulfur	aliphatic sulfur

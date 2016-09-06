@@ -1,0 +1,11 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+    sdfSelectivityCalculator.csh -in .sdf -out .sdf -outputMode "combine+op" \
+    -numerator "PF proliferation inhibition 3D7 EC50 uM" \
+    -denominator "W2 Pf proliferation inhibition EC50 uM " \
+    -selectivity "PF/W2 PF prolif" -selectivityOp "PF/W2 PF prolif OP"
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

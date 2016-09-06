@@ -1,0 +1,8 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+    sdfRingSystemExtraction.csh -in .sdf -out .sdf
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

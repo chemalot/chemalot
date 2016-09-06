@@ -1,0 +1,28 @@
+# this is to be sourced after setting $class
+# it will execute that java class setting the correct classpath
+# to include the Aestel package and the oechem package
+# it depends on the following variables:
+#  OE_DIR
+# of the script sourcing this (as given in $0)
+# if XMX is set it will be used to adjust the java memory
+# if javaOpts is set it will be used passed to java
+
+set script=$0
+if( $script == $script:h ) set script=$PWD/$script
+#if( $script !~ /* ) set script=$PWD/$script
+set installDir=$script:h
+
+set basename = $script:t:r
+set libDir=$installDir/../lib
+
+if( ! $?XMX )      set XMX=1G
+if( ! $?javaOpts ) set javaOpts=-Xmx$XMX
+set javaOpts="$javaOpts -XX:+UseMembar -Djava.awt.headless=true -Djava.security.egd=file:///dev/urandom"
+
+set cp="$libDir/*"
+if( $?OE_LIB_DIR ) then
+   set javaOpts="$javaOpts -Doejava.libs.path=$OE_LIB_DIR"
+endif
+
+java $javaOpts -cp "$cp" $main $*:q
+

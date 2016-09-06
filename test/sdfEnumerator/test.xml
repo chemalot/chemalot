@@ -1,0 +1,8 @@
+<tests>
+
+<test in="./inputFiles/100.sdf" out="out/amides_VL.out.sdf">
+    sdfEnumerator.csh -hydrogenExplicit -out .sdf "[O:1]=[C:2][Cl:3].[N:4][H:5]>>[O:1]=[C:2][N:4]" ../inputFiles/acid_chlorides.sdf ../inputFiles/amines.sdf
+    <diff ref="amides_VL.refout.sdf"/>
+</test>
+
+</tests>

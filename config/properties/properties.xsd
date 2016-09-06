@@ -1,0 +1,78 @@
+<xs:schema
+      xmlns:xs='http://www.w3.org/2001/XMLSchema'
+      xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+      xsi:schemaLocation='http://www.w3.org/2001/XMLSchema http://www.w3.org/2001/XMLSchema.xsd'> 
+ <xs:element name='properties'>
+  <xs:complexType>
+   <xs:sequence>
+    <xs:element ref='property' maxOccurs='unbounded'/>
+   </xs:sequence>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='property'>
+  <xs:complexType>
+   <xs:sequence>
+    <xs:element ref='progName' minOccurs='0'/>
+    <xs:element ref='progOptions' minOccurs='0'/>
+    <xs:element ref='expProgName' minOccurs='0'/>
+    <xs:element ref='expProgOptions' minOccurs='0'/>
+    <xs:element ref='requiredCalculators' minOccurs='0'/>
+    <xs:element ref='keepRequiredCalculators' minOccurs='0'/>
+    <xs:element ref='outputFields' minOccurs='0'/>
+    <xs:element ref='verboseFields' minOccurs='0'/>
+    <xs:element ref='helpText' minOccurs='0'/>
+   </xs:sequence>
+   <xs:attribute name='name' type='xs:string' use='required'/>
+   <xs:attribute name='isPublic' type='xs:string' use='optional'/>
+   <xs:attribute name='requiresIonization' type='xs:string' use='optional'/>
+   <xs:attribute name='progAggregateID' type='xs:string' use='optional'/>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='progName'>
+  <xs:complexType mixed='true'>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='progOptions'>
+  <xs:complexType mixed='true'>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='expProgName'>
+  <xs:complexType mixed='true'>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='expProgOptions'>
+  <xs:complexType mixed='true'>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='requiredCalculators'>
+  <xs:complexType mixed='true'>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='keepRequiredCalculators'>
+  <xs:complexType mixed='true'>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='outputFields'>
+  <xs:complexType mixed='true'>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='verboseFields'>
+  <xs:complexType mixed='true'>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='helpText'>
+  <xs:complexType mixed='true'>
+  </xs:complexType>
+ </xs:element>
+</xs:schema>
+

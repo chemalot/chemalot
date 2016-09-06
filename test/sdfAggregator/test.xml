@@ -1,0 +1,26 @@
+<tests>
+
+<!-- test with groupBy -->
+<test in="../inputFiles/100.sdf" out="out/100.out.txt">
+    sdfSorter.csh -in .sdf -out .sdf -sortTag "Powder data?" \
+    | sdfAggregator.csh -in .sdf -out .sdf --groupby "Powder data?" \
+         -function "cnt=count(PF proliferation inhibition 3D7 EC50 uM)" \
+         -function "med=median(PF proliferation inhibition 3D7 EC50 uM)" \
+         -function "avg=mean(PF proliferation inhibition 3D7 EC50 uM)" \
+         -function "cnt2=count(distinct Powder data?)" \
+    | sdf2Tab.csh -in .sdf -tags "Powder data?|cnt|med|avg|cnt2"
+    <diff ref="100.refout.txt"/>
+</test>
+
+<!-- test without groupBy -->
+<test in="../inputFiles/100.sdf" out="out/100_2.out.txt">
+    sdfAggregator.csh -in .sdf -out .sdf \
+         -function "cnt=count(PF proliferation inhibition 3D7 EC50 uM)" \
+         -function "med=median(PF proliferation inhibition 3D7 EC50 uM)" \
+         -function "avg=mean(PF proliferation inhibition 3D7 EC50 uM)" \
+         -function "cnt2=count(distinct Powder data?)" \
+    | sdf2Tab.csh -in .sdf -tags "Powder data?|cnt|med|avg|cnt2"
+    <diff ref="100_2.refout.txt"/>
+</test>
+
+</tests>

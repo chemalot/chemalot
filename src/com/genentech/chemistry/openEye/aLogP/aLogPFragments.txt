@@ -1,0 +1,180 @@
+#Name	#Type	Central Atom	Match Order	H Explicit	SMARTS	Description {a}	hydrophobicity {b}	no of compounds	no of freq of use		
+#C in											
+ALogP_GCount_001	1	C	1	n	[Ch3][#6]	":CH3R, CH4 "	-1.5603	4088	7642		
+ALogP_GCount_001	1	C	1	n	[Ch4]	":CH3R, CH4 "	-1.5603	4088	7642		
+ALogP_GCount_002	2	C	2	n	[Ch2]([#6])([#6])	:CH2R2 	-1.012	2941	7639		
+ALogP_GCount_003	3	C	3	n	[Ch]([#6])([#6])[#6]	:CHR3 	-0.6681	848	1406		
+ALogP_GCount_004	4	C	4	n	C([#6])([#6])([#6])[#6]	:CR4 	-0.3698	403	527		
+ALogP_GCount_005	5	C	5	n	"[Ch3]-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CH3X 	-1.788	2279	3463		
+ALogP_GCount_006	6	C	6	n	"[Ch2]([#6])-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CH2RX 	-1.2486	3529	6957		
+ALogP_GCount_007	7	C	7	n	"[Ch2](-[#7,#8,#9,#15,#16,#17,#34,#35,#53])-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CH2X2 	-1.0305	156	162		
+ALogP_GCount_008	8	C	8	n	"[Ch]([#6])([#6])-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CHR2X 	-0.6805	1640	2846		
+ALogP_GCount_009	9	C	9	n	"[Ch]([#6])(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CHRX2 	-0.3858	301	315		
+ALogP_GCount_010	10	C	10	n	"[Ch](-[#7,#8,#9,#15,#16,#17,#34,#35,#53])(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CHX3 	0.7555	30	30		
+ALogP_GCount_011	11	C	11	n	"C([#6])([#6])([#6])-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CR3X 	-0.2849	436	508		
+ALogP_GCount_012	12	C	12	n	"C([#6])([#6])(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CR2X2 	0.02	82	96		
+ALogP_GCount_013	13	C	13	n	"C([#6])(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CRX3 	0.7894	275	305		
+ALogP_GCount_014	14	C	14	n	"C(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:CX4 	1.6422	44	44		
+ALogP_GCount_015	15	C	15	n	[Ch2X3]=C	:=CH2 	-0.7866	134	153		
+ALogP_GCount_016	16	C	16	n	[ChX3](=C)-[#6]	:=CHR 	-0.3962	794	1307		
+ALogP_GCount_017	17	C	17	n	[CX3](=C)(-[#6])-[#6]	:=CR2 	0.0383	444	530		
+ALogP_GCount_018	18	C	18	n	"[ChX3](-[#7,#8,#9,#15,#16,#17,#34,#35,#53])=[#6]"	:=CHX 	-0.8051	260	286		
+ALogP_GCount_019	19	C	19	n	"[CX3](-[#6])(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])=[#6]"	:=CRX 	-0.2129	314	417		
+ALogP_GCount_020	20	C	20	n	"[CX3](-[#7,#8,#9,#15,#16,#17,#34,#35,#53])(-[#7,#8,#9,#15,#16,#17,#34,#35,#53])=[#6]"	:=CX2 	0.2432	57	59		
+ALogP_GCount_021	21	C	21	n	[ChX2][#6]	:#CH 	0.4697	72	88		
+ALogP_GCount_022	22	C	22	n	[CX2;!$(C[!#6])]	":#CR,R=C=R "	0.2952	77	79		
+ALogP_GCount_023	23	C	23	n	"[CX2]-[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:#CX 	0	-	-		
+ALogP_GCount_024	24	C	24	n	[ch](c)(c)	:R--CH--R 	-0.3251	6046	27607		
+ALogP_GCount_025	25	C	25	n	c(c)(c)[#6]	:R--CR--R 	0.1492	4086	6356		
+ALogP_GCount_026	26	C	26.3	n	"c(c)(c)[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:R--CX--R 	0.1539	4328	8624		
+ALogP_GCount_027	27	C	27.2	n	[ch](c)[nX2]	:R--CH--X 	0.0005	1010	1384		
+ALogP_GCount_028	28	C	26.2	n	c(c)([#6])[nX2]	:R--CR--X 	0.2361	860	1089		
+ALogP_GCount_029	29	C	29.4	n	"c(c)([nX2])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:R--CX--X 	0.3514	545	653		
+ALogP_GCount_030	30	C	30.1	n	[ch]([nX2])[nX2]	:X--CH--X 	0.1814	152	154		
+ALogP_GCount_031	31	C	29.3	n	c([#6])([nX2])[nX2]	:X--CR--X 	0.0901	133	146		
+ALogP_GCount_032	32	C	32.2	n	"c([nX2])([nX2])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:X--CX--X 	0.5142	296	429		
+ALogP_GCount_033	33	C	27.1	n	"[ch](c)[n&X3,o,s,se]"	:R--CH...X 	-0.3723	428	478		
+ALogP_GCount_034	34	C	26.1	n	"c(c)([#6])[n&X3,o,s,se]"	:R--CR...X 	0.2813	673	789		
+ALogP_GCount_035	35	C	29.2	n	"c(c)([n&X3,o,s,se])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:R--CX...X 	0.1191	302	314		
+ALogP_GCount_036	36	C	36	n	"[Ch](=[N,O,P,S,Se])A"	:Al-CH=X 	-0.132	39	39		
+ALogP_GCount_037	37	C	37	n	"[Ch](=[N,O,P,S,Se])a"	:Ar-CH=X 	-0.0244	115	115		
+ALogP_GCount_038	38	C	38	n	"C(=[N,O,P,S,Se])(A)A"	:Al-C(=X)-Al 	-0.2405	55	65		
+ALogP_GCount_039	39	C	39	n	"C(=[N,O,P,S,Se])(a)[#6]"	:Ar-C(=X)-R 	-0.0909	434	492		
+ALogP_GCount_040	40	C	40	n	"[#6](=[N,O,P,S,Se])([#6])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	"::R-C(=X)-X,R-C#X,X=C=X "	-0.1002	4126	5998		
+ALogP_GCount_040	40	C	40	n	C(#N)[#6]	"::R-C(=X)-X,R-C#X,X=C=X "	-0.1002	4126	5998		
+ALogP_GCount_040	40	C	40	n	"C(=[N,O,P,S,Se])=[N,O,P,S,Se]"	"::R-C(=X)-X,R-C#X,X=C=X "	-0.1002	4126	5998		
+ALogP_GCount_041	41	C	41	n	"C(=[N,O,P,S,Se])([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:X-C(=X)-X 	0.4182	1399	1527		
+ALogP_GCount_042	42	C	30.2	n	"[ch]([n&X3,o,s,se])[nX2]"	:X--CH...X 	-0.2147	381	383		
+ALogP_GCount_043	43	C	29.1	n	"c([#6])([n&X3,o,s,se])[nX2]"	:X--CR...X 	-0.0009	247	261		
+ALogP_GCount_044	44	C	32.1	n	"c([n&X3,o,s,se])([nX2])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:X--CX...X 	0.1388	205	261		
+#						:unused 	-	-	-		
+											
+#H attached to {c}											
+ALogP_GCount_046	46	H	46	n	[C!h0X4;!$(C~[!#6]);!$(C~[#6]~[!#6])]	":C0sp3, having no X attached to next C "	0.7341	2870	19673		
+ALogP_GCount_047	47	H	47	n	"[CX4;h&$(C([#6])[#6]),h2&$(C[#6]),h3][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C1sp3,C0sp2"	0.6301	7785	53484		
+ALogP_GCount_047	47	H	47	n	"[#6!h0;!$([#6]~[!#6])]=,:[#6]"	":C1sp3,C0sp2"	0.6301	7785	53484		
+ALogP_GCount_048	48	H	48	n	"[CX4;h2,h&$(C[#6])]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C2sp3,C1sp2,C0sp "	0.518	1056	1370		
+ALogP_GCount_048	48	H	48	n	"[#6h]([#8,#7X3,#16,#15,#34,F,Cl,Br,I])=,:[#6]"	":C2sp3,C1sp2,C0sp "	0.518	1056	1370		
+ALogP_GCount_048	48	H	48	n	[Ch]#C	":C2sp3,C1sp2,C0sp "	0.518	1056	1370		
+ALogP_GCount_049	49	H	49	n	"[#6h]([#8,#7,#16,#15,#34,F,Cl,Br,I])([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C3sp3,C2-3sp2,C1-3sp "	-0.0371	1599	2247		
+ALogP_GCount_049	49	H	49	n	"[#6h]([#6,#8,#7,#16,#15,#34,F,Cl,Br,I])=,:[#8,#7,#16,#15,#34]"	":C3sp3,C2-3sp2,C1-3sp "	-0.0371	1599	2247		
+ALogP_GCount_049	49	H	49	n	"[#6h2]=[#8,#7,#16,#15,#34]"	":C3sp3,C2-3sp2,C1-3sp "	-0.0371	1599	2247		
+ALogP_GCount_049	49	H	49	n	"[#6h]#[#8,#7,#16,#15,#34]"	":C3sp3,C2-3sp2,C1-3sp "	-0.0371	1599	2247		
+ALogP_GCount_050	50	H	50	n	[!#6;!h0]	::heteroatom 	-0.1036	5456	10957		
+ALogP_GCount_051	51	H	0	n	"[CX4!h0]C=,#[#8,#7,#16,#15,#34]"	:alpha-C {d}	0.5234	3072	8801		
+ALogP_GCount_051	51	H	0	n	[CX4!h0]C-[NX3]=O	:alpha-C {d}	0.5234	3072	8801		
+ALogP_GCount_052	52	H	52.9	n	"[CX4!h0][#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 1 X attached to next carbon "	0.6666	2891	13030		
+ALogP_GCount_053	53	H	52.8	n	"[CX4!h0][#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 2 X attached to next carbon "	0.5372	370	952		How about HC(CHF2)(CH3)CH3?
+ALogP_GCount_053	53	H	52.8	n	"[CX4!h0][#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])C[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 2 X attached to next carbon "	0.5372	370	952		How about HC(CHF2)(CH3)CH3?
+ALogP_GCount_054	54	H	52.7	n	"[CX4!h0]C([#8,#7,#16,#15,#34,F,Cl,Br,I])([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 3 X attached to next carbon "	0.6338	79	164		How about HC(CHF2)(CH2F)CH3 and HC(CF3)(CH3)CH3?
+ALogP_GCount_054	54	H	52.7	n	"[CX4!h0]([#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I])[#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 3 X attached to next carbon "	0.6338	79	164		How about HC(CHF2)(CH2F)CH3 and HC(CF3)(CH3)CH3?
+ALogP_GCount_054	54	H	52.7	n	"[CX4h](C[#8,#7,#16,#15,#34,F,Cl,Br,I])(C[#8,#7,#16,#15,#34,F,Cl,Br,I])C[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 3 X attached to next carbon "	0.6338	79	164		How about HC(CHF2)(CH2F)CH3 and HC(CF3)(CH3)CH3?
+ALogP_GCount_055	55	H	55.1	n	"[CX4!h0](C([#8,#7,#16,#15,#34,F,Cl,Br,I])([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I])[#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 4 or more X attached to next carbon "	0.362	2	4		"How about HC(CHF2)(CHF2)CH3 and HC(CF3)(CH2F)CH3 as well as the ""or more X"" requirement?"
+ALogP_GCount_055	55	H	55.1	n	"[CX4!h0]([#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I])[#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 4 or more X attached to next carbon "	0.362	2	4		"How about HC(CHF2)(CHF2)CH3 and HC(CF3)(CH2F)CH3 as well as the ""or more X"" requirement?"
+ALogP_GCount_055	55	H	55.1	n	"[CX4h]([#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I])([#6][#8,#7,#16,#15,#34,F,Cl,Br,I])[#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 4 or more X attached to next carbon "	0.362	2	4		"How about HC(CHF2)(CHF2)CH3 and HC(CF3)(CH2F)CH3 as well as the ""or more X"" requirement?"
+											
+# O in											
+ALogP_GCount_056	56	O	56	n	"[Oh][C;X4&!$(C([O,N,S,P,Se])O)]"	:alcohol 	-0.3567	953	1477		
+ALogP_GCount_057	57	O	57	n	"[Oh][c,CX3]"	":phenol, enol, carboxyl OH "	-0.0127	1048	1239		
+ALogP_GCount_058	58	O	58.5	n	[O;X1]	:=O 	-0.0233	5138	8248		
+ALogP_GCount_059	59	O	59.9	n	[O](-[A])-[A]	:Al-O-Al 	-0.1541	575	821		
+ALogP_GCount_060	60	O	60	n	"[#8](a)[a,A]"	":Al-O-Ar, Ar2O :R...O...R, R-O-C=X "	0.0324	2924	4188		
+ALogP_GCount_060	60	O	59.5	n	"[O][#6]C=[#7,O]"	":Al-O-Ar, Ar2O :R...O...R, R-O-C=X "	0.0324	2924	4188		
+ALogP_GCount_061	61	O	58.1	n	"[$(O=[#7]),$([O;-1][#7;+1])]"	:--O {e}	1.052	902	1928		How about carboxy acid C(=O)O?
+ALogP_GCount_062	62	O	62	n	[O;-1;!$([O;-1][N;+1;X4])]	:O-(negatively charged) 	-0.7941	182	363		
+ALogP_GCount_063	63	O	63	n	O(-[#6])-O-[#6]	:R-O-O-R 	0.4165	8	16		
+											
+#Se in 											
+ALogP_GCount_064	64	Se	64	n	"[Se]([a,A])[a,A]"	:Any-Se-Any 	0.6601	6	6		
+ALogP_GCount_065	65	Se	65	n	"[Se]=[a,A]"	:=Se	0	-	-		
+											
+#N in 											
+ALogP_GCount_066	66	N	79.1	n	[Nh2;X3][A]	:Al-NH2	-0.5427	138	141		
+ALogP_GCount_067	67	N	79.1	n	[Nh;X3]([A])[A]	:Al2NH	-0.3168	166	169		
+ALogP_GCount_068	68	N	79.1	n	[N;X3]([A])([A])[A]	:Al3N	0.0132	457	481		
+ALogP_GCount_069	69	N	79.1	n	"[Nh2;X3][a,#8,#7,#16,#15,#34,F,Cl,Br,I]"	":Ar-NH2,X-NH2"	-0.3883	687	859		
+ALogP_GCount_070	70	N	79.1	n	[Nh;X3]([a])[A]	:Ar-NH-Al	-0.0389	196	239		
+ALogP_GCount_071	71	N	79.1	n	[N;X3]([a])([A])[A]	:Ar-NAl2	0.1087	198	218		
+ALogP_GCount_072	72	N	66.1	n	"[N;X3;$(N-C(=O)C),$(N-[#7,#15]=[#8,#7,#16,#15,#34])]"	":RCO-N<,>N-X=X"	-0.5113	3717	5526		
+ALogP_GCount_073	73	N	79.1	n	[Nh;X3](a)a	":Ar2NH,Ar3N,:Ar2N-Al,R...N...R {f} "	0.1259	1251	1264		
+ALogP_GCount_073	73	N	79.1	n	[N;X3](a)(a)a	":Ar2NH,Ar3N,:Ar2N-Al,R...N...R {f} "	0.1259	1251	1264		
+ALogP_GCount_073	73	N	79.1	n	[N;X3](a)(a)A	":Ar2NH,Ar3N,:Ar2N-Al,R...N...R {f} "	0.1259	1251	1264		
+ALogP_GCount_073	73	N	79.1	n	[nX3](a)a	":Ar2NH,Ar3N,:Ar2N-Al,R...N...R {f} "	0.1259	1251	1264		
+ALogP_GCount_074	74	N	74	n	"[N;$(N#C),$([N;X2]=C)]"	":R#N,R=N-"	0.1349	1070	1293		
+ALogP_GCount_075	75	N	75	n	"[nX2;$(n(c)c),$(n(c)[o,n,s,p])]"	":R--N--R,{g} R--N--X"	-0.1624	1927	3083		
+ALogP_GCount_076	76	N	76	n	"[N;$([NX3](=O)=O),$([NX3+](=O)[O-])]a"	":Ar-NO2.R--N(--R)--O {h}, RO-NO"	-2.0585	867	969		
+ALogP_GCount_076	76	N	76	n	[n+1](c)(c)[#8;-1]	":Ar-NO2.R--N(--R)--O {h}, RO-NO"	-2.0585	867	969		
+ALogP_GCount_076	76	N	76	n	[N;X2](=O)O[#6]	":Ar-NO2.R--N(--R)--O {h}, RO-NO"	-2.0585	867	969		
+ALogP_GCount_077	77	N	77	n	"[N;$([NX3](=O)=O),$([NX3+](=O)[O-])]A"	:Al-NO2	-1.915	21	21		
+ALogP_GCount_078	78	N	78	n	"[N;X2](=[O,N,S,P,Se])-[a,O,#7,S,#15,Se,F,Cl,Br,I]"	":Ar-N=X,X-N=X"	0.4208	270	392		
+ALogP_GCount_079	79	N	79	n	[N+1;X4]	:N+ (positively charged)	-1.4439	189	189		
+											
+#F attached to 											
+ALogP_GCount_081	81	F	81.9	n	F[CX4]	:C1sp3	0.4797	107	115		
+ALogP_GCount_082	82	F	81.8	n	"F[CX4][#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:C2sp3	0.2358	30	84		
+ALogP_GCount_083	83	F	81.7	n	"F[CX4]([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:C3sp3	0.1029	289	893		
+ALogP_GCount_084	84	F	84	n	"F[C;h,$(C-C)]=C"	:C1sp2	0.3566	278	341		
+ALogP_GCount_084	84	F	84	n	Fc(c)c	:C1sp2	0.3566	278	341		
+ALogP_GCount_085	85	F	85	n	"F[#6X3]~[#7,#8,#9,#15,#16,#34,#35,#53]"	":C2-4sp2,C1sp,C4sp3,X"	0.1988	18	22		
+ALogP_GCount_085	85	F	85	n	F[#6X2]	":C2-4sp2,C1sp,C4sp3,X"	0.1988	18	22		
+ALogP_GCount_085	85	F	81.6	n	"F[CX4]([#7,#8,#9,#15,#16,#17,#34,#35,#53])([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	":C2-4sp2,C1sp,C4sp3,X"	0.1988	18	22		
+											
+#Cl attached to 											
+ALogP_GCount_086	86	Cl	86.9	n	Cl[CX4]	:C1sp3	0.7443	154	253		
+ALogP_GCount_087	87	Cl	86.8	n	"Cl[CX4][#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:C2sp3	0.5337	41	76		
+ALogP_GCount_088	88	Cl	86.7	n	"Cl[CX4]([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:C3sp3	0.2996	58	195		
+ALogP_GCount_089	89	Cl	89	n	"Cl[C;h,$(C-C)]=C"	:C1sp2	0.8155	1044	1939		
+ALogP_GCount_089	89	Cl	89	n	Clc(c)c	:C1sp2	0.8155	1044	1939		
+ALogP_GCount_090	90	Cl	90	n	"Cl[#6X3]~[#7,#8,#9,#15,#16,#34,#35,#53]"	":C2-4sp2,C1sp,C4sp3,X"	0.4856	121	145		
+ALogP_GCount_090	90	Cl	90	n	Cl[#6X2]	":C2-4sp2,C1sp,C4sp3,X"	0.4856	121	145		
+ALogP_GCount_090	90	Cl	86.6	n	"Cl[CX4]([#7,#8,#9,#15,#16,#17,#34,#35,#53])([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	":C2-4sp2,C1sp,C4sp3,X"	0.4856	121	145		
+											
+#Br attached to 											
+ALogP_GCount_091	91	Br	91.9	n	Br[CX4]	:C1sp3	0.8888	36	43		
+ALogP_GCount_092	92	Br	91.8	n	"Br[CX4][#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:C2sp3	0.7452	4	5		
+ALogP_GCount_093	93	Br	91.7	n	"Br[CX4]([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:C3sp3	0.5034	6	15		
+ALogP_GCount_094	94	Br	94	n	"Br[C;h,$(C-C)]=C"	:C1sp2	0.8995	213	257		
+ALogP_GCount_094	94	Br	94	n	Brc(c)c	:C1sp2	0.8995	213	257		
+ALogP_GCount_095	95	Br	95	n	"Br[#6X3]~[#7,#8,#9,#15,#16,#34,#35,#53]"	":C2-4sp2,C1sp,C4sp3,X"	0.5946	29	35		
+ALogP_GCount_095	95	Br	95	n	Br[#6X2]	":C2-4sp2,C1sp,C4sp3,X"	0.5946	29	35		
+ALogP_GCount_095	95	Br	91.6	n	"Br[CX4]([#7,#8,#9,#15,#16,#17,#34,#35,#53])([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	":C2-4sp2,C1sp,C4sp3,X"	0.5946	29	35		
+											
+#I attached to 											
+ALogP_GCount_096	96	I	96.9	n	I[CX4]	:C1sp3	1.4201	10	12		
+ALogP_GCount_097	97	I	96.8	n	"I[CX4][#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:C2sp3	1.1472	1	2		
+ALogP_GCount_098	98	I	96.7	n	"I[CX4]([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:C3sp3	0	-	-		
+ALogP_GCount_099	99	I	99	n	"I[C;h,$(C-C)]=C"	:C1sp2	0.7293	83	116		
+ALogP_GCount_099	99	I	99	n	Ic(c)c	:C1sp2	0.7293	83	116		
+ALogP_GCount_100	100	I	100	n	"I[#6X3]~[#7,#8,#9,#15,#16,#34,#35,#53]"	":C2-4sp2,C1sp,C4sp3,X"	0.7173	15	17		
+ALogP_GCount_100	100	I	100	n	I[#6X2]	":C2-4sp2,C1sp,C4sp3,X"	0.7173	15	17		
+ALogP_GCount_100	100	I	96.6	n	"I[CX4]([#7,#8,#9,#15,#16,#17,#34,#35,#53])([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	":C2-4sp2,C1sp,C4sp3,X"	0.7173	15	17		
+											
+#halide ions 											
+ALogP_GCount_101	101	F	101	n	[F-]	:fluoride ion	0	-	- 		
+ALogP_GCount_102	102	Cl	102	n	[Cl-]	chloride ion	-2.6737	3	3		
+ALogP_GCount_103	103	Br	103	n	[Br-]	:bromide ion	-2.4178	1	1		
+ALogP_GCount_104	104	I	104	n	[I-]	:iodide ion	-3.1121	2	2		
+											
+#S in 											
+ALogP_GCount_106	106	S	106	n	[Sh;X2][#6]	:R-SH	0.6146	23	27		
+ALogP_GCount_107	107	S	107	n	[#16;X2]([#6])[#6]	":R2S, RS-SR"	0.5906	675	774		
+ALogP_GCount_107	107	S	107	n	[#16;X2]([#6])[#16;X2][#6]	":R2S, RS-SR"	0.5906	675	774		
+ALogP_GCount_108	108	S	108	n	[SX1]=C	:R=S	0.8758	204	211		
+ALogP_GCount_109	109	S	109	n	[SX3](=O)([#6])[#6]	:R-SO-R	-0.4979	58	59		
+ALogP_GCount_110	110	S	110	n	[SX4](=O)(=O)([#6])[#6]	:R-SO2-R	-0.3786	560	631		
+											
+#Si in 											
+ALogP_GCount_111	111	Si	111	n	[Si]	:>Si< as in silicones	1.5188	11	11		
+											
+#B in 											
+ALogP_GCount_112	112	B	112	n	[B]	:>B- as in boranes	1.0255	2	2		
+											
+#P in 											
+ALogP_GCount_115	115	P	115	n	[P][C-]	:ylids	0				
+ALogP_GCount_116	116	P	116	n	"[P]([#6])([#6])([#6])=[N,O,S,Se]"	R3-P=X	-0.9359	2	2		
+ALogP_GCount_117	117	P	117	n	"[P]([O,N,S,Se,F,Cl,Br,I])([O,N,S,Se,F,Cl,Br,I])([O,N,S,Se,F,Cl,Br,I])=[O,N,S,Se]"	:X3-P=X (phosphate)	-0.1726	131	132		
+ALogP_GCount_118	118	P	118	n	"[PX3]([O,N,S,Se,F,Cl,Br,I])([O,N,S,Se,F,Cl,Br,I])([O,N,S,Se,F,Cl,Br,I])"	:PX3 (phosphite)	-0.7966	3	3		
+ALogP_GCount_119	119	P	119	n	[PX3]([#6])([#6])([#6])	:PR3 (phosphine)	0.6705	2	2		
+ALogP_GCount_120	120	P	120	n	"[P]([#6])([O,N,S,Se,F,Cl,Br,I])([O,N,S,Se,F,Cl,Br,I])=[O,N,S,Se]"	:C-P(X)2=X (phosphonate)	-0.4801	20	20		
+											
+#											

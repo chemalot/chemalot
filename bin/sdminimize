@@ -1,0 +1,528 @@
+#!/bin/csh -f
+#if 0
+$MOE/bin/moebatch -run $0 $*
+exit
+#endif
+//
+//	sdminimize.svl	Minimize and compute force field energies from an SDF
+//
+//	18-sep-2014 (hs) fixed restrainDihAtoms use of aAngle >aDihedralCW
+//	10-sep-2014 (hs) uncommented MM
+//	09-sep-2014 (hs) updated to use aSetDihedralCW
+//	19-aug-2014 (ad) added restrainDihAtoms, restrainDihSmarts, restrainforce
+//	17-jul-2014 (ad) added fixAtoms and tetherAtoms
+//	15-apr-2014 (md) added fixdummies
+//	11-dec-2013 (md) created (based on sdrecap)
+//
+//
+//  DESCRIPTION:
+//
+//	This script will take an SD file (or files) as input, minimize each
+//	entry (with the options below), and writes the minimized geometry and
+//	the forcefield energy to an output SD file.  Available options
+// are shown with -help
+//
+//	For example:
+//
+//	sdminimize -ff mmff94x -solvation R-Field -tether heavy -tetherforce 50
+//		   -fixSmarts c1ccccc1 -o output.sdf input.sdf
+//
+//
+// COPYRIGHT (C) 2013 CHEMICAL COMPUTING GROUP INC.  ALL RIGHTS RESERVED.
+//
+// PERMISSION TO USE, COPY, MODIFY AND DISTRIBUTE THIS SOFTWARE IS HEREBY
+// GRANTED PROVIDED THAT: (1) UNMODIFIED OR FUNCTIONALLY EQUIVALENT CODE
+// DERIVED FROM THIS SOFTWARE MUST CONTAIN THIS NOTICE; (2) ALL CODE DERIVED
+// FROM THIS SOFTWARE MUST ACKNOWLEDGE THE AUTHOR(S) AND INSTITUTION(S); (3)
+// THE NAMES OF THE AUTHOR(S) AND INSTITUTION(S) NOT BE USED IN ADVERTISING
+// OR PUBLICITY PERTAINING TO THE DISTRIBUTION OF THE SOFTWARE WITHOUT
+// SPECIFIC, WRITTEN PRIOR PERMISSION; (4) ALL CODE DERIVED FROM THIS SOFTWARE
+// BE EXECUTED WITH THE MOLECULAR OPERATING ENVIRONMENT (MOE) LICENSED FROM
+// CHEMICAL COMPUTING GROUP INC.
+//
+// CHEMICAL COMPUTING GROUP INC. DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
+// SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS,
+// AND IN NO EVENT SHALL CHEMICAL COMPUTING GROUP INC. BE LIABLE FOR ANY
+// SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER
+// RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+// CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+// CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+#set title	'SD Minimize'
+#set class	'MOE:sdtools'
+#set version	'2013.08'
+
+global argv;
+const PNAME   = 'sdminimize';
+
+function sdutil_ParseCommandLine;
+function sdutil_InputOpen, sdutil_InputClose, sdutil_InputRead;
+function sdutil_OutputOpen, sdutil_OutputClose, sdutil_OutputWrite;
+function MM;
+
+
+// ------------------------------ ENTRY POINT ---------------------------------
+
+const SOLVATION = ['Vacuum', 'Distance', 'R-Field', 'Born'];
+const PROGRESS = 50;
+const HELP =
+#string
+usage:
+    sdminimize [options] [-o outfile] [filename]
+options:
+    -ff			The forcefield (Options: Amber12EHT, charmm22, charmm27, empirical, engh_huber, koll89, koll94, koll99, mmff94, mmff94s, mmff94x, oplsaa, pef95sac, pfrosst, taff. Default: mmff94s)
+    -solvation		The solvation method (Options: Vacuum, Distance, R-Field, Born. Default: Vacuum)
+    -fix		Fix heavy, all, or none of the atoms (Default: none)
+    -tether		Tether heavy, all, or none of the atoms (Default: none)
+    -tetherforce	Force of the tether (Default: 10)
+    -tetherwidth	Width of the flat-bottomed tether (Default: 0.25)
+    -restrainDihAtoms	Restrain a torsion by specifying 4 indices
+    -restrainDihSmarts	Restrain a torsion (first 4) by specifying a SMARTS string
+    -restrainforce	Force of the restraint (Default: 10)
+    -fixdummies		Fix the atoms nearest atoms named LP in the input (0 or 1, Default: 0)
+    -fixAtoms		Fix the atoms by comma separated index as in sdf file (first = 1)
+    -fixSmarts		Fix the moiety matching a SMARTS token (Default: [])
+    -tetherSmarts	Tether the moiety matching a SMARTS token (Default: [])
+    -tetherAtoms	Tether atoms listed by indexes as in sdf file (first = 1)
+    -dielectric		The implicit solvent dielectric constant (Default: 80)
+    -help 		Print this information
+    -verbose		Enable information printing (Default)
+    -quiet		Disable information printing
+# ;
+
+local function eOut [str]
+  fwrite[ STDERR, '{v}\n', str];
+endfunction
+
+local function MinimizeSD []
+
+    local i, j;
+
+	// parse the options vector
+
+    local opt = [
+	outfile			: '-',		
+	verbose			: 1,		
+	ff			: 'mmff94s',
+	solvation		: 'Vacuum',
+	fix			: 'none',
+	tether			: 'none',
+	tetherforce		: 10,
+	tetherwidth		: 0.25,
+	fixdummies		: 0,
+	fixSmarts		: [],
+	tetherSmarts		: [],
+	restrainDihSmarts	: [],
+	restrainforce		: 100,
+	dielectric		: 80
+    ];
+
+    local ifile,ifmt,iopt,ioptval,ofile,ofmt,ffile,ffmt;
+    [ifile,ifmt,iopt,ioptval,ofile,ofmt,ffile,ffmt] = 
+	sdutil_ParseCommandLine [ PNAME, argv, HELP, tr [
+	    [ '-quiet',		0 ],
+	    [ '-verbose',	1 ],
+	    [ '-ff',		1 ],
+	    [ '-solvation',	1 ],
+	    [ '-fix',		1 ],
+	    [ '-tether',	1 ],
+	    [ '-tetherforce',	1 ],
+	    [ '-tetherwidth',	1 ],
+	    [ '-fixdummies',	1 ],
+	    [ '-fixAtoms',	1 ],
+	    [ '-fixSmarts',	1 ],
+	    [ '-tetherSmarts',	1 ],
+	    [ '-tetherAtoms',	1 ],
+	    [ '-restrainDihAtoms',	1 ],
+	    [ '-restrainDihSmarts',	1 ],
+	    [ '-restrainforce',	1 ],
+	    [ '-dielectric',	1 ]
+	]
+    ];
+
+    opt.ofile = ofile;
+    opt.ofmt = ofmt;
+
+    const FLAGOPT = tr [			
+	[ '-verbose'		, 'verbose'		,  1],
+	[ '-quiet'		, 'verbose'		,  0]
+    ];
+
+	// parse the flag options taking the last one as definititive
+
+    for i = 1, length iopt loop
+	if j = indexof [iopt(i), FLAGOPT(1)] then
+	    opt.(FLAGOPT(2)(j)) = FLAGOPT(3)(j);
+	    iopt(i) = '';
+	endif
+    endloop
+    [iopt,ioptval] = [iopt,ioptval] || [iopt <> ''];
+
+	// Turn iopt into opt.___
+
+    if length (i = last x_pack ('-ff' == iopt)) then
+	opt.ff = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-solvation' == iopt)) then
+	opt.solvation = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-fix' == iopt)) then
+	opt.fix = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-tether' == iopt)) then
+	opt.tether = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-tetherAtoms' == iopt)) then
+	    opt.tetherAtoms = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-fixdummies' == iopt)) then
+	opt.fixdummies = apt tonum ioptval(i);
+    endif
+    if length (i = last x_pack ('-fixAtoms' == iopt)) then
+	    opt.fixAtoms = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-fixSmarts' == iopt)) then
+	opt.fixSmarts = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-tetherSmarts' == iopt)) then
+	opt.tetherSmarts = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-restrainDihAtoms' == iopt)) then
+	opt.restrainDihAtoms = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-restrainDihSmarts' == iopt)) then
+	opt.restrainDihSmarts = apt token ioptval(i);
+    endif
+
+    if length (i = last x_pack ('-tetherforce' == iopt)) then
+	opt.tetherforce = atof token ioptval(i);
+	if (isnull opt.tetherSmarts and isnull opt.tetherAtoms and opt.tether == 'none') then
+	    fwrite [STDERR,
+		    'tetherforce requires use of -tether, -tetherAtoms or -tetherSmarts\n'];
+	    exit[];
+	endif
+    endif
+
+    if length (i = last x_pack ('-tetherwidth' == iopt)) then
+	opt.tetherwidth = atof token ioptval(i);
+	if (isnull opt.tetherSmarts and opt.tether == 'none') then
+	    fwrite [STDERR,
+		    'tetherwidth requires use of -tether or -tetherSmarts'];
+	    exit[];
+	endif
+    endif
+
+    if length (i = last x_pack ('-restrainforce' == iopt)) then
+	opt.restrainforce = atof token ioptval(i);
+	if (isnull opt.restrainDihAtoms and isnull opt.restrainDihSmarts) then
+	    fwrite [STDERR,
+		    'restrainforce requires use of -restainDihAtoms or -restrainDihSmarts\n'];
+	    exit[];
+	endif
+    endif
+
+    if length (i = last x_pack ('-dielectric' == iopt)) then
+	opt.dielectric = atof token ioptval(i);
+    endif
+
+    local ictx = sdutil_InputOpen [ifile, ifmt, [
+	rfmt	: 'sdf'
+    ,	pname	: PNAME
+    ,	verbose	: opt.verbose
+    ]];
+    local octx = sdutil_OutputOpen [PNAME, ofile, ofmt];
+
+    if opt.verbose then
+	fwrite [STDERR,'{}: started {}\n', PNAME, asctime[]];
+    endif
+
+	// Parse forcefield
+	
+    local ffs = fbase ftail flist ['$MOE/lib', '*.ff'];
+    if isnull findmatch [opt.ff, ffs] then
+	fwrite [STDERR,
+		'{}: {} not found.  Allowable forcefields are: {}\n',
+		PNAME, opt.forcefield, ffs]; exit [];
+    else
+	pot_Load [tok_cat ['$MOE/lib/', opt.ff, '.ff']];
+    endif
+	
+	// Parse solvation
+	
+    if isnull findmatch [opt.solvation, SOLVATION] then
+	fwrite [STDERR,
+		'{}: {} not found.  Allowable solvation models are: {}\n',
+		PNAME, opt.solvation, SOLVATION]; exit [];
+    else
+	if opt.solvation == 'Vacuum' then
+	    pot_Setup [solEnable: 0, eleDist: 0];
+	elseif opt.solvation == 'Distance' then
+	    pot_Setup [solEnable: 0, eleDist: 1];
+	elseif opt.solvation == 'R-Field' then
+	    pot_Setup [solEnable: 0, eleDist: 2];
+	elseif opt.solvation == 'Born' then
+	    pot_Setup [solEnable: 1, eleDist: 0];
+	endif
+    endif
+
+	// Parse dielectric
+
+    pot_Setup [solDielectric: opt.dielectric];
+    
+	// Other options need atoms, so set them during the loop
+
+    local time0 = clock[];
+    local entnum = 0;
+
+    local fmt, data1, data2, ctab;
+
+    loop
+
+	entnum = entnum + 1;
+
+	local mol;
+	[fmt, [mol, data1, data2]] = sdutil_InputRead ictx;
+	
+	if fmt == 'eof' then break; endif
+	if fmt == 'sdf' then
+	    ctab = mol;
+	elseif fmt == 'smi' then
+	    ctab = ctab_ExtractFromSMI mol;
+	elseif fmt == 'mdb' then
+	    local chains = mol_Create mol;
+	    ctab = ctab_Extract [chains, [heavy:0, aro:0, xvalence:0]];
+	    oDestroy chains;
+	endif
+
+	mol = first mol_ExtractFromCTAB ctab; // create mol object
+	local c = mol_Create mol; // create atoms
+
+	// up to hear the structure is verified
+
+	local atOrgOrder = cat cAtoms c;
+	pot_FinalizeModel []; // add hydrogen and charges as per FF
+	local at = cat cAtoms c; // concatenate all atoms and create one vecoor vor al chains
+	local hvy = at | aAtomicNumber at > 1; // | (such that)
+
+	    // Parse fix options
+	    
+	if opt.fix == 'none' then
+	    aSetFixed [at, 0];
+	elseif opt.fix == 'heavy' then
+	    aSetFixed [hvy, 1];
+	elseif opt.fix == 'all' then
+	    aSetFixed [at, 1];
+	else
+	    fwrite [STDERR,
+		    '{}: Allowable options for -fix are none, heavy, & all\n',
+		    PNAME]; exit [];
+	endif
+	
+	    // Parse tether options
+	    
+	if opt.tether == 'none' then
+	    aSetTether [at, aPos at, 0, 0, 0];
+	elseif opt.tether == 'heavy' then
+	    aSetTether [hvy, aPos hvy, opt.tetherforce, 0, opt.tetherwidth];
+	elseif opt.tether == 'all' then
+	    aSetTether [at, aPos at, opt.tetherforce, 0, opt.tetherwidth];
+	else
+	    fwrite [STDERR,
+		    '{}: Allowable options for -tether are none, heavy, & all\n',
+		    PNAME]; exit [];
+	endif
+
+	    // Parse fixdummies options
+
+	if opt.fixdummies then
+	    local dum = at | aElement at == 'LP';
+	    local notdum = at | aElement at <> 'LP';
+	    local mins = app x_min aDist [[notdum], dum];
+	    aSetFixed [get [notdum, mins], 1];
+	endif
+
+	    // Parse fixSmarts options
+
+	if not isnull opt.fixSmarts then
+	    if sm_MatchSyntax opt.fixSmarts then
+		aSetFixed [sm_MatchAtoms [opt.fixSmarts, at], 1];
+	    else
+		fwrite [STDERR, '{}: Invalid SMARTS pattern: {}\n',
+			PNAME, opt.fixSmarts]; exit [];
+	    endif
+	endif
+
+
+	local atIdx;
+	// Parse fixAtoms option
+	if not isnull opt.fixAtoms then
+	    atIdx = atoi app token fieldsplit[string opt.fixAtoms,","];
+
+	    if anytrue (atIdx < 1) and anytrue (atIdx > length atOrgOrder) then
+		fwrite [STDERR, '{}: Invalid atom indexes: {}\n',
+		PNAME, opt.fixAtoms]; exit [];
+	    endif
+
+	    aSetFixed [atOrgOrder[atIdx], 1];
+	endif
+
+
+	// Parse tetherAtoms option
+	if not isnull opt.tetherAtoms then
+	    atIdx = atoi app token fieldsplit[string opt.tetherAtoms,","];
+
+	    if anytrue (atIdx < 1) and anytrue (atIdx > length atOrgOrder) then
+		fwrite [STDERR, '{}: Invalid atom indexes: {}\n',
+		PNAME, opt.tetherAtoms]; exit [];
+	    endif
+
+	    aSetTether[atOrgOrder[atIdx], aPos atOrgOrder[atIdx],
+		opt.tetherforce, 0, opt.tetherwidth];
+	endif
+
+
+
+	    // Parse tetherSmarts options
+	
+	if not isnull opt.tetherSmarts then
+	    if sm_MatchSyntax opt.tetherSmarts then
+		local teth = cat sm_MatchAtoms [opt.tetherSmarts, at];
+		aSetTether [teth, aPos teth,
+		    opt.tetherforce, 0, opt.tetherwidth];
+	    else
+		fwrite [STDERR, '{}: Invalid SMARTS pattern: {}\n',
+			PNAME, opt.tetherSmarts]; exit [];
+	    endif
+	endif
+
+
+	local res_keys = [];
+	// Parse restrainDihAtoms option
+	if not isnull opt.restrainDihAtoms then
+
+
+	    atIdx = atoi app token fieldsplit[string opt.restrainDihAtoms,","];
+
+
+	    if anytrue (atIdx < 1) and anytrue (atIdx > length atOrgOrder) then
+		fwrite [STDERR, '{}: Invalid atom indexes: {}\n',
+		PNAME, opt.restrainDihAtoms]; exit [];
+	    endif
+
+	    if mod [length atIdx, 4] <> 0 then
+		fwrite [STDERR, '{}: Torsions require multiple of 4 indices: {}\n',
+		PNAME, opt.restrainDihAtoms]; exit [];
+	    endif
+
+
+
+	    //(hs)
+	    local dhatoms = split [atOrgOrder[atIdx], 4];
+	    //local dhangle = split [aAngle atOrgOrder[atIdx], 4];	// this is the old code
+	    local dhangle = split [aDihedralCW atOrgOrder[atIdx] ,4];
+	    write ['fixing the {} dihedral to {} degrees\n',aName dhatoms, 180 * dhangle/PI];
+
+	    aSetDihedralCW [dhatoms, dhangle];
+	    res_keys = cat [res_keys, RestraintCreate [
+		'dihedral', dhatoms,dhangle, opt.restrainforce
+	    ]];
+
+	endif
+
+
+	    // Parse restrainDihSmarts options
+	
+	if not isnull opt.restrainDihSmarts then
+	    if sm_MatchSyntax opt.restrainDihSmarts then
+		local res = sm_MatchAtoms [opt.restrainDihSmarts, at];
+		res = res | not app isnull res;
+		res = apt keep [res, 4]; // they are torsions!
+
+		// keep only one torsion per central bond, remove dups
+		res = res | m_uniq app sort apt get [res, [[2,3]]];
+		if not isnull res then
+		    //(hs)
+		    aSetDihedralCW[res,aAngle res];
+		    res_keys = cat [res_keys, RestraintCreate [
+			'dihedral', res,
+//			app aAngle res, opt.restrainforce
+			app aDihedralCW res, opt.restrainforce
+		    ]];
+		endif
+	    else
+		fwrite [STDERR, '{}: Invalid SMARTS pattern: {}\n',
+			PNAME, opt.restrainDihSmarts]; exit [];
+	    endif
+	endif
+
+	    // Minimize and calculate the forcefield energy
+
+	local omol, E;
+	MM [verbose:0, gtest:0.1, careful:1000]; // _LIGX_Minimize's settings
+
+	aSetFixed[ cat cAtoms c, 0]; 				// remove fixed atoms
+	aSetTether[ cat cAtoms c, aPos cat cAtoms c,0,0,0];	// remove tethers
+	RestraintDestroy res_keys;				// remove restrain
+
+	omol = mol_Extract c;
+	E = first Potential [];
+	oDestroy c;
+
+	    // Write to output
+	    
+	local newfields = ["Energy"];
+	local newdata = [swrite ['{.2f}', E]];
+	sdutil_OutputWrite [octx, [omol,
+		cat [newfields, dropfirst data1],
+		cat [newdata, dropfirst data2]]];
+
+	    // Report on progress
+	
+	if opt.verbose then
+	    if mod [*ictx.cur_entnum, PROGRESS] == 0 then
+		fwrite [STDERR,
+		    '{} molecules of {} minimized\n',
+		    *ictx.cur_entnum,
+		    *ictx.cur_filename
+		];
+	    endif
+	endif
+	
+    endloop
+
+    sdutil_InputClose ictx;
+    sdutil_OutputClose octx;
+
+    if opt.verbose then
+	fwrite [STDERR
+	,   '\n{}: done {} ({n:.9g} molecules/sec)\n\nOptions used:\n'
+	,   PNAME
+	,   asctime[]
+	,   round (entnum * invz (clock[] - time0))
+	];
+	
+	for i = 1, length iopt loop
+	    fwrite [STDERR, '{} {}\n', iopt(i), ioptval(i)];
+	endloop
+	
+    endif
+endfunction
+
+local function main []
+    local [res,code] = task_wfork [];
+    if code == 'child' then
+	MinimizeSD [];
+    elseif code <> '' then
+	where[];
+    endif
+endfunction
+

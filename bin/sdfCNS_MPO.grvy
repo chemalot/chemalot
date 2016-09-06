@@ -1,0 +1,32 @@
+#!/usr/bin/env sdfGroovy.csh
+import com.aestel.math.StepFunction;
+
+logD = tVal($mol,'cLogD7.4');
+
+if( $cLogP.length()      == 0 ) return;
+if( logD.length()        == 0 ) return;
+if( $MW.length()         == 0 ) return;
+if( $TPSA.length()       == 0 ) return;
+if( $H_polar_neu.length()== 0 ) return;
+if( $c_pKa_MB.length()   == 0 ) c_pKa_MB = "0";
+
+$>CNS_MPO_cLogP = StepFunction.linearScore(5D,3D, f(cLogP));
+$>CNS_MPO_cLogD = StepFunction.linearScore(4,2, f(logD));
+$>CNS_MPO_MW    = StepFunction.linearScore(500, 360, f(MW));
+$>CNS_MPO_TPSA  = StepFunction.humpScore(20,40,90,120, f(TPSA));
+$>CNS_MPO_HBD   = StepFunction.linearScore(3.5, 0.5, f(H_polar_neu));
+$>CNS_MPO_pKa   = StepFunction.linearScore(10,8, f(c_pKa_MB));
+
+StringBuilder sb = new StringBuilder(200);
+if( CNS_MPO_cLogP < 0.5 ) sb.append("cLogP ");
+if( CNS_MPO_cLogD < 0.5 ) sb.append("cLogD ");
+if( CNS_MPO_MW    < 0.5 ) sb.append("MW ");
+if( CNS_MPO_TPSA  < 0.5 ) sb.append("TPSA ");
+if( CNS_MPO_HBD   < 0.5 ) sb.append("HBD ");
+if( CNS_MPO_pKa   < 0.5 ) sb.append("pKa ");
+
+if( sb.length() > 0 ) sb.setLength(sb.length()-1);
+$>CNS_MPO_warnings = sb.toString();
+
+$>CNS_MPO_score = CNS_MPO_cLogP + CNS_MPO_cLogD + CNS_MPO_MW +
+                  CNS_MPO_TPSA + CNS_MPO_HBD + CNS_MPO_pKa;

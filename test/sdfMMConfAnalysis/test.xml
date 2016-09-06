@@ -1,0 +1,8 @@
+<tests>
+
+<test in="../inputFiles/1.3d.sdf" out="out/1.3d.conf.out.sdf">
+    sdfMMConfAnalysis.pl -in .sdf -out .sdf -ref ../inputFiles/1.core.3d.sdf -optH -sampleOtherMin -nCPU 1
+    <diff ref="1.3d.conf.refout.sdf"/>
+</test>
+
+</tests>

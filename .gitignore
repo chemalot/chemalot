@@ -1,0 +1,16 @@
+*.bak
+gne_documents_lnk
+*.~*
+*.gne.*
+chemalot_*.tgz
+*.swp
+*~
+t
+repCP*
+/classes
+/README.html
+omega2.log
+omega2.parm
+omega2.rpt
+omega2_status.txt
+/test-output

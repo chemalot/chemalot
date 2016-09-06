@@ -1,0 +1,9 @@
+<tests>
+
+<test workDir="out" in="../in/LIST_U2.sdf" out="../out/LIST_U2.out.sdf">
+    sdfRGroupCalcProps.pl -in .sdf -out .sdf -propColPrefix R2 -smiCol SMI \
+                          MW TPSA
+    <diff ref="../LIST_U2.refout.sdf"/>
+</test>
+
+</tests>

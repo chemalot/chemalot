@@ -1,0 +1,25 @@
+ 
+Model name: test
+Location: ./out
+
+Call:
+svm.default(x = x, y = y, kernel = "polynomial", cost = c(1), cross = 5, 
+    seed = 1)
+
+
+Parameters:
+   SVM-Type:  eps-regression 
+ SVM-Kernel:  polynomial 
+       cost:  1 
+     degree:  3 
+      gamma:  0.3333333 
+     coef.0:  0 
+    epsilon:  0.1 
+
+
+Number of Support Vectors:  90
+
+Size of training set: 100
+Number of descriptors: 3 
+
+[1] "R version 3.2.2 (2015-08-14)"

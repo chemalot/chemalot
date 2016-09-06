@@ -1,0 +1,12 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+    OEProps.csh -in .sdf -out .sdf Charge cIC50atLE0.3 cIC50atLE0.35 cIC50atLE0.4 \
+      Heavy_Atoms H_polar MW N+O NH+OH Rings RotBonds TPSA AromaticFraction \
+      CarboAromaticFraction AromaticRings CarboAromaticRings HeteroAromaticRings \
+      AliphaticRings CarboAliphaticRings HeteroAliphaticRings Csp3 Csp3Fraction \
+      NonSp3Fraction
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

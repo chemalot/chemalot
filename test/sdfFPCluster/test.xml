@@ -1,0 +1,10 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+   sdfCFP.csh -in .sdf -out .sdf -level 2 \
+   | sdfSorter.csh -in .sdf -out .sdf -numeric -sortTag MW \
+   | sdfFPCluster.pl -in .sdf -out .sdf -fpTag AFP2 -radius 0.6
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

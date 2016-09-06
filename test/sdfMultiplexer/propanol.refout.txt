@@ -1,0 +1,7 @@
+this tests if the sdfMultiplexer can achieve a speedup
+by distributing over 10 CPU comapred to runnig on a single CPU
+in extreem situations this might not be the case even though
+the program runs fine.
+ 
+1000
+sdfMultiplexer -nProc 10 is significantly faster than single CPU

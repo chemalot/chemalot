@@ -1,0 +1,6 @@
+#Smarts	rotations (0 should always be first)
+"[H][O,S;X2][X3]*"	"0,180"
+"[H][O,S;X2][X4]*"	"0,120,240"
+[H][OX2][NX2]=*	"0,180"
+[H][NX2]=**	"0,180"
+[H][NH2]**	"0,180"

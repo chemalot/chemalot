@@ -1,0 +1,14 @@
+<tests>
+
+<test in="../inputFiles/propanol.3d.sdf" out="out/propanol.out.txt">
+    sdfConformerSampler.csh -in .sdf -out .sdf -maxConfs 10 \
+    |fgrep -c '$$$$'
+    <diff ref="propanol.refout.txt"/>
+</test>
+<test in="../inputFiles/propandiol.3d.sdf" out="out/propandiol.out.txt">
+    sdfConformerSampler.csh -in .sdf -out .sdf -maxConfs 10 \
+    |fgrep -c '$$$$'
+    <diff ref="propandiol.refout.txt"/>
+</test>
+
+</tests>

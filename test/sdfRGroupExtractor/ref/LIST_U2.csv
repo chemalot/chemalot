@@ -1,0 +1,5 @@
+"RG SMILES","TITLE","RG ID","RG Type"
+"c1ccc(c(c1)N[U+2])F","U2_0","U2_0","U+2"
+"c1cc(ccc1N[U+2])O","U2_1","U2_1","U+2"
+"c1ccc(c(c1)N[U+2])O","U2_2","U2_2","U+2"
+"N[U+2]","U2_3","U2_3","U+2"

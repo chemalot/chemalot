@@ -1,0 +1,9 @@
+<tests>
+
+<test in="../inputFiles/100.3d.sdf" out="out/100.out.sdf">
+    sdfRMSDNNFinder.csh -ref .sdf -in in/10.confs.sdf -out .sdf \
+                        -mirror -molIdTag "GNF-Pf identifier"
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

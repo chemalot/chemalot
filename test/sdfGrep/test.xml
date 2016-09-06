@@ -1,0 +1,8 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+    sdfGrep.pl -i 'GNF-Pf-[12]'
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

@@ -1,0 +1,17 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/aap.out.sdf">
+   sdfSorter.csh -in .sdf -out .sdf -numeric -sortTag MW \
+   | sdfMCSSSphereExclusion.csh -in .sdf -out .sdf \
+                       -AAPathSim DEFAULT \
+                       -radius 0.3 -printAll
+    <diff ref="aap.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/mcss.out.sdf">
+   sdfSorter.csh -in .sdf -out .sdf -numeric -sortTag MW \
+   | sdfMCSSSphereExclusion.csh -in .sdf -out .sdf \
+                       -radius 0.3 -printAll
+    <diff ref="mcss.refout.sdf"/>
+</test>
+
+</tests>

@@ -1,0 +1,28 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100_smartsSet01.out.sdf">
+    sdfStructureTagger.csh -in .sdf -out .sdf \
+    -smarts structureTagger_smarts.txt -sets Set_01 \
+    -output_exists -output_count
+    <diff ref="100_smartsSet01.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/100_sdfSet01.out.sdf">
+    sdfStructureTagger.csh -in .sdf -out .sdf \
+    -sdfile structureTagger_mol.sdf -sets Set_01 \
+    -onlyMatches -tag_info firstTag
+    <diff ref="100_sdfSet01.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/100_smartsSulfurNoMatch.out.sdf">
+    sdfStructureTagger.csh -in .sdf -out .sdf \
+    -smarts structureTagger_smarts.txt -sets "aliphatic sulfur" \
+    -noMatches
+    <diff ref="100_smartsSulfurNoMatch.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/100_smartsSulfurMatch.out.sdf">
+    sdfStructureTagger.csh -in .sdf -out .sdf \
+    -smarts structureTagger_smarts.txt -sets "aliphatic sulfur" \
+    -onlyMatches
+    <diff ref="100_smartsSulfurMatch.refout.sdf"/>
+</test>
+
+</tests>

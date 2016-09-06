@@ -1,0 +1,14 @@
+<tests>
+
+<test workDir="out" in="../../inputFiles/10.sdf" out="../out/10.out.sdf">
+    sdfRGroupExtractor.pl -in .sdf -out .sdf -smirksFile ../in/transform.smirks
+    <postprocess>
+    mv sdfRGExtractor_Log.txt sdfRGExtractor_Log.last.txt
+    </postprocess>
+
+    <diff ref="../10.refout.sdf"/>
+     <diffDir refDir='../ref' outDir='.' 
+         opts='--exclude="sdfRGExtractor_Log.last.txt" --exclude="*.out.err"'/>
+</test>
+
+</tests>

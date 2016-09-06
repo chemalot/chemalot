@@ -1,0 +1,8 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+    sdfBinning.csh -in .sdf -binTag MW_bins -dataTag MW -bin "300=&lt;300|500=300-500|1000000=&gt;500" -out .sdf
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

@@ -1,0 +1,13 @@
+sdfRSVMCreator.pl -in .sdf -modelLocation ./out -modelName test -identifierField GNF-Pf identifier -responseField MW -descriptorFields N+O|NH+OH|TPSA -seed 1 -predictionColName cMW -kernel polynomial -cost 1 -type eps-regression 
+
+sdfCFP.csh -in .sdf -out .sdf -level 2 | sdfTagTool.csh -in .sdf -out .sdf -rename 'GNF-Pf identifier=_internalID_' | sdfNormalizer.csh -in .sdf -out .sdf | tee ./out/_trainingSet.sdf | sdf2Tab.csh -in .sdf > ./out/_trainingSet.TSMI.tab -tags 'CTISMILES|_internalID_' 
+
+sdf2Tab.csh -in ./out/_trainingSet.sdf -tags 'N+O|NH+OH|TPSA|MW' >> /tmp/Rmc.53505 
+
+      sdfRModelPredictor.pl -in ./out/_trainingSet.sdf -out  /tmp/_trainingSet.53505.sdf \
+            -modelLocation ./out --modelName test \
+            -FPFieldName AFP2
+ 
+
+mv /tmp/_trainingSet.53505.sdf ./out/_trainingSet.sdf 
+

@@ -1,0 +1,12 @@
+<tests>
+
+<test in="../inputFiles/10.sdf" out="out/10.out.tab">
+    sdf2Tab.csh -in .sdf
+    <diff ref="10.refout.tab"/>
+</test>
+<test in="../inputFiles/10.sdf" out="out/10_2.out.tab">
+    sdf2Tab.csh -in .sdf -tags 'GNF-Pf identifier|IFI value'
+    <diff ref="10_2.refout.tab"/>
+</test>
+
+</tests>

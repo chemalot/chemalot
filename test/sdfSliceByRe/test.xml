@@ -1,0 +1,13 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100f.out.sdf">
+    sdfSliceByRe.pl -filter 'GNF-Pf-[12]'
+    <diff ref="100f.refout.sdf"/>
+</test>
+
+<test in="../inputFiles/100.sdf" out="out/100a.out.sdf">
+    sdfSliceByRe.pl -after GNF-Pf-4331
+    <diff ref="100a.refout.sdf"/>
+</test>
+
+</tests>

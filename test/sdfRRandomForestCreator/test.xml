@@ -1,0 +1,20 @@
+<tests>
+
+<!-- this model is of no value, just to test sdfRRandomForestCreator.pl -->
+<test in="../inputFiles/100.sdf" out="std.out">
+  sdfRRandomForestCreator.pl -in .sdf \
+      -modelLocation ./out -modelName test \
+      -identifierField "GNF-Pf identifier" -responseField MW \
+      -descriptorFields "N+O|NH+OH|TPSA" \
+      -seed 1 -predictionColName cMW
+
+  <postprocess>
+  perl -i.bak -pe 's/^(  -OEChem-).+/$1/' out/_trainingSet.sdf
+  rm out/_trainingSet.sdf.bak
+  </postprocess>
+
+  <diffDir refDir='ref' outDir='out'
+           opts="--exclude='*.RDATA' --exclude='*.txt'"/>
+</test>
+
+</tests>

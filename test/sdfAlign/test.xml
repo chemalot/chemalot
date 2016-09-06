@@ -1,0 +1,12 @@
+<tests>
+
+<test in="../inputFiles/10.3d.sdf" out="out/10.out.sdf">
+    sdfAlign.pl -in .sdf -out .sdf -ref template.sdf -rmsdTag RMSD
+    <diff ref="10.refout.sdf"/>
+</test>
+<test in="../inputFiles/10.3d.sdf" out="out/10m.out.sdf">
+    sdfAlign.pl -mirror -in .sdf -out .sdf -ref template.sdf -rmsdTag RMSD
+    <diff ref="$dir/10m.refout.sdf"/>
+</test>
+
+</tests>

@@ -1,0 +1,159 @@
+<project name="chemalot" default="jar" basedir=".">
+    <description>
+        Command Line tools from Genetechs Cheminformtics Project
+    </description>
+
+  <tstamp>
+    <format property="date" pattern="yyyyMMd"/>
+  </tstamp>
+
+  <!-- set global properties for this build -->
+  <property environment="env"/>
+  <property name="src" value="src"/>
+  <property name="build" value="classes"/>
+  <property name="docDir" value="doc"/>
+  <property name="lib" value="lib"/>
+
+  <taskdef resource="testngtasks">
+     <classpath>
+       <fileset dir="lib/build">
+        <include name="testng*.jar"/>
+     </fileset>
+     </classpath>
+  </taskdef>
+
+  <path id="project.class.path">
+     <fileset dir="lib">
+        <include name="*.jar"/>
+        <exclude name="chemalot.jar"/>
+     </fileset>
+     <path location="classes" />
+  </path>
+
+  <path id="build.class.path">
+     <path refid='project.class.path'/>
+     <fileset dir="lib/build">
+        <include name="*.jar"/>
+     </fileset>
+  </path>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+   <target name="compile" depends="init"
+        description="compile the source" >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <property name="myclasspath" refid="build.class.path"/>
+    <echo message='classpath=${myclasspath}'/>
+
+    <javac srcdir="${src}" destdir="${build}" debug="true" source="1.6" target="1.6">
+      <compilerarg value="-Xlint"/>
+      <classpath refid='build.class.path'/>
+    </javac>
+    <copy todir="${build}">
+       <fileset dir="src">
+          <include name="**/*"/>
+          <exclude name="**/*.java"/>
+          <exclude name="**/*.csh"/>
+          <exclude name="**/*.pl"/>
+          <exclude name="**/*.bat"/>
+          <exclude name="**/doc-files/**"/>
+          <exclude name="**/package.html"/>
+       </fileset>
+    </copy>
+  </target>
+
+  <target name='javaDoc' depends='compile'>
+     <javadoc packagenames="*" sourcepath="${src}" destDir="${docDir}/javaDoc" 
+              classpathref='build.class.path'
+              Use='true' 
+              doctitle="chemalot API documentation"
+              Windowtitle="chemalot API documentation"
+              stylesheetfile="${docDir}/stylesheet.css"/>
+  </target>
+
+  <target name='jar' depends='compile'
+    description='pack class files'>
+      <delete><fileset dir='lib'><include name='chemalot_*.jar'/></fileset></delete>
+      <jar destfile='lib/chemalot_${date}.jar'>
+         <fileset dir='${build}'/>
+      </jar>
+   </target>
+
+   <target name='test' depends='compile' description='runs test programs'>
+      <testng classpathref='build.class.path'>
+         <xmlfileset file='testng.xml'/>
+      </testng>
+   </target>
+
+   <target name="clean" description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+      <delete dir="${build}"/>
+      <delete dir='${docDir}/javaDoc'/>
+      <delete dir='test-output'/>
+      <delete><fileset dir='lib'><include name='chemalot_*.jar'/></fileset></delete>
+      <delete><fileset dir='.'><include name='chemalot_*.zip'/></fileset></delete>
+      <delete><fileset dir='.'><include name='chemalot_*.tgz'/></fileset></delete>
+      <delete><fileset dir='test'><include name='*.out.*'/></fileset></delete>
+  </target>
+
+   <target name="doc" depends=''
+          description="Compile documentation">
+      <exec executable="find" osfamily='unix' dir='.'>
+        <arg value ="."/>
+        <arg value ="-iname"/> <arg value ="*.md"/>
+        <arg value ="-exec"/>
+        <arg value ="tcsh"/>
+        <arg value ="-cv"/>
+        <arg value ="bin/Markdown.pl --html4tags {} > !#:2:r.html"/>
+        <arg value =";"/>
+     </exec>
+  </target>
+
+  <target name="distribution" depends='clean,jar,doc'
+          description="Create zip fiel for open source distribution">
+  <echo message='build=${build} docDir=${docDir}'/>
+  <!-- convert markdown to html -->
+  <tar compression="gzip" destfile="chemalot_${date}.tgz">
+   <fileset dir=".">
+     <exclude name="**/oejava*.jar"/>
+     <exclude name="${build}/"/>
+     <exclude name="${docDir}/javaDoc/"/>
+     <exclude name="test-output/"/>
+     <exclude name="tmp2/"/>
+     <exclude name="test/**/*.out.*"/>
+     <exclude name="test/**/out/**"/>
+     <exclude name="test/**/*.err"/>
+     <exclude name="test/**/*.out"/>
+     <exclude name="doc/paper/**"/>
+     <exclude name="**/*.csh"/>
+     <exclude name="**/*.pl"/>
+     <exclude name="**/*.zip"/>
+     <exclude name="**/*.tgz"/>
+     <exclude name="**/.svn"/>
+     <exclude name="**/.git/**"/>
+     <exclude name="**/*.~*"/>
+     <exclude name="**/*.*~"/>
+     <exclude name="**/*.sw?"/>
+     <exclude name="**/t"/>
+     <exclude name="**/t.*"/>
+     <exclude name="repCP*"/>
+     <!-- allow for genentech only files with *.gne. pattern -->
+     <exclude name="**/*.gne.*"/>
+     <exclude name="gne_documents_lnk/**"/>
+   </fileset>
+   <tarfileset dir="." filemode='755'>
+      <include name='test/*.csh'/>
+      <include name='bin/*.csh'/>
+      <include name='bin/*.pl'/>
+      <exclude name="**/*.gne.*"/>
+   </tarfileset>
+  </tar>
+  </target>
+
+</project>
+

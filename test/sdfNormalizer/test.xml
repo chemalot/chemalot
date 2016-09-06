@@ -1,0 +1,8 @@
+<tests>
+
+<test in="../inputFiles/10.sdf" out="out/10.out.sdf">
+    sdfNormalizer.csh -in .sdf -out .sdf 
+    <diff ref="10.ref.sdf"/>
+</test>
+
+</tests>

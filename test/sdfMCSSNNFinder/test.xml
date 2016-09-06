@@ -1,0 +1,26 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/aap.out.sdf">
+   sdfMCSSNNFinder.csh -in .sdf -out .sdf -ref ../inputFiles/10.sdf \
+             -AAPathSim DEFAULT \
+             -maxNeighbors 10 -printAll \
+             -countSimilarAbove 0.7 -minSimilarity 0.4 
+   <diff ref="aap.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/cliff.out.sdf">
+   sdfMCSSNNFinder.csh -in .sdf -out .sdf -ref ../inputFiles/10.sdf \
+      -AAPathSim DEFAULT \
+      -cliffPropertyLogarithmic -cliffMinSimilarity .40 \
+      -cliffSimAt2Delta .3 -cliffFoldAt1Sim 100 -minSimilarity 3 \
+      -cliffPropertyTag "PF proliferation inhibition 3D7 EC50 uM" \
+      -maxNeighbors 10 -printAll
+   <diff ref="cliff.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/mcss.out.sdf">
+   sdfMCSSNNFinder.csh -in .sdf -out .sdf -ref ../inputFiles/10.sdf \
+             -maxNeighbors 10 -printAll \
+             -countSimilarAbove 0.7 -minSimilarity 0.4 
+   <diff ref="mcss.refout.sdf"/>
+</test>
+
+</tests>

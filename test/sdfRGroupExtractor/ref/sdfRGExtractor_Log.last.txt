@@ -1,0 +1,125 @@
+csv
+
+
+
+cat - \
+   | sdfTagTool.csh -in .sdf -out .sdf -addCounter -counterTag _internalID_ \
+   | sdfTagTool.csh -in .sdf -out .sdf -title _internalID_ -remove "counter" \
+   | tee  _RGE__24038_input.sdf \
+   | sdfTransformer.csh -in .sdf -out .sdf \
+      -makeHExplicit -transformOnce -trans ../in/transform.smirks \
+   | tee  _RGE__24038_tf.sdf \
+   | sdf2Tab.csh -in .sdf -tags "_internalID_|transformedBy" \
+   | perl -ne 'chomp; if( /.+\t.+/ ){ print "$_\n"; }' \
+   > _RGE__24038_tf.tab
+
+
+
+
+perl -e 'print "RG SMILES\t_internalID_\tRG ID\n";' > _RGE__24038_fragAll.tab
+perl -e 'print "RG SMILES\tRG Type\tRG ID\n";' > _RGE__24038_fragUnique.tab
+
+cat _RGE__24038_tf.sdf \
+   | sdfMolSeparator.csh -in .sdf -out .smi \
+   | perl -pe 's/\[UH\+(\d*)\]/\[H\]\[U\+$1\]/' \
+   | perl -pe 's/(.+) (.+)/$1\t$2/' \
+   | perl -pe 's/\[U\+\]/\[U\+1\]/g' \
+   | perl -ne '/U\+\d/ && print' \
+   | perl -pe 'chomp; @a=/(U\+\d+)/g; @a=sort(@a); $_=$_."\t".join("_",@a)."\n";' \
+   | tee -a _RGE__24038_fragAll.tab \
+   | perl -pe 'chomp; @_=split(/\t/); $_="$_[0]\t$_[2]\n";' \
+   | sort | uniq \
+   | perl -pe 'chomp; @_=split(/\t/); $c=$_[1]."_".$cnt{$_[1]}++; $c=~s/\+//g; $_=join("\t",@_)."\t".$c."\n";' \
+   | tee -a _RGE__24038_fragUnique.tab \
+   | perl -pe 'chomp; @_=split(/\t/); $_="$_[1]\n";' \
+   | sort | uniq \
+   > _RGE__24038_fragTypes.tab
+
+tabTabMerger.pl -add _RGE__24038_fragUnique.tab _RGE__24038_fragAll.tab \
+   | perl -pe 'chomp; @_=split(/\t/); $_=$_[1]."\t".$_[3]."\t".$_[5]."\t".$_[4]."\n";' \
+   > _RGE__24038_fragMerged.tab
+
+
+
+
+
+cat _RGE__24038_fragMerged.tab \
+   | perl -ne 'if( /\tU\+1\n|_internalID_/ ){ print $_;}' \
+   | perl -pe 's/RG /U1 /g' \
+   | perl -pe 'chomp; @_=split(/\t/); $_="$_[0]\t$_[1]\t$_[2]\n";' \
+   > _RGE__24038_U1.tab
+
+cat _RGE__24038_fragMerged.tab \
+   | perl -ne 'if( /\tU\+11_U\+12_U\+13\n|_internalID_/ ){ print $_;}' \
+   | perl -pe 's/RG /U11_U12_U13 /g' \
+   | perl -pe 'chomp; @_=split(/\t/); $_="$_[0]\t$_[1]\t$_[2]\n";' \
+   > _RGE__24038_U11_U12_U13.tab
+
+cat _RGE__24038_fragMerged.tab \
+   | perl -ne 'if( /\tU\+2\n|_internalID_/ ){ print $_;}' \
+   | perl -pe 's/RG /U2 /g' \
+   | perl -pe 'chomp; @_=split(/\t/); $_="$_[0]\t$_[1]\t$_[2]\n";' \
+   > _RGE__24038_U2.tab
+
+cat _RGE__24038_fragMerged.tab \
+   | perl -ne 'if( /\tU\+3\n|_internalID_/ ){ print $_;}' \
+   | perl -pe 's/RG /U3 /g' \
+   | perl -pe 'chomp; @_=split(/\t/); $_="$_[0]\t$_[1]\t$_[2]\n";' \
+   > _RGE__24038_U3.tab
+
+
+
+
+cat _RGE__24038_input.sdf \
+   | sdfTabMerger.csh -out .sdf -sdf .sdf -tab _RGE__24038_tf.tab \
+         -outAll -quiet -addEmptyValues -mergeTag "_internalID_" -mergeCol "_internalID_" \
+   | sdfTabMerger.csh -out .sdf -sdf .sdf -tab _RGE__24038_U1.tab \
+         -outAll -quiet -addEmptyValues -mergeTag "_internalID_" -mergeCol "_internalID_" \
+   | sdfTabMerger.csh -out .sdf -sdf .sdf -tab _RGE__24038_U11_U12_U13.tab \
+         -outAll -quiet -addEmptyValues -mergeTag "_internalID_" -mergeCol "_internalID_" \
+   | sdfTabMerger.csh -out .sdf -sdf .sdf -tab _RGE__24038_U2.tab \
+         -outAll -quiet -addEmptyValues -mergeTag "_internalID_" -mergeCol "_internalID_" \
+   | sdfTabMerger.csh -out .sdf -sdf .sdf -tab _RGE__24038_U3.tab \
+         -outAll -quiet -addEmptyValues -mergeTag "_internalID_" -mergeCol "_internalID_" \
+   | sdfTagTool.csh -in .sdf -out .sdf -remove "_internalID_"
+
+
+
+
+cat _RGE__24038_fragUnique.tab \
+   | perl -ne 'if( /\t#RG_TYPE#\t|RG ID/ ){ print $_;}' \
+   | perl -pe 'chomp; @_=split(/\t/); if(/RG ID/){$t="TITLE";}else{$t=$_[2];} $_="\"$_[0]\",\"$t\",\"$_[2]\",\"$_[1]\"\n";' \
+   > LIST_#RG_TYPE_TAG#.csv
+
+
+
+cat _RGE__24038_fragUnique.tab \
+   | perl -ne 'if( /\tU\+1\t|RG ID/ ){ print $_;}' \
+   | perl -pe 'chomp; @_=split(/\t/); if(/RG ID/){$t="TITLE";}else{$t=$_[2];} $_="\"$_[0]\",\"$t\",\"$_[2]\",\"$_[1]\"\n";' \
+   > LIST_U1.csv
+
+
+
+cat _RGE__24038_fragUnique.tab \
+   | perl -ne 'if( /\tU\+11_U\+12_U\+13\t|RG ID/ ){ print $_;}' \
+   | perl -pe 'chomp; @_=split(/\t/); if(/RG ID/){$t="TITLE";}else{$t=$_[2];} $_="\"$_[0]\",\"$t\",\"$_[2]\",\"$_[1]\"\n";' \
+   > LIST_U11_U12_U13.csv
+
+
+
+cat _RGE__24038_fragUnique.tab \
+   | perl -ne 'if( /\tU\+2\t|RG ID/ ){ print $_;}' \
+   | perl -pe 'chomp; @_=split(/\t/); if(/RG ID/){$t="TITLE";}else{$t=$_[2];} $_="\"$_[0]\",\"$t\",\"$_[2]\",\"$_[1]\"\n";' \
+   > LIST_U2.csv
+
+
+
+cat _RGE__24038_fragUnique.tab \
+   | perl -ne 'if( /\tU\+3\t|RG ID/ ){ print $_;}' \
+   | perl -pe 'chomp; @_=split(/\t/); if(/RG ID/){$t="TITLE";}else{$t=$_[2];} $_="\"$_[0]\",\"$t\",\"$_[2]\",\"$_[1]\"\n";' \
+   > LIST_U3.csv
+
+
+
+\rm _RGE__24038_*
+

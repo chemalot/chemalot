@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2008-2015 Genentech Inc.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+-->
+
+<smartsList>
+   <smarts name='HDonor' hydrogens='none'>
+      <!-- <![CDATA[ .. ]]> is a secret handshake for inputing special chars  -->
+     <![CDATA[
+     [$([O;!H0,-&!$(*-N=O)]),$([S&X2&!H0,S&X1&-]),$([#7;!H0;!$(*(S(=O)=O)C(F)(F)F);!$(n1nnnc1);!$(n1nncn1)]),$([#7;-])]
+     ]]>
+   </smarts>
+
+   <smarts name='HAcceptor'>
+      [$([$([#8,#16]);!$(*=N~O);!$(*~N=O);X1,X2]),$([#7;v3;!$([nX3]);!$(*(-a)-a)])]
+   </smarts>
+
+   <smarts name='BradshawRB'>
+      <!-- RB:   [!$([NH]!@C(=O))&!D1&!(*#*)]&!@[!$([NH]!@C(=O))!D1&!(*#*)]  -->
+      <!--
+         <![CDATA[ [!$([NH]!@C(=O))&!D1&!$(*#*)]&!@[!$([NH]!@C(=O))!D1&!$(*#*)]
+         ]]>
+      -->
+   </smarts>
+
+   <smarts name='SingleBond'>
+      <!--
+         This will also match single bonds out of triple bonds and secondary
+         (and higher) amines which might not be counted as fully rotatable.
+         rotBonds = SingleBond - Amide - 3Bond;
+      -->
+      <!-- [*;$(*(-*)~*)]-;!@[*;$(*(-*)~*)] -->
+      [!#1;$(*(-[!#1])~[!#1])]-;!@[!#1;$(*(-[!#1])~[!#1])]
+   </smarts>
+
+   <smarts name='Amide'>
+      <!-- secondary (and higher) amines -->
+      <!--   O=C-;!@[N;$(N(-*)~*)] -->
+      O=C-;!@[#7;$([#7](-[!#1])~[!#1])]
+   </smarts>
+
+   <smarts name='TripleBondAtom'>
+      <!--
+         atom with triple bond attached to branched fragment for use in
+         rotatable bond calculation
+      -->
+      <!-- [*;$(*(#*)~*~*)]#* -->
+      [!#1;$(*(#*)~[!#1]~[!#1])]#*
+   </smarts>
+
+   <smarts name='NCount'>
+      [#7]
+   </smarts>
+
+   <smarts name='OCount'>
+      [#8]
+   </smarts>
+
+   <smarts name='NHCount'>
+      [#7;!H0]
+    </smarts>
+
+   <smarts name='OHCount'>
+      [#8;!H0]
+     </smarts>
+
+   <smarts name='LipinskiHBD'>
+      [$([#7,#8;!H0]),$([#7-][*+0])]
+      </smarts>
+
+   <smarts name='LipinskiHBA'>
+      [#7,#8]
+       </smarts>
+
+   <smarts name='HPolar'>
+      [HN,HO,HS]
+   </smarts>
+
+   <smarts name='HeavyAtom'>
+      [!#1]
+   </smarts>
+
+   <smarts name='AromaticAtom'>
+      [a]
+   </smarts>
+
+   <smarts name='AromaticCarbonAtom'>
+      [c]
+   </smarts>
+
+   <smarts name='AliphaticCarbonAtom'>
+      [C]
+   </smarts>
+
+   <smarts name='Aliphatic3Rings'>
+      <!--  [A,a]1[A,a][A,a]1 -->
+      *1~*~*1
+   </smarts>
+   <smarts name='Aliphatic4Rings'>
+      <!--  [A,a]1[A,a][A,a][A,a]1 -->
+      *1~*~*~*1
+   </smarts>
+   <smarts name='Aliphatic5Rings'>
+      <!-- [A,a]1[A,a][A,a][A,a][A,a]1 -->
+      *1~*~*~*~*1
+   </smarts>
+   <smarts name='Aliphatic6Rings'>
+      <!-- [A,a]1[A,a][A,a][A,a][A,a][A,a]1 -->
+      *1~*~*~*~*~*1
+   </smarts>
+   <smarts name='Aliphatic7Rings'>
+      <!-- [A,a]1[A,a][A,a][A,a][A,a][A,a][A,a]1 -->
+      *1~*~*~*~*~*~*1
+   </smarts>
+   <smarts name='Aliphatic8Rings'>
+      <!--  [A,a]1[A,a][A,a][A,a][A,a][A,a][A,a][A,a]1 -->
+      *1~*~*~*~*~*~*~*1
+   </smarts>
+
+   <smarts name='CarboAliphatic3Rings'>
+      [C,c]1~[C,c]~[C,c]1
+   </smarts>
+   <smarts name='CarboAliphatic4Rings'>
+      [C,c]1[C,c][C,c][C,c]1
+   </smarts>
+   <smarts name='CarboAliphatic5Rings'>
+      [C,c]1[C,c][C,c][C,c][C,c]1
+   </smarts>
+   <smarts name='CarboAliphatic6Rings'>
+      [C,c]1[C,c][C,c][C,c][C,c][C,c]1
+   </smarts>
+   <smarts name='CarboAliphatic7Rings'>
+      [C,c]1[C,c][C,c][C,c][C,c][C,c][C,c]1
+   </smarts>
+   <smarts name='CarboAliphatic8Rings'>
+      [C,c]1[C,c][C,c][C,c][C,c][C,c][C,c][C,c]1
+   </smarts>
+
+   <smarts name='Aromatic5Rings'>
+      [a]1[a][a][a][a]1
+   </smarts>
+   <smarts name='Aromatic6Rings'>
+      [a]1[a][a][a][a][a]1
+   </smarts>
+   <smarts name='Aromatic7Rings'>
+      [a]1[a][a][a][a][a][a]1
+   </smarts>
+
+   <smarts name='CarboAromatic5Rings'>
+      [c]1[c][c][c][c]1
+   </smarts>
+   <smarts name='CarboAromatic6Rings'>
+      [c]1[c][c][c][c][c]1
+   </smarts>
+   <smarts name='CarboAromatic7Rings'>
+      [c]1[c][c][c][c][c][c]1
+   </smarts>
+   <smarts name='Csp3'>
+      [CX4]
+   </smarts>
+   <smarts name='CSsp3'>
+      [CX4;!H2;!H3]
+   </smarts>
+   <smarts name='CS2sp3'>
+      [CX4;!H2;!H3;$(*(-*~[!#1])(-*~[!#1])-*~[!#1])]
+   </smarts>
+   <smarts name='sp3'><!-- [CX4,N&!$(NC=O),O&!$(O=*)] [!$(*:,=,#*);!N&$(N*=O)]-->
+     <![CDATA[
+      [!$(*:,=,#*);!$(N*=O)]
+    ]]>
+   </smarts>
+   
+</smartsList>

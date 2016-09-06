@@ -1,0 +1,24 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100_es_count.out.sdf">
+    sdfEStateCalculator.csh -in .sdf -out .sdf -es_count
+    <diff ref="100_es_count.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/100_es_sum.out.sdf">
+    sdfEStateCalculator.csh -in .sdf -out .sdf -es_sum
+    <diff ref="100_es_sum.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/100_es_symbol.out.sdf">
+    sdfEStateCalculator.csh -in .sdf -out .sdf -es_symbol
+    <diff ref="100_es_symbol.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/100_es_indice.out.sdf">
+    sdfEStateCalculator.csh -in .sdf -out .sdf -es_indice
+    <diff ref="100_es_indice.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/100_es_indiceSMARTS.out.sdf">
+    sdfEStateCalculator.csh -in .sdf -out .sdf -es_indice -smarts 'Nc1nccc(N)n1'
+    <diff ref="100_es_indiceSMARTS.refout.sdf"/>
+</test>
+
+</tests>

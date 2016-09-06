@@ -1,0 +1,9 @@
+<tests>
+
+<test workDir="out"
+      in="../../inputFiles/10.3d.sdf" out="output.txt">
+    sdf2g.pl -FNPrefix t -template hf_mp2.opt.g 
+    <diffDir refDir='../ref' outDir='.' opts='--exclude="output.*"'/>
+</test>
+
+</tests>

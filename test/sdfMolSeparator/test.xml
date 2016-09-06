@@ -1,0 +1,7 @@
+<tests>
+<test in="../inputFiles/multi_mol.sdf" out="out/out.smi">
+    sdfMolSeparator.csh -in .sdf -out .smi
+    <diff ref="refout.smi"/>
+</test>
+
+</tests>

@@ -1,0 +1,9 @@
+sdfEnumerator.csh -out outFile [-hydrogenExplicit] [-correctValences] [-regenerate2D] [-reactAllSites] [-maxAtoms n] [-randomFraction 0.n] smirks pos1Reagent1 pos2Reagent2 ....
+  pos1Reagent<n> are either file names (of any oe type) or smiles and provide the list
+     of reagent(s) to be used in the <n>th position.
+  Smirks can be a filename containing a smirks or a string containing a smirks 
+  Smirks can alternatively be a scaffold definition containing [U+n] for the rgroups
+     n is the rGroup position. On the scaffold this is the RGroup position plus 100.
+     eg if your smarts is C[U+] the transform will be [C:1][U+101].[U+][*:2]>>[C:1][*:2]
+  sdfEnumerator can be sdfMultiplexed by using .sdf as the inputFile for the largest
+     posReagentFile and piping that file through sdfMultiplexer

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2008-2015 Genentech Inc.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!--  if progAggregateID is not specified, then a calculator cannot be aggregated -->
+<properties xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                xsi:noNamespaceSchemaLocation='properties.xsd'>
+
+   <property name='RO5' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps_ALogP'>
+       <progName>OEProps.csh -in .sdf -out .sdf -cLogP ALogP_GNE</progName>
+       <progOptions>RO5</progOptions>
+       <requiredCalculators>N+O|NH+OH|MW|ALogP</requiredCalculators>
+       <keepRequiredCalculators>N+O|NH+OH|MW|ALogP</keepRequiredCalculators>
+       <outputFields>RO5</outputFields>
+       <helpText>Number of Lipinski's Rule of Five violations for the neutral molecule. 
+       The four components are: N+O > 10, NH+OH > 5, MW > 500, and cLogP > 5. 
+       For the purpose of showing an example, ALogP will be used instead of cLogP</helpText>
+   </property>
+   
+    <property name='ALogP' isPublic='Y' requiresIonization = 'N' progAggregateID=''>
+    	<progName>sdfALogP.csh -in .sdf -out .sdf</progName>
+   		<outputFields>ALogP_GNE</outputFields>
+   		<helpText>Compute logP value as per the ALogP publication: 
+              Ghose, A. K.; Viswanadhan, V. N.; Wendoloski, J. J. 
+              Prediction of Hydrophobic (Lipophilic) Properties of Small Organic Molecules Using Fragmental Methods: An Analysis of ALOGP and CLOGP Methods. 
+              J. Phys. Chem. A 1998, 102, 3762-3772</helpText>
+    </property>
+   
+      <property name='MW' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>MW</progOptions>
+       <outputFields>MW</outputFields>
+       <helpText>Molecular weight of the neutral molecule, counting isotopes.</helpText>
+   </property>
+   
+   <property name='N+O' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>N+O</progOptions>
+       <outputFields>N+O</outputFields>
+       <helpText>Number of hydrogen bond acceptors.</helpText>
+   </property>
+   
+   <property name='NH+OH' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>NH+OH</progOptions>
+       <outputFields>NH+OH</outputFields>
+       <helpText>Number of hydrogen bond donors for the neutral molecule, NH2 counts as two.</helpText>
+   </property>
+
+   <property name='AromaticRings' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>AromaticRings</progOptions>
+       <outputFields>AromaticRings</outputFields>
+       <helpText>Number of 5-, 6-, or 7-membered aromatic rings.</helpText>
+   </property>
+
+   <property name='CarboAromaticRings' isPublic='N' requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>CarboAromaticRings</progOptions>
+       <outputFields>CarboAromaticRings</outputFields>
+       <helpText>Number of 5, 6, or 7 membered aromatic rings, containing only carbon.</helpText>
+   </property>
+
+   <property name='HeteroAromaticRings' isPublic='N'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>HeteroAromaticRings</progOptions>
+       <outputFields>HeteroAromaticRings</outputFields>
+       <helpText>Number of 5, 6, or 7 member hetero aromatic rings.</helpText>
+   </property>
+
+   <property name='AliphaticRings' isPublic='N' requiresIonization = 'N'  progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>AliphaticRings</progOptions>
+       <outputFields>AliphaticRings</outputFields>
+       <helpText>Number aliphatic rings.</helpText>
+   </property>
+
+   <property name='CarboAliphaticRings' isPublic='N' requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>CarboAliphaticRings</progOptions>
+       <outputFields>CarboAliphaticRings</outputFields>
+       <helpText>Number aliphatic rings containing only carbon.</helpText>
+   </property>
+
+   <property name='HeteroAliphaticRings' isPublic='N' requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>HeteroAliphaticRings</progOptions>
+       <outputFields>HeteroAliphaticRings</outputFields>
+       <helpText>Number hetero aliphatic rings.</helpText>
+   </property>
+
+   <property name='AromaticFraction' isPublic='N' requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>AromaticFraction</progOptions>
+       <outputFields>AromaticFraction</outputFields>
+       <helpText>Fraction of aromatic atoms in molecule.</helpText>
+   </property>
+
+   <property name='CarboAromaticFraction' isPublic='N' requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>CarboAromaticFraction</progOptions>
+       <outputFields>CarboAromaticFraction</outputFields>
+       <helpText>Fraction of aromatic carbon atoms in molecule.</helpText>
+   </property>
+   
+   <property name='Csp3' isPublic='N' requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>Csp3</progOptions>
+       <outputFields>Csp3</outputFields>
+       <helpText>Number of sp3 carbon atoms in molecule.</helpText>
+   </property>
+
+   <property name='Csp3Fraction' isPublic='N' requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>Csp3Fraction</progOptions>
+       <outputFields>Csp3Fraction</outputFields>
+       <helpText>Fraction of sp3 carbon atoms in molecule.</helpText>
+   </property>
+
+   <property name='NonSp3Fraction' isPublic='N' requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>NonSp3Fraction</progOptions>
+       <outputFields>NonSp3Fraction</outputFields>
+       <helpText>Fraction of non sp3 atoms in molecule.</helpText>
+   </property>
+   
+   <property name='cIC50atLE0.3' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>cIC50atLE0.3</progOptions>
+       <outputFields>cIC50atLE0.3</outputFields>
+       <helpText>IC50 (uM) needed to achieve a ligand efficiency of 0.3.</helpText>
+   </property>
+   
+   <property name='Heavy_Atoms' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>Heavy_Atoms</progOptions>
+       <outputFields>Heavy_Atoms</outputFields>
+       <helpText>Number of heavy atoms.</helpText>
+   </property>
+   
+   <property name='H_polar' isPublic='Y'  requiresIonization = 'Y' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>H_polar</progOptions>
+       <outputFields>H_polar</outputFields>
+       <helpText>Number of polar hydrogen atoms at pH 7.4. Tautomers and ionization states are calculated by MoKa.</helpText>
+   </property>
+   
+   <property name='Rings' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>Rings</progOptions>
+       <outputFields>Rings</outputFields>
+       <helpText>Number of rings. Fused rings count as one ring.</helpText>
+   </property>
+   
+   <property name='RotBonds' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>RotBonds</progOptions>
+       <outputFields>RotBonds</outputFields>
+       <helpText>Number of rotatable bonds.</helpText>
+   </property>
+   
+   <property name='TPSA' isPublic='Y'  requiresIonization = 'N' progAggregateID='OEProps'>
+       <progName>OEProps.csh -in .sdf -out .sdf </progName>
+       <progOptions>TPSA</progOptions>
+       <outputFields>TPSA</outputFields>
+       <helpText>Topological polar surface area of the neutral molecule.</helpText>
+   </property>
+  
+  <!-- a filter calculator is hard coded in the Java code, can fake it with cat -->
+   <property name='filter' isPublic='N'  requiresIonization = 'N' progAggregateID=''>
+       <progName>cat </progName> 
+       <!-- <progName>sdfFilter.csh </progName> 
+       <progOptions>-in .sdf -out .sdf | filter -in .sdf -out .sdf -dots false -filter /dev/null -pkanorm false -prefix /tmp/filter.$USER.$$</progOptions> -->
+       <helpText>Filter out "bad" molecules</helpText>
+   </property>
+</properties>

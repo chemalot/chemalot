@@ -1,0 +1,8 @@
+<tests>
+
+<test in="../inputFiles/1000.sdf" out="out/1000.txt">
+    ./testTime.csh |&amp; egrep -v '^W[0-9]: '
+    <diff ref="propanol.refout.txt"/>
+</test>
+
+</tests>

@@ -1,0 +1,91 @@
+"#Source: Hall, L. H.; Kier, L. B.  J. Chem. Inf. Comput. Sci. 1995, 35, 1039-1045"											
+#	atom group	Z	dv	d	dv+d	dv-d	AR	count single bond	single bonds	group symbol	Hash number
+1	-Li	3	1	1	2	0	0	n		sLi	3110220
+2	-Be-	4	2	2	4	0	0	n		ssBe	4220420
+3	>Be< [-2]	4	2	4	6	-2	0	n		ssssBe	4240600
+4	-BH-	5	2	2	5	0	0	n		ssBH	5220520
+5	>B-	5	3	3	6	0	0	n		sssB	5330620
+6	>B< [-1]	5	3	4	7	-1	0	n		ssssB	5340710
+7	-CH3	6	1	1	2	0	0	n		sCH3	6110220
+8	=CH2	6	2	1	3	1	0	n		dCH2	6210330
+9	-CH2-	6	2	2	4	0	0	n		ssCH2	6220420
+10	=CH	6	3	1	4	2	0	n		tCH	6310440
+11	=CH-	6	3	2	5	1	0	n		dsCH	6320530
+12	aCHa	6	3	2	5	1	1	n		aaCH	6320531
+13	>CH-	6	3	3	6	0	0	n		sssCH	6330620
+14	=C=	6	4	2	6	2	0	y	0	ddC	6420640
+15	#C-	6	4	2	6	2	0	y	1	tsC	6420640
+16	=C<	6	4	3	7	1	0	n		dssC	6430730
+17	aCa-	6	4	3	7	1	1	y	1	aasC	6430731
+18	aaCa	6	4	3	7	1	1	y	0	aaaC	6430731
+19	>C<	6	4	4	8	0	0	n		ssssC	6440820
+20	-NH3 [+1]	7	2	1	3	1	0	n		sNH3	7210330
+21	-NH2	7	3	1	4	2	0	n		sNH2	7310440
+22	-NH2- [+1]	7	3	2	5	1	0	n		ssNH2	7320530
+23	=NH	7	4	1	5	3	0	n		dNH	7410550
+24	-NH-	7	4	2	6	2	0	n		ssNH	7420640
+25	aNHa	7	4	2	6	2	1	n		aaNH	7420641
+26	#N	7	5	1	6	4	0	n		tN	7510660
+27	>NH- [+1]	7	4	3	7	1	0	n		sssNH	7430730
+28	=N-	7	5	2	7	3	0	n		dsN	7520750
+29	aNa	7	5	2	7	3	1	n		aaN	7520751
+30	>N-	7	5	3	8	2	0	y	3	sssN	7530840
+31	-N<<	7	5	3	8	2	0	y	2	ddsN (nitro)	7530840
+32	aaNs	7	5	3	8	2	1	n		aasN (N oxide)	7530841
+33	>N< [+1]	7	5	4	9	-1	0	n		ssssN (onium)	7540910
+34	-OH	8	5	1	6	4	0	n		sOH	8510660
+35	=O	8	6	1	7	5	0	n		dO	8610770
+36	-O-	8	6	2	8	4	0	n		ssO	8620860
+37	aOa	8	6	2	8	4	1	n		aaO	8620861
+38	-F	9	7	1	8	6	0	n		sF	9710880
+39	-SiH3	14	1	1	2	0	0	n		sSiH3	14110220
+40	-SiH2-	14	2	2	4	0	0	n		ssSiH2	14220420
+41	>SiH-	14	3	3	6	0	0	n		sssSiH	14330620
+42	>Si<	14	4	4	8	0	0	n		ssssSi	14440820
+43	-PH2	15	3	1	4	2	0	n		sPH2	15310440
+44	-PH-	15	4	2	6	2	0	n		ssPH	15420640
+45	>P-	15	5	3	8	2	0	n		sssP	15530840
+46	->P=	15	5	4	9	1	0	n		dsssP	15540930
+47	->P<	15	5	5	10	0	0	n		sssssP	15551020
+48	-SH	16	5	1	6	4	0	n		sSH	16510660
+49	=S	16	6	1	7	5	0	n		dS	16610770
+50	-S-	16	6	2	8	4	0	n		ssS	16620860
+51	aSa	16	6	2	8	4	1	n		aaS	16620861
+52	>S=	16	6	3	9	3	0	n		dssS (sulfone)	16630950
+53	zSz	16	6	4	10	2	0	n		ddssS (sulfate)	16641040
+54	-Cl	17	7	1	8	6	0	n		sCl	17710880
+55	-GeH3	32	1	1	2	0	0	n		sGeH3	32110220
+56	-GeH2-	32	2	2	4	0	0	n		ssGeH2	32220420
+57	>GeH-	32	3	3	6	0	0	n		sssGeH	32330620
+58	>Ge<	32	4	4	8	0	0	n		ssssGe	32440820
+59	-AsH2	33	3	1	4	2	0	n		sAsH2	33310440
+60	-AsH-	33	4	2	6	2	0	n		ssAsH	33420640
+61	>As-	33	5	3	8	2	0	n		sssAs	33530840
+62	->As=	33	5	4	9	1	0	n		sssdAs	33540930
+63	->As<	33	5	5	10	0	0	n		sssssAs	33551020
+64	-SeH	34	5	1	6	4	0	n		sSeH	34510660
+65	=Se	34	6	1	7	5	0	n		dSe	34610770
+66	-Se-	34	6	2	8	4	0	n		ssSe	34620860
+67	aSea	34	6	2	8	4	1	n		aaSe	34620861
+68	>Se=	34	6	3	9	3	0	n		dssSe	34630950
+69	zSez	34	6	4	10	2	0	n		ddssSe	34641040
+70	-Br	35	7	1	8	6	0	n		sBr	35710880
+71	-SnH3	50	1	1	2	0	0	n		sSnH3	50110220
+72	-SnH2-	50	2	2	4	0	0	n		ssSnH2	50220420
+73	>SnH-	50	3	3	6	0	0	n		sssSnH	50330620
+74	>Sn<	50	4	4	8	0	0	n		ssssSn	50440820
+75	-I	53	7	1	8	6	0	n		sI	53710880
+76	-PbH3	82	1	1	2	0	0	n		sPbH3	82110220
+77	-PbH2-	82	2	2	4	0	0	n		ssPbH2	82220420
+78	>PbH-	82	3	3	6	0	0	n		sssPbH	82330620
+79	>Pb<	82	4	4	8	0	0	n		ssssPb	82440820
+											
+"# {atom group} Indication of atom groups according to valence state together with number of bonded hydrogens. Symbols: - for single, = for double, # for triple, a for aromatic, << for two double bonds or two resonance single/double bonds as in nitro group, z for a single and a double bond, and -> for three single bonds."											
+# {Z} Atomic number of element.											
+# {dv}  Valence connectivity delta value.											
+# {d} Simple connectivity delta value.											
+# {dv+d} Sum of valence and simple delta value.											
+# {dv-d} Difference of valence and simple delta value											
+# {AR} Indicator that atom is part of aromatic system: 1 indicates aromaticity.											
+# {group symbol} Symbols for atom type as used in conjunction with the atom type electrotopological state index.											
+"# {count single bond} If ""y"", ensure the number of the single bonds attached to the atom is the same as indicated in the ""single bonds"" column"											

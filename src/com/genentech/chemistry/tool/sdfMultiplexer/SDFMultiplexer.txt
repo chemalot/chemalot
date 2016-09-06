@@ -1,0 +1,45 @@
+
+SDFMultiplexer -in inFile -out outFile [-shell shell] -nProc n [-cmd cmdLine|-cmdFile fn]
+              [-groupByTitle] [-groupByAtomCount] [-errFilePrefix prefix]
+   -in ............. InputFile, must be sdf, ".sdf" for stdin
+   -out ............ OutputFile, must be sdf, ".sdf" for stdout
+   -shell .......... shell used to execute cmdLine, default="$SHELL -fc"
+                     This affects only subsequent -nProc parameters.
+                     The string is tokenized splitting on spaces.
+   -nProc .......... number of processes to start
+                     -shell and -nProc may be repeated to start multiple executions
+                     with different remote-shells
+   -cmd ............ commandLine to be executed in each process
+                     This is not tokenized.
+                     $procNum,$batchNum is replaced with the number of the process/batch.
+                     $currentDir is replaced with the directory of this process.
+   -cmdFile ........ ifileName of file containing commandLine to be executed in
+                     each process.
+                     $procNum,$batchNum is replaced with the number of the process/batch.
+                     $currentDir is replaced with the directory of this process.
+  -stopOnError ..... Do not start new batch if previous batched exited with error code (!=0).                   
+  -maxCrashRecover . maximum number of restart for each process upon a crash.
+                     Default = 10
+  -batchSize ....... stop processes after batchSize molecules and restart them.
+                     -batchSize 1 is useful to debug crashing programs
+                     -batchSize n could be useful to get more continuous output
+                                from processes buffering their output
+  -groupByTitle .... Keep consecutive molfiles with same title together.
+  -groupByAtomCount  Keep consecutive molfiles with same atoms & bonds counts together.
+  -errFilePrefix.... Write error output of each process into separate file with this prefix.
+                     Default: write to stderr.
+  -startDelay        Delay between startups of the subProcesses in ms. This can be used
+                     if the subprocesses use the timestamp for temporary files to
+                     avaoid collissions on the filename.
+
+Notes: 1.) Use SDFMultiplexer only for programs that work independently on single records.
+       2.) The input order is not retained in the output file.
+
+stdErr of all processes will be redirected to the stdErr of this process.
+
+The example below will start 2 local and 2 remote processes:
+  sdfMultiplexer.pl -in big.sdf -out finalOut.sdf \
+     -nProc 2 \
+     -shell "ssh remoteNode" -nProc 2 \
+     -cmd 'tee $currentDir/$HOST.$procNum.out|tee $currentDir/$HOST.$procNum.2.out'
+

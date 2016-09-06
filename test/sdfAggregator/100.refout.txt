@@ -1,0 +1,3 @@
+Powder data?	cnt	med	avg	cnt2
+No	22	0.34	0.50	1
+Yes	78	0.25	0.61	1

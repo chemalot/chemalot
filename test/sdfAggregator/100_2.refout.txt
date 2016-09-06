@@ -1,0 +1,2 @@
+Powder data?	cnt	med	avg	cnt2
+No	100	0.26	0.59	2

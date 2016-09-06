@@ -1,0 +1,12 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+    sdfFingerprinter.csh -in .sdf -out .sdf -format folded512 -fpType 'linear7*4'
+    <diff ref="100.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/maccs.out.sdf">
+    sdfFingerprinter.csh -in .sdf -out .sdf -format bitList -fpType maccs
+    <diff ref="maccs.refout.sdf"/>
+</test>
+
+</tests>

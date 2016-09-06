@@ -1,0 +1,18 @@
+<tests>
+
+   <test in="../inputFiles/propanol.3d.sdf" out="out/propanol.3d.min.szybki.out.sdf">
+      sdfMMMinimize.csh -in .sdf -out .sdf -program SZYBKI -forcefield MMFF94S -solvent VACUUM
+      <diff ref="propanol.3d.min.szybki.refout.sdf"/>
+      <postprocess>rm *_input_0*</postprocess>
+   </test>
+   <test in="../inputFiles/propanol.3d.sdf" out="out/propanol.3d.min.macro.out.sdf">
+      sdfMMMinimize.csh -in .sdf -out .sdf -program MACROMODEL -forcefield OPLS_2005 -solvent VACUUM
+      <diff ref="propanol.3d.min.macro.refout.sdf"/>
+      <postprocess>rm *_input_0*</postprocess>
+   </test>
+   <test in="../inputFiles/propanol.3d.sdf" out="out/propanol.3d.min.moe.out.sdf">
+      sdfMMMinimize.csh -in .sdf -out .sdf -program MOE -forcefield MMFF94S -solvent VACUUM
+      <diff ref="propanol.3d.min.moe.refout.sdf"/>
+      <postprocess>rm *_input_0*</postprocess>
+   </test>
+</tests>

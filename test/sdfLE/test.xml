@@ -1,0 +1,9 @@
+<tests>
+
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+    sdfCalcProps.csh -in .sdf -out .sdf ALogP Heavy_Atoms \
+    |sdfLE.grvy -in .sdf -out .sdf "PF proliferation inhibition 3D7 EC50 uM" LE LLE ALogP_GNE
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>

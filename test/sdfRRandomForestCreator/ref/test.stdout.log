@@ -1,0 +1,22 @@
+ 
+Model name: test
+Location: ./out
+randomForest 4.6-12
+Type rfNews() to see new features/changes/bug fixes.
+
+R square (out-of-bag): 0.3298
+RMS error (out-of-bag): 73.15 
+
+Call:
+ randomForest(x = x, y = y, nodesize = 5) 
+               Type of random forest: regression
+                     Number of trees: 500
+No. of variables tried at each split: 1
+
+          Mean of squared residuals: 5351.373
+                    % Var explained: 32.71
+
+Size of training set: 100
+Number of descriptors: 3 
+
+[1] "R version 3.2.2 (2015-08-14)"

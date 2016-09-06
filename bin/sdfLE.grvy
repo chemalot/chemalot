@@ -1,0 +1,60 @@
+#!/usr/bin/env sdfGroovy.csh
+import groovy.transform.Field;
+import com.aestel.utility.DataFormat;
+import java.util.regex.*;
+
+/* static fields for command line arguemnts initilized at startup */
+@Field static String ic50uMTag;
+@Field static String leTag;
+@Field static String lleTag;
+@Field static String cLogPTag;
+@Field static Pattern rvPattern;
+
+/** Print Help message if executed with -h or without options */
+static void help()
+{  System.err.println("sdfLE.grvy -in .sdf -out .sdf ic50uMTag leTag lleTag [cLogP/DTag]");
+   System.err.println("The default clogP/DTag is 'cLogP'");
+}
+
+/** initialize scripts with command line arguments */
+static void init(String[] args)
+{ if( args.length < 3 || args.length > 4 )
+   {  help();
+      System.exit(1);
+   }
+
+   cLogPTag = "cLogP";
+   // initiate command line arguments
+   ic50uMTag=args[0];
+   leTag=args[1];
+   lleTag=args[2];
+   if( args.length > 3 ) cLogPTag = args[3];
+   
+   rvPattern=Pattern.compile( " *([<>~]*) *(.+) *" );
+}
+
+
+/////// the rest is executed for each record in the sdf file
+String c=tVal($mol,cLogPTag);
+String h=$Heavy_Atoms;
+ic=tVal($mol,ic50uMTag);
+
+if($ic.length()>0 && c.length()>0 && h.length()>0)
+{  
+   Matcher m=rvPattern.matcher(ic);
+   if( m.matches() )
+   {  ic = m.group(2);
+      if( ic != null && DataFormat.isNumeric( ic ) )
+      {  String op = m.group(1);
+         if( ">".equals( op ) )
+            op = "<";
+         else if( "<".equals( op ) )
+            op = ">";
+         else
+            op = "";
+         ic = Math.log10(f(ic)*0.000001);
+         setVal($mol, leTag,  op + DataFormat.formatNumber(-1.4 *ic/f($h), "r2"));
+         setVal($mol, lleTag, op + DataFormat.formatNumber(-ic-f(c),  "r2"));
+      }
+   }
+}

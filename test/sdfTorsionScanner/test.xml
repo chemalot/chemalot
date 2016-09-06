@@ -1,0 +1,8 @@
+<tests>
+
+<test in="../inputFiles/propanol.3d.sdf" out="out/propanol.3d.torsion.out.sdf">
+    sdfTorsionScanner.csh -in .sdf -out .sdf -bondFile propanol.3d.bondfile.sdf -nSteps 36 -startTorsion -170 -torsionAtomsTag torsionAtoms -torsionIncrement 10 
+    <diff ref="propanol.3d.torsion.refout.sdf"/>
+</test>
+
+</tests>
