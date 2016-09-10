@@ -272,7 +272,7 @@ Brief Description of Command Line Programs
    Generate various types of fingerprints including, linear fingerprints and smarts based fragment fingerprints.
 
 * **`sdfFPCluster.pl`**   
-   Use the specified fingerprints to cluster input molecules using the Sphere Exclusion clustering algorithm.   
+   Use the specified fingerprints to cluster input molecules using the Sphere Exclusion clustering algorithm.  A radius of 0.5 is a good values for clustering HTS libraries.    
    [Gobbi A, Lee M. DISE: Directed Sphere Exclusion. J. Chem. Inf. Comput. Sci. 2002, 43 (1), 317.323]
 
 * **`sdfFPNNFinder.csh`**   
