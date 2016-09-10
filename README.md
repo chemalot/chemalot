@@ -240,7 +240,8 @@ Brief Description of Command Line Programs
    Groups numerical values into bins
 
 * **`sdfCalcProps.csh`**   
-   Serves as the "properties" warehouse to which any calculator command line programs can be added, thus, enable a single point access to the properties
+   Serves as the "properties" warehouse to which any calculator command line programs can be added, thus, enable a single point access to the properties.
+   Feng JA, Aliagas I, Bergeron P, Blaney JM, Bradley EK, Koehler MFT, Lee M, Ortwine DF, Tsui V, Wu J, Gobbi A. An Integrated Suite of Modeling Tools That Empower Scientists in Structure- and Property-Based Drug Design. Journal of Computer-Aided Molecular Design 2015, 29 (6), 511-523.
 
 * **`sdfCatsIndexer.csh`**   
    Generate CATS fingerprints for input molecules.   
