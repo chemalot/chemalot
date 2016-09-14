@@ -79,7 +79,7 @@
   <target name='jar' depends='compile'
     description='pack class files'>
       <delete><fileset dir='lib'><include name='chemalot_*.jar'/></fileset></delete>
-      <jar destfile='chemalot_${date}.jar'>
+      <jar destfile='lib/chemalot_${date}.jar'>
          <fileset dir='${build}'/>
       </jar>
    </target>
