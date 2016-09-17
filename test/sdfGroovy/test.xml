@@ -1,0 +1,11 @@
+<tests>
+
+<!-- filter by TPSA and MW --> 
+    <!--sdfGroovy.csh -in .sdf -out .sdf -c 'return (f($MW)>100 && f($TPSA)>50)' -->
+    <!-- need to use escape characters for < (%lt;) and && (&amp;&amp; --> 
+<test in="../inputFiles/100.sdf" out="out/100.out.sdf">
+    sdfGroovy.csh -in .sdf -out .sdf -c 'return (f($MW)&lt;500 &amp;&amp; f($TPSA)&lt;120 )'
+    <diff ref="100.refout.sdf"/>
+</test>
+
+</tests>
