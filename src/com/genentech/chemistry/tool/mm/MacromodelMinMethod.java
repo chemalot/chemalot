@@ -56,6 +56,7 @@ public class MacromodelMinMethod extends MMMinMethod
       addAvailableForceFieldName("OPLS_2001", "OPLS_2001");
       addAvailableForceFieldName("OPLS_2005", "OPLS_2005");
       addAvailableForceFieldName("OPLS_21",   "OPLS_21");
+      addAvailableForceFieldName("OPLS_3",    "OPLS_3");
    }
  
  

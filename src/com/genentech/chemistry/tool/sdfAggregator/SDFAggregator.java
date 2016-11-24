@@ -375,8 +375,10 @@ public class SDFAggregator
    private static void exitWithHelp(Options options)
    {
       HelpFormatter formatter = new HelpFormatter();
-      formatter.printHelp("SDFAggregator", options);
-      System.out.println("Format specs: siN (siginficant N digits) or rN (round to N digits)");
+      String head = "Note: input file must be ordered by the groupby tags";
+      String foot = "\nFormat specs: siN (siginficant N digits) or rN (round to N digits)";
+      formatter.printHelp("SDFAggregator", head, options, foot);
+      //System.out.println("Format specs: siN (siginficant N digits) or rN (round to N digits)");
       System.exit(1);
    }
 }

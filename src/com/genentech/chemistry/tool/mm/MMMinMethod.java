@@ -17,6 +17,9 @@
 package com.genentech.chemistry.tool.mm;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -236,8 +239,22 @@ public abstract class MMMinMethod
       sdTagsToAdd.put(SOLVENT_TAG,    this.getSolventChoice());
       sdTagsToAdd.put(METHOD_TAG,     this.getMethodName() + "_" + this.getForceFieldChoice() + "_" + this.getSolventChoice());
             
-      // Cleanup
-      SDFSplitOnTagValue.concatenateFilesAndWriteTags(tempOutputFilenames, outFilename, sdTagsToAdd);     
+      // Concatenate the individual job output files
+      SDFSplitOnTagValue.concatenateFilesAndWriteTags(tempOutputFilenames, outFilename, sdTagsToAdd);
+      
+      // Cleanup the temp input and output files
+      for (MinimizeJob job : jobs)
+      {           
+         try
+         {
+            Files.deleteIfExists(Paths.get(job.getInputFilename()));
+            Files.deleteIfExists(Paths.get(job.getOutputFilename()));  
+         } catch (IOException e)
+         {            
+            throw new Error("Failed to delete temp files.\n");
+         }
+                
+      }
    }
    
    protected static void addIsotopePropertyToJob(MinimizeJob job)
