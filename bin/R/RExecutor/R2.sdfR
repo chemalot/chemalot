@@ -1,0 +1,48 @@
+#!/usr/bin/env sdfRExecutor.pl
+# R2.sdfR -in .sdf -out .sdf -dataFields 'A|B|...' [-removeQualifier] [-params "method='kendall'"]
+#
+# Computes the correlation coeficients for two numerical columns and adds 
+# the results as fields. The default method is "pearson".
+# Depending on the method the following fields are added to your sdf file:
+# pearson:  R, R2
+# kendal:   TAU
+# spearman: RHO
+#
+# internally the "cor" function is used. The "parms" parameter can be used to pass
+# additional options to the cor function eg. method = c("pearson", "kendall", "spearman")
+# c.f. https://stat.ethz.ch/R-manual/R-devel/library/stats/html/cor.html
+
+# Overwrite chunkSize since computing R2 does not make sense with chunks 
+# do not use .Machine$integer.max because read.table does not work
+
+doCompute <- function(data, ...)
+{  Call <- match.call(expand.dots = TRUE)
+   for (argname in c("x", "y"))
+      if (!is.null(Call[[argname]]))
+         warning(gettextf("attempt to set '%s' ignored", argname), domain = NA)
+   rn <- eval.parent(Call$row.names)
+   Call$x <- data
+   Call[["data"]]<-NULL
+   Call[[1L]] <- as.name("cor")
+   res <- eval.parent(Call)[1,2]
+
+   method <- Call[["method"]]
+   if( is.null(method) || substr(method,1,1) == "p") 
+   {  fname<-c("R","R2")
+      res <- c(res,res^2)
+   }else if( substr(method,1,1) == "s" )
+   {  fname <- "RHO"
+   } else if( substr(method,1,1) == "k" )
+   {  fname <- "TAU"
+   } else
+   {  warning(paste("Unknown method ", method))
+   }
+   p<-matrix(res, nrow=nrow(data),ncol=length(res), byrow=TRUE)
+   rownames(p) <- rownames(data)
+   colnames(p) <- fname
+   return(p)
+}
+#doCompute(t)
+#doCompute(t, method="spearman")
+#doCompute(t, method="kendal")
+

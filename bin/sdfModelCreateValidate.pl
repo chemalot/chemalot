@@ -101,8 +101,11 @@ my($descriptors, $descriptorCount ) = ("", 0);
 open(IN, $descriptorFile) || die "$!";
 while($_=<IN>)
 {  chomp;
-   $descriptors .= "$_|";
+   s/^\s+|\s+$//g;
+   if( $_ )
+   {  $descriptors .= "$_|";
    $descriptorCount++;
+   }
 }
 close(IN);
 $descriptorCount > 0 || die "Too few descriptors: $descriptorCount\n";
@@ -138,7 +141,7 @@ for( my $i = 0; $i<$testRepeats; $i++)
    #!/bin/tcsh -f
 
    cat '#inputFile#' \
-   | sdfSplicer.csh -in .sdf -out .sdf -rndSeed #randomSeed# -rndFract 0.75 \
+   | sdfSplicer.csh -in .sdf -out .sdf #randomSeed# -rndFract 0.75 \
        -skipped '#modelName#/test/#i#/testSetIn.sdf' \
    | sdfTagTool.csh -in .sdf -out .sdf -add 'testIteraton=#i#|model=train' \
    | sdfR#modelType#Creator.pl -in .sdf -out .sdf #creatorOptions# \
@@ -158,8 +161,11 @@ ___COM
 
    $comTest =~ s/^   ( *)/$1/gm;
    $comTest =~ s/#i#/$i/g;
-   my($rSeed) = $randomSeed * $i;
-   $randomSeed && ($comTest =~ s/#randomSeed#/$rSeed/g);
+   my($rSeed) = "";
+   if( $randomSeed )
+   {   $rSeed = "-rndSeed " . ($randomSeed * $i);
+   }
+   $comTest =~ s/#randomSeed#/$rSeed/g;
 
    $com = "$com\n\n#####$i $i $i $i\n$comTest";
 }

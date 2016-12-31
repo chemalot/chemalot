@@ -1,0 +1,30 @@
+#!/usr/bin/env sdfRExecutor.pl
+# data must have:
+#    data[,1] = response
+#    data[,2] = prediction
+#    if(predThreshold !=null) classify data[,0] as positve if < predThreshold
+#    else prediction should be 0 (negative) or 1 (positive)
+library(pROC)
+doCompute <- function(data, predThreshold=NULL,...)
+{  Call <- match.call(expand.dots = TRUE)
+   for (argname in c("response", "prediction"))
+      if(!is.null(Call[[argname]]))
+        warning(gettextf("attempt to set '%s' ignored", argname), domain = NA)
+   rn <- eval.parent(Call$row.names)
+   if( ! is.null(predThreshold) )
+      Call$response <- data[,1]<predThreshold
+   else
+      Call$response <- data[,1]
+   Call$predictor <- data[,2]
+   Call[["data"]]<-NULL
+   if(!is.null(Call[["predThreshold"]])) Call[["predThreshold"]]<-NULL
+   Call[[1L]] <- as.name("roc")
+   rocRes <-eval.parent(Call)
+
+   auc <- rocRes$auc
+   p<-matrix(auc, nrow=nrow(data))
+   rownames(p) <- rownames(data)
+   colnames(p) <- "AUC"
+   return(p)
+}
+#doCompute(t3, predThreshold=4)
