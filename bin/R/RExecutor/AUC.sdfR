@@ -1,10 +1,17 @@
 #!/usr/bin/env sdfRExecutor.pl
+# sdfRExecutor.pl -in .sdf -out .sdf -RScript AUC.sdfR \
+#        -dataFields 'MW|cMW' -params 'predThreshold=300'
 # data must have:
 #    data[,1] = response
 #    data[,2] = prediction
 #    if(predThreshold !=null) classify data[,0] as positve if < predThreshold
 #    else prediction should be 0 (negative) or 1 (positive)
+#
+# The roc function of the pROC package is used, check the roc documentation
+# for additional info: https://cran.r-project.org/web/packages/pROC/pROC.pdf
+
 library(pROC)
+
 doCompute <- function(data, predThreshold=NULL,...)
 {  Call <- match.call(expand.dots = TRUE)
    for (argname in c("response", "prediction"))
