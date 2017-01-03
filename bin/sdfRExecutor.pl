@@ -24,6 +24,7 @@ $progName
    -outMode <arg> computed|all all (default) outputs records if R has no results
    -chunkSize n   If given the input is passed in chunks to R to save memory
    -removeQualifier If given "[ ><~=]" will be removed from the input fields
+   -removeNA      remove all rows where one or more columns have nulls
    -printRScript   Output R script before execution.
    -params str    A "," separated list of additional parameter to pass to docompute
                   method. e.g. "method='spearman',use='all.obs'"
@@ -35,6 +36,7 @@ ___help
 my($printRScript)    = "";
 my($debug)           = "";
 my($removeQualifier) = "";
+my($removeNA)        = "";
 my($chunkSize)       = "";
 
 my($tmpDir)= "/tmp";
@@ -64,6 +66,7 @@ GetOptions( 'in=s' => \$input,
             'dataFields=s' => \$dataFields, 
             'outMode=s' => \$outMode, 
             'removeQualifier' => \$removeQualifier,
+            'removeNA' => \$removeNA,
             'computeOutputScript=s' => \$computeOutputScript,
             'chunkSize=i' => \$chunkSize,
             'params=s' => \$params,
@@ -132,12 +135,14 @@ my($MERGEFieldName) = "counter";
 if( $input !~ /^\./ && ! -e $input )
 {  die "$input does not exists";
 }
-if( $removeQualifier ) { $removeQualifier = "perl -pe 's/ *[<>=~] *//g'"; }
+if( $removeQualifier ) { $removeQualifier = "| perl -pe 's/ *[<>=~] *//g'"; }
+if( $removeNA )        { $removeNA = "| perl -ne '/\t\t|\t\$/ || print'"; }
 my($com) = <<___coms;
    sdfTagTool.csh -in $input -out .sdf -addCounter \\
    | tee $inputFile \\
    | sdf2Tab.csh -in .sdf -tags '$MERGEFieldName|$dataFields' \\
    $removeQualifier \\
+   $removeNA \\
    | perl -ne '\@_=split(/\\t/); if(\$#_!= $nDataFields) {print} else{ warn "Invalid line: \$_"}' \\
    >> $dataFile &
 ___coms

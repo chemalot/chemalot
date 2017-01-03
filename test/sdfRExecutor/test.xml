@@ -13,7 +13,7 @@
 </test>
 
 <test in="in/in.sdf" out="out/roc.out.sdf">
-  sdfRExecutor.pl -in .sdf -out .sdf -RScript ROC_Measures.sdfR -outMode all\
+  sdfRExecutor.pl -in .sdf -out .sdf -RScript ROC_Measures.sdfR -outMode all -removeNA \
                   -dataFields 'MW|cMW' -params 'predThreshold=300,plotName="out/roc.png"' \
   | sdfSplicer.csh -in .sdf -out .sdf -count 1
   <diff ref='ref/roc.refout.sdf'/>
