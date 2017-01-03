@@ -21,6 +21,7 @@ $progName
                   and relative to $installDir/R/RExecutor 
                   For example look at $installDir/R/RExecutor/R2.sdfR
    -dataFields    Pipe separated list of datafields to pass to R.
+   -outMode <arg> computed|all all (default) outputs records if R has no results
    -chunkSize n   If given the input is passed in chunks to R to save memory
    -removeQualifier If given "[ ><~=]" will be removed from the input fields
    -printRScript   Output R script before execution.
@@ -49,6 +50,7 @@ my($rScript) = "";
 my($input) = "";
 my($output) = "";
 my($dataFields) = "";
+my($outMode) = "-outAll";
 my($computeOutputScript) = "";
 my($params) = "";
 my($help) = "";
@@ -60,6 +62,7 @@ GetOptions( 'in=s' => \$input,
             'out=s' => \$output, 
             'RScript=s' => \$rScript,
             'dataFields=s' => \$dataFields, 
+            'outMode=s' => \$outMode, 
             'removeQualifier' => \$removeQualifier,
             'computeOutputScript=s' => \$computeOutputScript,
             'chunkSize=i' => \$chunkSize,
@@ -100,6 +103,11 @@ if( !$output )
 }
 if( !$dataFields )                                                                   
 {  $errMessage .= "dataFields is reqired\n";
+}
+if( $outMode =~ /computed/i )
+{  $outMode = "";
+}else
+{  $outMode = "-outAll";
 }
 my($nDataFields) = split(/\|/,$dataFields);
 $errMessage && &exitWithHelp( $use, $errMessage );
@@ -208,7 +216,7 @@ if( $status != 0 )
 
 
 $com = <<com;
-sdfTabMerger.csh -sdf $inputFile -tab $tmpOutput -out .sdf \\
+sdfTabMerger.csh -sdf $inputFile -tab $tmpOutput -out .sdf $outMode\\
    -addEmptyValues -mergeTag "$MERGEFieldName" -mergeCol "$MERGEFieldName" \\
    | sdfTagTool.csh -in .sdf -out $output -remove "$MERGEFieldName"
 com

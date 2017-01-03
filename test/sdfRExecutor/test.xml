@@ -2,7 +2,7 @@
 
 <!-- this model is of no value, just to test sdfRRandomForestCreator.pl -->
 <test in="in/in.sdf" out="out/in.out.sdf">
-  sdfRExecutor.pl -in .sdf -out .sdf -RScript R2.sdfR -dataFields 'MW|cMW'
+  sdfRExecutor.pl -in .sdf -out .sdf -RScript R2.sdfR -dataFields 'MW|cMW' -outMode all
   <diff ref='ref/in.refout.sdf'/>
 </test>
 
@@ -13,14 +13,14 @@
 </test>
 
 <test in="in/in.sdf" out="out/roc.out.sdf">
-  sdfRExecutor.pl -in .sdf -out .sdf -RScript ROC_Measures.sdfR \
+  sdfRExecutor.pl -in .sdf -out .sdf -RScript ROC_Measures.sdfR -outMode all\
                   -dataFields 'MW|cMW' -params 'predThreshold=300,plotName="out/roc.png"' \
   | sdfSplicer.csh -in .sdf -out .sdf -count 1
   <diff ref='ref/roc.refout.sdf'/>
 </test>
 
 <test in="in/in.sdf" out="out/auc.out.sdf">
-   sdfRExecutor.pl -in .sdf -out .sdf -RScript AUC.sdfR \
+   sdfRExecutor.pl -in .sdf -out .sdf -RScript AUC.sdfR -outMode all\
          -dataFields 'MW|cMW' -params 'predThreshold=300' \
   | sdfSplicer.csh -in .sdf -out .sdf -count 1
   <diff ref='ref/auc.refout.sdf'/>
