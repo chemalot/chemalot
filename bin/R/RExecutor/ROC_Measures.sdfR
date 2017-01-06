@@ -1,43 +1,45 @@
 #!/usr/bin/env sdfRExecutor.pl
 # sdfRExecutor.pl -in .sdf -out .sdf -RScript ROC_Measures.sdfR \
-#     -dataFields 'MW|cMW' -params 'predThreshold=300,plotName="out/roc.png"'
+#     -dataFields 'MW|cMW' -params 'measuredThreshold=300,plotName="out/roc.png"'
 #
 # Computes several metrics to evaluate a classification model
 # Outputs the following columns:
 # H, Gini, AUC, AUCH, KS, MER, MWL, Spec.Sens95, Sens.Spec95
 # For details see the hmeasure R package: https://cran.r-project.org/web/packages/hmeasure/index.html
+# and this paper: http://rd.springer.com/article/10.1007/s10994-009-5119-5
 #
 # data must have:
-#    data[,1] = response
+#    data[,1] = measured
 #    data[,2] = prediction
-#    if(predTreshhold !=null) classify data[,0] as positve if < predTreshhold
-#    else prediction should be 0/FALSE (negative) or 1/TRUE (positive)
+#    if(predTreshhold !=null) classify data[,1] as positve if < predTreshhold
+#    else measured should be 0/FALSE (negative) or 1/TRUE (positive)
 #
 # if plotName is given a png file witht he rocs curve is written to that file
 #
 # The HMeasure function from the hmeasure package is used.
 # cf. the HMeasure documentation for further options:
 #    https://cran.r-project.org/web/packages/hmeasure/hmeasure.pdf
+#    http://rd.springer.com/article/10.1007/s10994-009-5119-5
 
 library(hmeasure)
 
-doCompute <- function(data, predThreshold=NULL, plotName=NULL, ...)
+doCompute <- function(data, measuredThreshold=NULL, plotName=NULL, ...)
 {  Call <- match.call(expand.dots = TRUE)
    for (argname in c("true.class", "scores"))
       if(!is.null(Call[[argname]]))
         warning(gettextf("attempt to set '%s' ignored", argname), domain = NA)
    rn <- eval.parent(Call$row.names)
 
-   # convert regression into classification if predThreshold given
-   if( ! is.null(predThreshold) )
-      Call$true.class <- data[,1]<predThreshold
+   # convert regression into classification if measuredThreshold given
+   if( ! is.null(measuredThreshold) )
+      Call$true.class <- data[,1]<measuredThreshold
    else
       Call$true.class <- data[,1]
 
    # hmeasure assumes high scores are good
    Call$scores <- -data[,2]
    Call[["data"]]<-NULL
-   if(!is.null(Call[["predThreshold"]])) Call[["predThreshold"]]<-NULL
+   if(!is.null(Call[["measuredThreshold"]])) Call[["measuredThreshold"]]<-NULL
    if(!is.null(Call[["plotName"]]))      Call[["plotName"]]<-NULL
 
    # call HMeasure method
@@ -58,4 +60,4 @@ doCompute <- function(data, predThreshold=NULL, plotName=NULL, ...)
    colnames(p) <- names(res)
    return(p)
 }
-#doCompute(t3, predThreshold=4, plotName='c:\\tmp\\rp.png')
+#doCompute(t3, measuredThreshold=4, plotName='c:\\tmp\\rp.png')

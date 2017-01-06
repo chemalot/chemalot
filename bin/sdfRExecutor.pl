@@ -255,7 +255,7 @@ sub exitWithHelp
    warn("\n$msg$help\n");
 
    warn("Scripts in default location ($installDir/R/RExecutor/):\n" 
-       .`cd $installDir/R/RExecutor;ls -1` ."\n");
+       .`cd $installDir/R/RExecutor;ls -1 *.sdfR` ."\n");
 
   exit(1);
 }

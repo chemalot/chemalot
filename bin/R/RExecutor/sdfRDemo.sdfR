@@ -1,0 +1,31 @@
+#!/usr/bin/env sdfRExecutor.pl
+# sdfRDemo.sdfR -in in/in.sdf -out .sdf -dataFields 'MW|cMW'
+#
+# The first block of comments up until the first line that does not start with
+# "#" is used as helptext when running the script wiht the -H option
+#
+# If the first line is "#!/usr/bin/env sdfRExecutor.pl" then the script is
+# executable on its own
+#
+# This examples shows how to compute trhe R and R2 correlation coeficient and
+# add those to all input rows.
+
+doCompute <- function(data, ...)
+{  # compute correlation coeficient R
+   res<-cor(data[,1],data[,2])
+
+   # also compute R^2
+   res <- c(res,res^2)
+
+   # Prepare output matrix, add row.names from input
+   p<-matrix(res, nrow=nrow(data),ncol=length(res), byrow=TRUE)
+
+   # row names contain identifiers used to merge data back to sdf file
+   rownames(p) <- rownames(data)
+
+   # column names define sdf Field Names
+   colnames(p) <- c('R','R2')
+
+   return(p)
+}
+

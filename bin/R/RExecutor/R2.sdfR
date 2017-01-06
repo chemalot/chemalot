@@ -1,5 +1,5 @@
 #!/usr/bin/env sdfRExecutor.pl
-# R2.sdfR -in .sdf -out .sdf -dataFields 'A|B|...' [-removeQualifier] [-params "method='kendall'"]
+# R2.sdfR -in .sdf -out .sdf -dataFields 'A|B|...' [-removeQualifier] [-params "use='na.or.complete', method='kendall'"]
 #
 # Computes the correlation coeficients for two numerical columns and adds 
 # the results as fields. The default method is "pearson".

@@ -1,0 +1,24 @@
+#!/usr/bin/env sdfRExecutor.pl
+# sdfRDemo2.sdfR -in in/in.sdf -out t.sdf -dataFields 'MW|cMW' -params 'fileName="o.tab"' -outMode computed
+#
+# The first block of comments up until the first line that does not start with
+# "#" is used as helptext when running the script wiht the -H option
+#
+# If the first line is "#!/usr/bin/env sdfRExecutor.pl" then the script is
+# executable on its own
+#
+# The example below shows who to compute the correlation matrix and output it into a file
+# whose name is given in the "fileName" parameter.
+
+doCompute <- function(data, fileName)
+{  # compute correlation coeficient R
+   res<-cor(data)
+
+   write.table(res,fileName,sep="\t", row.names=TRUE, quote=FALSE)
+
+   # Prepare empty output matrix, add row.names from input
+   p<-matrix(-1, nrow=0,ncol=1)
+
+   return(p)
+}
+
