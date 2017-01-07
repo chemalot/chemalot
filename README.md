@@ -322,6 +322,9 @@ Brief Description of Command Line Programs
    [Gobbi A, Lee M. Handling of Tautomerism and Stereochemistry in Compound Registration. J. Chem. Inf. Model. 2011, 52 (2), 285.292]   
    _Additional requirement: quacpac_
 
+* **`sdfRExecutor.pl`**   
+   Apply costum R scripts to data in SD file and add computed fields to the output file.
+
 * **`sdfRGroupCalcProps.pl`**   
    Calculate the properties of molecule fragments with attachment points (e.g. [U+1], [U+2]); companion program to sdfRGroupExtractor.pl
 
@@ -330,6 +333,9 @@ Brief Description of Command Line Programs
 
 * **`sdfRingSystemExtraction.csh`**   
    Fragments input molecules and outputs the largest (linked) ring system as well as the set of the basic rings as SMILES.
+
+* **`sdfModelCreateValidate.pl`**   
+   Use sdfRModelPredictor.pl to create a Machine Learning Model and validate at the same time using randomly selected training and test sets.
 
 * **`sdfRModelPredictor.pl`**   
    Compute the prediction according to the specified model created by sdfRRandomForestCreator.pl or sdfRSVMCreator.pl   
