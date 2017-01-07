@@ -303,6 +303,9 @@ Brief Description of Command Line Programs
 * **`sdfMDLSSSMatcher.csh`**   
    Remove molecules from the SDF file that don't match any of substructures in MDL query file
 
+* **`sdfModelCreateValidate.pl`**   
+   Use sdfRModelPredictor.pl to create a Machine Learning Model and validate at the same time using randomly selected training and test sets.
+
 * **`sdfMMConfAnalysis.pl`**   
    Perform strain energy analysis of input conformers including generation and geometry optimization of a large number of conformations. Also evaluates the energy of the minimized input conformation with several restraint strengths.   
    _Additional requirements: bmin, moebatch, szybki__
@@ -333,9 +336,6 @@ Brief Description of Command Line Programs
 
 * **`sdfRingSystemExtraction.csh`**   
    Fragments input molecules and outputs the largest (linked) ring system as well as the set of the basic rings as SMILES.
-
-* **`sdfModelCreateValidate.pl`**   
-   Use sdfRModelPredictor.pl to create a Machine Learning Model and validate at the same time using randomly selected training and test sets.
 
 * **`sdfRModelPredictor.pl`**   
    Compute the prediction according to the specified model created by sdfRRandomForestCreator.pl or sdfRSVMCreator.pl   
