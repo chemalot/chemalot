@@ -21,6 +21,8 @@ This software is released under the "Apache License Version 2.0".
 
  Summary of dependencies:
 -------------------------------
+Most of the chemalot command lione programs are implemented in java. Java 1.8 is thus required to run most programs.
+
 chemalot uses command line programs and libraries from several Open Source and commercial 
 software packages. For convenience the chemalot package includes the following libraries and executable:
 
