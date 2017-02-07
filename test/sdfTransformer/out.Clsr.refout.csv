@@ -1,0 +1,7 @@
+SMILES,TITLE,id
+C(F)(F)Cl,1,1
+C(C(F)Cl)(F)F,2,2
+C(C(F)F)(C(C(F)Cl)(F)F)F,3,3
+C(C(F)F)(C(C(F)F)(F)Cl)F,3,3
+C(C(F)F)(C(C(F)F)(F)F)Cl,3,3
+C(C(F)Cl)(C(C(F)F)(F)F)F,3,3

@@ -1,0 +1,6 @@
+SMILES,TITLE,id,transformedBy
+C(F)(F)(F)Cl,1,1,H->Cl
+C(C(F)(F)Cl)(F)F,2,2,H->Cl
+C(C(F)F)(C(C(F)(F)Cl)(F)F)F,3,3,H->Cl
+C(C(C(C(F)F)(F)Cl)(F)F)(F)F,3,3,H->Cl
+C(C(C(F)F)(F)F)(C(F)(F)Cl)F,3,3,H->Cl

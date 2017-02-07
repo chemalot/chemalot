@@ -1,0 +1,4 @@
+SMILES,TITLE,id
+C(Cl)(Cl)Cl,1,1
+C(C(Cl)Cl)(Cl)Cl,2,2
+C(C(Cl)Cl)(C(C(Cl)Cl)(Cl)Cl)Cl,3,3

@@ -1,0 +1,36 @@
+<tests>
+
+<test in="in/in.csv" out="out/out.Cl.csv">
+    sdfTransformer.csh -in .csv -out .csv -trans '[C:1]F>>[C:1]Cl'
+    <diff ref="out.Cl.refout.csv"/>
+</test>
+<test in="in/in.csv" out="out/out.Cl.ft.csv">
+    sdfTransformer.csh -in .csv -out .csv -firstTransformation -trans '[C:1]F>>[C:1]Cl'
+    <diff ref="out.Cl.refout.csv"/>
+</test>
+<test in="in/in.csv" out="out/out.Cl.sr.csv">
+    sdfTransformer.csh -in .csv -out .csv -singleReactionSite -trans '[C:1]F>>[C:1]Cl'
+    <diff ref="out.Clsr.refout.csv"/>
+</test>
+<test in="in/in.csv" out="out/out.Cl.ftsr.csv">
+    sdfTransformer.csh -in .csv -out .csv -singleReactionSite -firstTransformation -trans '[C:1]F>>[C:1]Cl'
+    <diff ref="out.Clsr.refout.csv"/>
+</test>
+
+<test in="in/in.csv" out="out/out.Cl.m.csv">
+    sdfTransformer.csh -in .csv -out .csv -trans in/reakt1.smirks
+    <diff ref="out.Cl.m.refout.csv"/>
+</test>
+<test in="in/in.csv" out="out/out.Cl.mft.csv">
+    sdfTransformer.csh -in .csv -out .csv -firstTransformation -trans in/reakt1.smirks
+    <diff ref="out.Cl.mft.refout.csv"/>
+</test>
+<test in="in/in.csv" out="out/out.Cl.msr.csv">
+    sdfTransformer.csh -in .csv -out .csv -singleReactionSite -trans in/reakt1.smirks
+    <diff ref="out.Cl.msr.refout.csv"/>
+</test>
+<test in="in/in.csv" out="out/out.Cl.mftsr.csv">
+    sdfTransformer.csh -in .csv -out .csv -singleReactionSite -firstTransformation -trans in/reakt1.smirks
+    <diff ref="out.Cl.mftsr.refout.csv"/>
+</test>
+</tests>

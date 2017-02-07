@@ -1,0 +1,4 @@
+SMI,title,id
+FC(F)F,1,1
+FC(F)C(F)F,2,2
+FC(F)C(F)(F)C(F)C(F)F,3,3

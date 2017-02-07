@@ -1,0 +1,4 @@
+SMILES,TITLE,id,transformedBy
+C(F)(F)(F)Br,1,1,"H->Cl,Cl-Br"
+C(C(F)(F)Br)(F)(F)Br,2,2,"H->Cl,Cl-Br"
+C(C(C(F)(F)Br)(F)Br)(C(F)(F)Br)(F)F,3,3,"H->Cl,Cl-Br"
