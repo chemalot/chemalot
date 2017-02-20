@@ -22,7 +22,7 @@ This software is released under the "Apache License Version 2.0".
  Summary of dependencies:
 -------------------------------
 
-Most of the chemalot command lione programs are implemented in java. Java 1.8 is thus required to run most programs.
+Most of the chemalot command line programs are implemented in java. Java 1.8 is thus required to run most programs.
 
 chemalot uses command line programs and libraries from several Open Source and commercial 
 software packages. For convenience the chemalot package includes the following libraries and executable:
@@ -151,6 +151,9 @@ All other files
 
  Compiling
 ------------------
+Note: there is no need to compile the chemalot package as it already include a compiled
+jar file. This description is for developers wjo whish to make changes to the code.
+
 In order to compile this package you must have the **oechem Java
 toolkit** installed as described under "Installation on LINUX".
 In addition you must have [ant](http://ant.apache.org/)
