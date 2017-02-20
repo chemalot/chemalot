@@ -151,6 +151,7 @@ All other files
 
  Compiling
 ------------------
+
 Note: there is no need to compile the chemalot package as it already include a compiled
 jar file. This description is for developers wjo whish to make changes to the code.
 
@@ -216,21 +217,39 @@ package should be considered LINUX only.
 Brief Description of Command Line Programs
 ------------------------------------------
 
+* **`AEREAExporter.csh`**<sup>a</sup>
+   Export from a database query and report saved using the AEREA aplication [[8](8),[9](9)]
+
+* **`dataLoader.csh`**<sup>a</sup>
+   Load data into a relational database using the Aestel dataLoader.
+
 * **`g2sdf.pl`**
    Create an SDF file from a Gaussian output file.
+
+* **`gOpt.py`**
+   Optimize using gaussian eabeling faster convergance by computing the seccond derivatives every 8 steps.
 
 * **`OEProps.csh`**
    Compute atom, bond, ring, and other count properties, TPSA, and other 2D properties. (see help text)
 
-* **`QTorsionProfileGenerator.csh`**
+* **`qTorsionMultiplexer.pl`**
    Perform a Gaussian torsion scan from an input molecule with a specified rotatable bond (requires Gaussian license)
    _Additional requirement: gaussian_
+
+* **`QTorsionProfileGenerator.csh`**
+   generate input files for qm torsion file runs
+
+* **`RModelManager.pl`**
+   Manage models created with sdfR*Creator.pl
 
 * **`sdf2DAlign.csh`**
    Transforms the 2D coordinates of input molecules according to the matching substructures specified in the template SDF file.
 
 * **`sdf2g.pl`**
    Create Gaussian input files from molecules in an input SDF file.
+
+* **`sdf2Tab.csh`**<sup>b</sup>
+   convert sdf file to tab separated file
 
 * **`sdfAggregator.csh`**
    Given a set of input molecules with SDF tag data, group them by a specified tag value and then perform a grouping function (e.g. find the average "My Assay IC50" (grouping function) for each "Chemical Series" (the group-by SDF tag).
@@ -291,6 +310,9 @@ Brief Description of Command Line Programs
 * **`sdfGrep.pl`**
    Remove a molecule from the SDF file if the field of interest does not matching the specified requirement
 
+* **`sdfGroovy.csh`**<sup>b</sup>
+   Apply groovy scriptlet to records in sdf file
+
 * **`sdfLE.grvy`**
    Calculate various ligand efficiencies, i.e. LE, LLE
    [Hopkins AL, Groom CR, Alex A. Ligand efficiency: a useful metric for lead selection. 2004, 9 (10), 430-431; Leeson PD, Springthorpe B. The influence of drug-like concepts on decision-making in medicinal chemistry. Nat. Rev. Drug Disc. 2007, 6 (11), 881-890]
@@ -309,10 +331,6 @@ Brief Description of Command Line Programs
 * **`sdfMDLSSSMatcher.csh`**
    Remove molecules from the SDF file that don't match any of substructures in MDL query file
 
-* **`sdfModelCreateValidate.pl`**
-   Use sdfRModelPredictor.pl to create a Machine Learning Model and validate at the same time using randomly selected training and test sets.
-   Uses sdfR???ModelCreator.pl in the background.
-
 * **`sdfMMConfAnalysis.pl`**
    Perform strain energy analysis of input conformers including generation and geometry optimization of a large number of conformations. Also evaluates the energy of the minimized input conformation with several restraint strengths.
    _Additional requirements: bmin, moebatch, szybki__
@@ -320,6 +338,10 @@ Brief Description of Command Line Programs
 * **`sdfMMMinimize.csh`**
    Perform a geometry optimization using a molecular mechanics force field, with wrapped choices of Macromodel (Schrodinger), MOE (CCG) or SZYBKI (OpenEye). (License requirements)
    _Additional requirements: bmin, moebatch, szybki_
+
+* **`sdfModelCreateValidate.pl`**
+   Use sdfRModelPredictor.pl to create a Machine Learning Model and validate at the same time using randomly selected training and test sets.
+   Uses sdfR???ModelCreator.pl in the background.
 
 * **`sdfMolSeparator.csh`**
    Separate the disconnected molecules in a molfile (e.g. salt and compound) and output them in individual records.
@@ -362,17 +384,38 @@ Brief Description of Command Line Programs
    Create models (R sessions) using Support Vector Machine algorithm; companion program to sdfRModelPredictor.pl
    _Additional requirement: R_
 
+* **`sdfSdfExport.csh`**<sup>b</sup>
+   Add data from relational database to sdf file
+
+* **`sdfSdfMerger.csh`**<sup>b</sup>
+   Merger two sdf files based on comon data field
+
 * **`sdfSelectivityCalculator.csh`**
    Computes selectivity (ratio) based on the specified numerator and denominator fields considering operator values
 
 * **`sdfSliceByRe.pl`**
    Partition sdf files by ranges of rows
 
+* **`sdfSmartsGrep.csh`**<sup>b</sup>
+   return records that match/do not match a smarts pattern
+
+* **`sdfSorter.csh`**<sup>b</sup>
+   sort sdf file by one or more data fields
+
+* **`sdfSplicer.csh`**<sup>b</sup>
+   Get a splice out of an sdf file
+
 * **`sdfStructureTagger.csh`**
    Tag molecules with specified names based on the corresponding SMARTS or molfile (queries)
 
 * **`sdfSubRMSD.csh`**
    Calculate the RMSD between a supplied fragment (e.g. core) and the matching part of the input molecule. Molecules need to be pre-aligned.
+
+* **`sdfTabMerger.csh`**<sup>b</sup>
+   Merge sdf file with tab separated file based on common data field
+
+* **`sdfTagTool.csh`**<sup>b</sup>
+   Perfrom a large variety of manipulation adn filterign based on data in sdf fields
 
 * **`sdfTopologicalIndexer.csh`**
    Compute topological indices, i.e. Balaban, Wiener, and Zagreb
@@ -381,8 +424,22 @@ Brief Description of Command Line Programs
    Given one or more molecules (e.g. sdf), generate a set of conformers rotated around a single rotatable bond within the input molecules. Useful as pre-step to sdfMMMinimize.csh to calculate energy torsion scans. (Optional minimization requires a SZYBKI license).
    _Additional requirement: szybki_
 
+* **`sdfTransformer.csh`**<sup>b</sup>
+   Apply SMIRKS transformation to chemical structures in sdf file
+
+* **`tab2Sdf.csh`**<sup>b</sup>
+   Convert tab file to sdf (First column must be SMILES)
+
+* **`tabExport.pl`**
+   Export data from relational database to tab separated file
+
 * **`tabTagTool.pl`**
    Modify column header and filter tab-delimited files
+
+<small><sup><a name='a'>a</a></sup> Implementation supplied by the Aestel jar file
+
+
+<small><sup><a name='b'>b</a></sup> Implementation supplied by the autocorrelator jar file
 
 References
 --------------
@@ -400,3 +457,7 @@ References
 <a name='6'>[6]</a> [50 years of the Cambridge Structural Database](https://www.ccdc.cam.ac.uk/News/csd50/CSD50_program_agenda_singles.pdf)
 
 <a name='7'>[7]</a> Lee M, Aliagas IM, Feng JA, Gabriel T, O'Donnell TJ, Sellers B, Wiswedel B, Gobbi A. Command line programs as workflow tools for drug discovery. In preparation.
+
+<a name='8'>[8]</a> Lee M, Aliagas I, Dotson J, et al (2011) DEGAS: Sharing and Tracking Target Compound Ideas with External Collaborators. J Chem Inf Model 52:278.284.
+
+<a name='9'>[9]</a>dataLoader and AEREA are an open-source applications of Aestel Scientific Information. Contact: aestelSW at gmail dot com
