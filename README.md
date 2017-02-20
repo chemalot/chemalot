@@ -460,4 +460,4 @@ References
 
 <a name='8'>[8]</a> Lee M, Aliagas I, Dotson J, et al (2011) DEGAS: Sharing and Tracking Target Compound Ideas with External Collaborators. J Chem Inf Model 52:278.284.
 
-<a name='9'>[9]</a>dataLoader and AEREA are an open-source applications of Aestel Scientific Information. Contact: aestelSW at gmail dot com
+<a name='9'>[9]</a> dataLoader and AEREA are an open-source applications of Aestel Scientific Information. Contact: aestelSW at gmail dot com
