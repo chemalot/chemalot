@@ -16,6 +16,7 @@
 */
 package com.genentech.struchk;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 
@@ -61,6 +62,10 @@ public class sdfNormalizer {
       opt.setRequired(false);
       options.addOption(opt);
 
+      opt = new Option("f",true, "configuration file. (if none the default will be read from the jar file).");
+      opt.setRequired(false);
+      options.addOption(opt);
+
 
       CommandLineParser parser = new PosixParser();
       CommandLine cmd;
@@ -100,8 +105,14 @@ public class sdfNormalizer {
          oemolistream ifs = new oemolistream(inFile);
          oemolostream ofs = new oemolostream(outFile);
 
-
-         URL cFile = OEStruchk.getResourceURL(OEStruchk.class,"Struchk.xml");
+         URL cFile;
+         if( cmd.hasOption("f") )
+         {  File cf = new File(cmd.getOptionValue("f"));
+            if( ! cf.canRead() ) throw new Error("Can not read from: " + cf.getAbsolutePath());
+               cFile= cf.toURI().toURL();
+         } else
+         {  cFile = OEStruchk.getResourceURL(OEStruchk.class,"Struchk.xml");
+         }
 
          // create OEStruchk from config file
          OEStruchk strchk = new OEStruchk(cFile, CHECKConfig.ASSIGNStructFlag, false);
