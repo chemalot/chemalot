@@ -99,6 +99,18 @@
  42 44  1  0  0  0  0
  44 45  1  0  0  0  0
 M  END
+> <cMW>
+486.544172075957
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-1034
+
 > <JC_XSMILES>
 COC1=C2OC3=C(OC)C(OC)=CC4=C3C(CC5=CC=C(O)C(OC6=CC=C(CC7N(C)CCC(=C1)C7=C2)C=C6)=C5)N(C)CC4
 
@@ -138,20 +150,8 @@ Hydrochloride
 > <TPSA>
 72
 
-> <cMW>
-486.544172075957
-
 > <AFP2>
 9001106011087c400020582209000319f41313220080c0000120c82954a08100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-1034
 
 $$$$
 
@@ -203,6 +203,18 @@ $$$$
  19 20  1  0  0  0  0
  20 21  1  0  0  0  0
 M  END
+> <cMW>
+354.417031492425
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-104
+
 > <JC_XSMILES>
 NC1=NC(N)=C2C=C(C=CC2=N1)S(=O)(=O)N3CCCCC3
 
@@ -242,20 +254,8 @@ Hydrochloride
 > <TPSA>
 115
 
-> <cMW>
-354.417031492425
-
 > <AFP2>
 0082000000120000c40000020911420130200002600024002124400060000114
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-104
 
 $$$$
 
@@ -318,6 +318,18 @@ $$$$
  24 25  1  0  0  0  0
  25 26  2  0  0  0  0
 M  END
+> <cMW>
+363.766688124676
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-1064
+
 > <JC_XSMILES>
 FC1=CC=CC=C1NC2=NC(NCC3=CC=CC=C3)=C4C=CC=CC4=N2
 
@@ -357,20 +369,8 @@ Hydrochloride
 > <TPSA>
 49
 
-> <cMW>
-363.766688124676
-
 > <AFP2>
 020004683006060984000007001002310000200c040098802000408008000008
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-1064
 
 $$$$
 
@@ -470,6 +470,18 @@ $$$$
  42 43  1  0  0  0  0
  43 44  2  0  0  0  0
 M  END
+> <cMW>
+556.411688333333
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-1145
+
 > <JC_XSMILES>
 COC1=CC=CC2=C1C(=O)C3=C(O)C4=C(C[C@](O)(C[C@@H]4O[C@@H]5C[C@H](N)[C@H](O)[C@H](C)O5)C(=O)CO)C(O)=C3C2=O
 
@@ -509,20 +521,8 @@ Hydrochloride
 > <TPSA>
 206
 
-> <cMW>
-556.411688333333
-
 > <AFP2>
 a66200fc1404104801d858824120039920b450000040c0600106900a04a00104
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-1145
 
 $$$$
 
@@ -579,6 +579,18 @@ $$$$
   5 22  1  0  0  0  0
  22 23  2  0  0  0  0
 M  END
+> <cMW>
+341.551854249795
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+3
+
+> <NN_nearGn>
+GNF-Pf-1251
+
 > <JC_XSMILES>
 OC1=CC=C(NC2=NC(N3CCCC3)=C4C=CC=CC4=N2)C=C1
 
@@ -618,20 +630,8 @@ Hydrochloride
 > <TPSA>
 61
 
-> <cMW>
-341.551854249795
-
 > <AFP2>
 12024008100682008000a0060010421b00000020060050002130400040400100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-3
-
-> <NN_nearGn>
-GNF-Pf-1251
 
 $$$$
 
@@ -694,6 +694,18 @@ $$$$
  24 25  1  0  0  0  0
  25 26  2  0  0  0  0
 M  END
+> <cMW>
+311.010432218862
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+3
+
+> <NN_nearGn>
+GNF-Pf-1295
+
 > <JC_XSMILES>
 OC1=CC=CC=C1NC2=NC(NCC3=CC=CC=C3)=C4C=CC=CC4=N2
 
@@ -733,20 +745,8 @@ Hydrochloride
 > <TPSA>
 70
 
-> <cMW>
-311.010432218862
-
 > <AFP2>
 020004683006060880002007081002394000000c040098802100400008000000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-3
-
-> <NN_nearGn>
-GNF-Pf-1295
 
 $$$$
 
@@ -799,6 +799,18 @@ $$$$
  20 21  1  0  0  0  0
  20 22  2  0  0  0  0
 M  END
+> <cMW>
+312.709854824867
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-1325
+
 > <JC_XSMILES>
 CC(C)N1CCC2=C(C1)SC(NC(=O)C(C)(C)C)=C2C(N)=O
 
@@ -838,20 +850,8 @@ Hydrochloride
 > <TPSA>
 75
 
-> <cMW>
-312.709854824867
-
 > <AFP2>
 0600400000c01000c41210301a82001500024300104b00200424200040000104
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-1325
 
 $$$$
 
@@ -941,6 +941,18 @@ $$$$
  35 38  1  0  0  0  0
  38 39  2  0  0  0  0
 M  END
+> <cMW>
+422.620626432605
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-138
+
 > <JC_XSMILES>
 CC[C@H]1CN2CCC3=CC(OC)=C(OC)C=C3[C@@H]2C[C@@H]1C[C@@H]4NCCC5=CC(OC)=C(OC)C=C45
 
@@ -980,20 +992,8 @@ Hydrochloride
 > <TPSA>
 52
 
-> <cMW>
-422.620626432605
-
 > <AFP2>
 800100603000100910a8500009800391458003000000e0204060888440210540
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-138
 
 $$$$
 
@@ -1045,6 +1045,18 @@ $$$$
  19 20  1  0  0  0  0
  20 21  1  0  0  0  0
 M  END
+> <cMW>
+354.417031492425
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-1408
+
 > <JC_XSMILES>
 NC1=NC(N)=C2C=C(C=CC2=N1)S(=O)(=O)N3CCSCC3
 
@@ -1084,20 +1096,8 @@ Hydrochloride
 > <TPSA>
 115
 
-> <cMW>
-354.417031492425
-
 > <AFP2>
 00a2000000123004c42000020911020130200000200024002164400060000114
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-1408
 
 $$$$
 
@@ -1148,6 +1148,18 @@ $$$$
  19 20  1  0  0  0  0
  20 21  1  0  0  0  0
 M  END
+> <cMW>
+349.057294801094
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-1409
+
 > <JC_XSMILES>
 COC1=CC=C(\C=C\C(=O)NC2=CC=NC=C2)C=C1OC
 
@@ -1187,20 +1199,8 @@ Hydrochloride
 > <TPSA>
 60
 
-> <cMW>
-349.057294801094
-
 > <AFP2>
 030200600a401000a01000220900033101004114000000100404800000b10000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-1409
 
 $$$$
 
@@ -1255,6 +1255,18 @@ $$$$
  13 21  2  0  0  0  0
 M  CHG  1   9   1
 M  END
+> <cMW>
+299.541811373708
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-1458
+
 > <JC_XSMILES>
 O=C1C2=CC=CC=C2[N+]3=CC=C4C(NC5=CC=CC=C45)=C13
 
@@ -1294,20 +1306,8 @@ Hydrochloride
 > <TPSA>
 36
 
-> <cMW>
-299.541811373708
-
 > <AFP2>
 02000080200402240608010240100711010000210820a0002804000204000040
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-1458
 
 $$$$
 
@@ -1359,6 +1359,18 @@ $$$$
  19 20  1  0  0  0  0
  20 21  2  0  0  0  0
 M  END
+> <cMW>
+287.380315005865
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-147
+
 > <JC_XSMILES>
 OCCNCCNCC1=CC=C2NC3=CC=CC=C3C2=C1
 
@@ -1398,20 +1410,8 @@ Hydrochloride
 > <TPSA>
 60
 
-> <cMW>
-287.380315005865
-
 > <AFP2>
 0209040100440be8000000020110023100090000206000102100000200040040
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-147
 
 $$$$
 
@@ -1458,6 +1458,18 @@ $$$$
  16 18  1  0  0  0  0
  18 19  2  0  0  0  0
 M  END
+> <cMW>
+285.275398865562
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-163
+
 > <JC_XSMILES>
 CN(C)CCCNC1=CC(C)=NC2=CC=C(C)C=C12
 
@@ -1497,20 +1509,8 @@ Hydrochloride
 > <TPSA>
 28
 
-> <cMW>
-285.275398865562
-
 > <AFP2>
 020180220002108880100286111002090201000000008404a2a0480800000000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-163
 
 $$$$
 
@@ -1571,6 +1571,18 @@ $$$$
  23 24  2  0  0  0  0
   6 25  2  0  0  0  0
 M  END
+> <cMW>
+349.48247890958
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-1678
+
 > <JC_XSMILES>
 CC1=CC=CC(NC2=NC(NCC3=CC=CO3)=C4C=CC=CC4=N2)=C1
 
@@ -1610,20 +1622,8 @@ Hydrochloride
 > <TPSA>
 62
 
-> <cMW>
-349.48247890958
-
 > <AFP2>
 0a000028300612088000100701902a398000000084001880a4a8400000000010
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-1678
 
 $$$$
 
@@ -1698,6 +1698,18 @@ $$$$
  30 31  1  0  0  0  0
  31 32  1  0  0  0  0
 M  END
+> <cMW>
+400.934439972633
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-176
+
 > <JC_XSMILES>
 ClC1=CC(=CC=C1OC2CCN(CC2)CC3CCCCC3)C(=O)NCCN4CCCCC4
 
@@ -1737,20 +1749,8 @@ Hydrochloride
 > <TPSA>
 44
 
-> <cMW>
-400.934439972633
-
 > <AFP2>
 820209302d0601e8009848020908c20100814806200001020625800040001100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-176
 
 $$$$
 
@@ -1821,6 +1821,18 @@ $$$$
  12 29  1  0  0  0  0
  29 30  2  0  0  0  0
 M  END
+> <cMW>
+350.899766590249
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-1791
+
 > <JC_XSMILES>
 CCOC1=CC=C2N=C(C)C=C(NC3=CC=C(OCC4=CC=CC=C4Cl)C=C3)C2=C1
 
@@ -1860,20 +1872,8 @@ Hydrochloride
 > <TPSA>
 43
 
-> <cMW>
-350.899766590249
-
 > <AFP2>
 0200c0800d9612288b100286811002010e0000000004c4002090e00000400104
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-1791
 
 $$$$
 
@@ -1911,6 +1911,18 @@ $$$$
  13 14  1  0  0  0  0
 M  CHG  1   5   1
 M  END
+> <cMW>
+313.792368587357
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-1835
+
 > <JC_XSMILES>
 C\C=C\C1=[N+](C)C2=CC=CC=C2N1C
 
@@ -1950,20 +1962,8 @@ Hydrochloride
 > <TPSA>
 8
 
-> <cMW>
-313.792368587357
-
 > <AFP2>
 008000480204120430000022000002010a980028000080003000010000050000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-1835
 
 $$$$
 
@@ -2043,6 +2043,18 @@ $$$$
  32 33  1  0  0  0  0
  33 34  2  0  0  0  0
 M  END
+> <cMW>
+376.356615492424
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-1864
+
 > <JC_XSMILES>
 NC1=NC(NCC2CCC(CC2)CNS(=O)(=O)C3=CC=CC4=CC=CC=C34)=NC5=CC=CC=C15
 
@@ -2082,20 +2094,8 @@ Hydrochloride
 > <TPSA>
 110
 
-> <cMW>
-376.356615492424
-
 > <AFP2>
 82824138100f0208a000002a0191021300004200240101002004400050002504
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-1864
 
 $$$$
 
@@ -2158,6 +2158,18 @@ $$$$
  24 25  1  0  0  0  0
  25 26  2  0  0  0  0
 M  END
+> <cMW>
+365.256475562876
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-1935
+
 > <JC_XSMILES>
 COC1=CC=CC=C1NC2=NC(NCC3CCCO3)=C4C=CC=CC4=N2
 
@@ -2197,20 +2209,8 @@ Hydrochloride
 > <TPSA>
 68
 
-> <cMW>
-365.256475562876
-
 > <AFP2>
 8202016a102612088011001710100231001010082c0098802000c00010300300
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-1935
 
 $$$$
 
@@ -2253,6 +2253,18 @@ $$$$
  14 16  1  0  0  0  0
  16 17  2  0  0  0  0
 M  END
+> <cMW>
+260.088717914513
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-1945
+
 > <JC_XSMILES>
 CC1(C)N=C(N)N=C(N)N1C2=CC=C(Br)C=C2
 
@@ -2292,20 +2304,8 @@ Hydrochloride
 > <TPSA>
 80
 
-> <cMW>
-260.088717914513
-
 > <AFP2>
 03400400204011080800b00201000201100000000008100801240000000000d4
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-1945
 
 $$$$
 
@@ -2364,6 +2364,18 @@ $$$$
   7 23  1  0  0  0  0
  23 24  2  0  0  0  0
 M  END
+> <cMW>
+285.275398865562
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2054
+
 > <JC_XSMILES>
 CN(C)C1=CC=C(NC2=C3CCCC3=NC4=CC=C(C)C=C24)C=C1
 
@@ -2403,20 +2415,8 @@ Hydrochloride
 > <TPSA>
 28
 
-> <cMW>
-285.275398865562
-
 > <AFP2>
 020340810402300080000086711002190000021000044464a2a0401000020500
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2054
 
 $$$$
 
@@ -2487,6 +2487,18 @@ $$$$
  28 29  1  0  0  0  0
  29 30  2  0  0  0  0
 M  END
+> <cMW>
+369.720507500105
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2152
+
 > <JC_XSMILES>
 OC(COC1=CC=C(Cl)C=C1)CN2C(=N)N(CCN3CCCCC3)C4=CC=CC=C24
 
@@ -2526,20 +2538,8 @@ Hydrochloride
 > <TPSA>
 66
 
-> <cMW>
-369.720507500105
-
 > <AFP2>
 1022081003141228348102020108c22108800002000040003120800040541101
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2152
 
 $$$$
 
@@ -2593,6 +2593,18 @@ $$$$
  20 21  1  0  0  0  0
  21 22  2  0  0  0  0
 M  END
+> <cMW>
+311.010432218862
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+3
+
+> <NN_nearGn>
+GNF-Pf-2170
+
 > <JC_XSMILES>
 OCCNC1=NC(NC2=CC=C(Cl)C=C2)=NC3=CC=CC=C13
 
@@ -2632,20 +2644,8 @@ Hydrochloride
 > <TPSA>
 70
 
-> <cMW>
-311.010432218862
-
 > <AFP2>
 02084028110603e8840100070010063100010000040058802100400000001000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-3
-
-> <NN_nearGn>
-GNF-Pf-2170
 
 $$$$
 
@@ -2699,6 +2699,18 @@ $$$$
  20 21  1  0  0  0  0
  21 22  2  0  0  0  0
 M  END
+> <cMW>
+307.068052101011
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-2216
+
 > <JC_XSMILES>
 OCCNC1=NC(NC2=CC=CC=C2O)=NC3=CC=CC=C13
 
@@ -2738,20 +2750,8 @@ Hydrochloride
 > <TPSA>
 90
 
-> <cMW>
-307.068052101011
-
 > <AFP2>
 02080468100603c8800020070810063940010008040098802100400000000000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-2216
 
 $$$$
 
@@ -2809,6 +2809,18 @@ $$$$
  12 23  1  0  0  0  0
  23 24  2  0  0  0  0
 M  END
+> <cMW>
+337.688181625518
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-2277
+
 > <JC_XSMILES>
 CCOC1=CC=C2N=C(C)C=C(NC3=CC=C(C=C3)N(C)C)C2=C1
 
@@ -2848,20 +2860,8 @@ Hydrochloride
 > <TPSA>
 37
 
-> <cMW>
-337.688181625518
-
 > <AFP2>
 0201c0810492100881100286211002010e0000000000c400a090c00000400400
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-2277
 
 $$$$
 
@@ -2927,6 +2927,18 @@ $$$$
  25 26  1  0  0  0  0
  26 27  2  0  0  0  0
 M  END
+> <cMW>
+298.699183647213
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2303
+
 > <JC_XSMILES>
 CN1C[C@@H](CSC2=CC=CC=N2)C=C3[C@H]1CC4=CNC5=CC=CC3=C45
 
@@ -2966,20 +2978,8 @@ Hydrochloride
 > <TPSA>
 31
 
-> <cMW>
-298.699183647213
-
 > <AFP2>
 830010002024323880200442610003a1198100340008d00000b8020350900105
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2303
 
 $$$$
 
@@ -3042,6 +3042,18 @@ $$$$
  24 25  2  0  0  0  0
   7 26  2  0  0  0  0
 M  END
+> <cMW>
+365.256475562876
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-2356
+
 > <JC_XSMILES>
 COC1=CC=CC(NC2=NC(NCC3CCCO3)=C4C=CC=CC4=N2)=C1
 
@@ -3081,20 +3093,8 @@ Hydrochloride
 > <TPSA>
 68
 
-> <cMW>
-365.256475562876
-
 > <AFP2>
 8202016a10263248801100171110023180100000240018802000c00014500120
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-2356
 
 $$$$
 
@@ -3164,6 +3164,18 @@ $$$$
  27 28  2  0  0  0  0
  28 29  1  0  0  0  0
 M  END
+> <cMW>
+402.146462460939
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2363
+
 > <JC_XSMILES>
 CC1=CC(C=C(C)N1C2=CC=C3OCOC3=C2)=C(C#N)C4=NC5=CC=CC=C5S4
 
@@ -3203,20 +3215,8 @@ Hydrochloride
 > <TPSA>
 58
 
-> <cMW>
-402.146462460939
-
 > <AFP2>
 4b44050800041200809902020132020314700010200e00618065400120100106
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2363
 
 $$$$
 
@@ -3272,6 +3272,18 @@ $$$$
  21 22  1  0  0  0  0
  22 23  2  0  0  0  0
 M  END
+> <cMW>
+325.907353371729
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2377
+
 > <JC_XSMILES>
 OC(CCNC1CCCCC1)COC2=CC=CC3=CC=CC=C23
 
@@ -3311,20 +3323,8 @@ Hydrochloride
 > <TPSA>
 41
 
-> <cMW>
-325.907353371729
-
 > <AFP2>
 8222412004040208648100020180023118015002000000022109808002000100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2377
 
 $$$$
 
@@ -3367,6 +3367,18 @@ $$$$
  14 16  1  0  0  0  0
  16 17  2  0  0  0  0
 M  END
+> <cMW>
+260.088717914513
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2380
+
 > <JC_XSMILES>
 CC1(C)N=C(N)N=C(N)N1C2=CC=C(F)C=C2
 
@@ -3406,20 +3418,8 @@ Hydrochloride
 > <TPSA>
 80
 
-> <cMW>
-260.088717914513
-
 > <AFP2>
 03400000204010010800a00201000201100020000008100801340004000000d5
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2380
 
 $$$$
 
@@ -3480,6 +3480,18 @@ $$$$
   5 24  1  0  0  0  0
  24 25  2  0  0  0  0
 M  END
+> <cMW>
+373.530195303312
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2408
+
 > <JC_XSMILES>
 BrC1=CC=C(NC2=NC(NCC3CCCO3)=C4C=CC=CC4=N2)C=C1
 
@@ -3519,20 +3531,8 @@ Hydrochloride
 > <TPSA>
 59
 
-> <cMW>
-373.530195303312
-
 > <AFP2>
 8202452a10260308801110171010023100100000240058802000400010100140
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2408
 
 $$$$
 
@@ -3622,6 +3622,18 @@ $$$$
  37 38  1  0  0  0  0
  38 39  2  0  0  0  0
 M  END
+> <cMW>
+556.411688333333
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-1145
+
 > <JC_XSMILES>
 COC1=CC=CC2=C1C(=O)C3=C(O)C4=C(CC(O)(CC4OC5CC(N)C(O)C(C)O5)C(=O)CO)C(O)=C3C2=O
 
@@ -3661,20 +3673,8 @@ Hydrochloride
 > <TPSA>
 206
 
-> <cMW>
-556.411688333333
-
 > <AFP2>
 a66200fc1404104801d858824120039920b450000040c0600106900a04a00104
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-1145
 
 $$$$
 
@@ -3733,6 +3733,18 @@ $$$$
   6 23  1  0  0  0  0
  23 24  2  0  0  0  0
 M  END
+> <cMW>
+382.168982084747
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-2511
+
 > <JC_XSMILES>
 COC1=CC=C(NC2=NC(N3CCCC3)=C4C=CC=CC4=N2)C=C1
 
@@ -3772,20 +3784,8 @@ Hydrochloride
 > <TPSA>
 50
 
-> <cMW>
-382.168982084747
-
 > <AFP2>
 1202404810569240800020060010421300000000060050002030c00040400100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-2511
 
 $$$$
 
@@ -3828,6 +3828,18 @@ $$$$
  14 16  1  0  0  0  0
  16 17  2  0  0  0  0
 M  END
+> <cMW>
+260.088717914513
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2519
+
 > <JC_XSMILES>
 CC1(C)N=C(N)N=C(N)N1C2=CC=C(Cl)C=C2
 
@@ -3867,20 +3879,8 @@ Hydrochloride
 > <TPSA>
 80
 
-> <cMW>
-260.088717914513
-
 > <AFP2>
 03400000214010200c01a00201000201100000000008100801240000000010d4
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2519
 
 $$$$
 
@@ -3957,6 +3957,18 @@ $$$$
   2 31  1  0  0  0  0
  31 32  2  0  0  0  0
 M  END
+> <cMW>
+382.517617538551
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2523
+
 > <JC_XSMILES>
 CC1(CC23CC(C(OC(=O)C4=CC=CC=C4)C5=CC=NC6=CC=CC=C56)N2CCC13)C=C
 
@@ -3996,20 +4008,8 @@ Hydrochloride
 > <TPSA>
 42
 
-> <cMW>
-382.517617538551
-
 > <AFP2>
 8140094c04051244a631609201120a91aa00c025a080002020e5c80150000180
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2523
 
 $$$$
 
@@ -4076,6 +4076,18 @@ $$$$
   7 27  1  0  0  0  0
  27 28  2  0  0  0  0
 M  END
+> <cMW>
+373.530195303312
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2586
+
 > <JC_XSMILES>
 CCOC1=CC=C(NC2=NC(NCC3=CC=CC=C3)=C4C=CC=CC4=N2)C=C1
 
@@ -4115,20 +4127,8 @@ Hydrochloride
 > <TPSA>
 59
 
-> <cMW>
-373.530195303312
-
 > <AFP2>
 020044a83416160880000007001002310c000004040058802000c00008400000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2586
 
 $$$$
 
@@ -4197,6 +4197,18 @@ $$$$
  14 28  1  0  0  0  0
  28 29  2  0  0  0  0
 M  END
+> <cMW>
+385.649931078755
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2592
+
 > <JC_XSMILES>
 CCOC(=O)C1=CC=C2N=C(C)C=C(NC3=CC=C(C=C3)N4CCCCC4)C2=C1
 
@@ -4236,20 +4248,8 @@ Hydrochloride
 > <TPSA>
 54
 
-> <cMW>
-385.649931078755
-
 > <AFP2>
 0202c88000029008911002a601124201160040020380c44420b4c00040000100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2592
 
 $$$$
 
@@ -4325,6 +4325,18 @@ $$$$
  31 32  1  0  0  0  0
  32 33  2  0  0  0  0
 M  END
+> <cMW>
+345.426810095392
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2607
+
 > <JC_XSMILES>
 CCCCCCCN(CCCCCCC)CC(O)C1=CC2=CC=CC=C2C3=CC(Br)=CC=C13
 
@@ -4364,20 +4376,8 @@ Hydrochloride
 > <TPSA>
 23
 
-> <cMW>
-345.426810095392
-
 > <AFP2>
 080d040000041b083400001a012102110d00400000000421a950000500800040
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2607
 
 $$$$
 
@@ -4423,6 +4423,18 @@ $$$$
  16 17  2  0  0  0  0
  17 18  1  0  0  0  0
 M  END
+> <cMW>
+325.332768342386
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2610
+
 > <JC_XSMILES>
 CCC1=CC2=C(NC3=CC=NC=C3)N=CN=C2S1
 
@@ -4462,20 +4474,8 @@ Hydrochloride
 > <TPSA>
 50
 
-> <cMW>
-325.332768342386
-
 > <AFP2>
 03004020200112188080202601000221054021004108000020a0400000100004
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2610
 
 $$$$
 
@@ -4522,6 +4522,18 @@ $$$$
  17 18  1  0  0  0  0
  18 19  2  0  0  0  0
 M  END
+> <cMW>
+305.069264806541
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2629
+
 > <JC_XSMILES>
 COC1=CC(NCCCC(C)N)=C2N=CC=CC2=C1
 
@@ -4561,20 +4573,8 @@ Hydrochloride
 > <TPSA>
 60
 
-> <cMW>
-305.069264806541
-
 > <AFP2>
 0380826000251048a400080611800211000b4000000684002882800002400104
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2629
 
 $$$$
 
@@ -4627,6 +4627,18 @@ $$$$
  19 21  2  0  0  0  0
  11 22  2  0  0  0  0
 M  END
+> <cMW>
+291.532174499927
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-270
+
 > <JC_XSMILES>
 NC(=N)NN=CC1=CC=CC(OCC2=CC=C(Cl)C(Cl)=C2)=C1
 
@@ -4666,20 +4678,8 @@ Hydrochloride
 > <TPSA>
 83
 
-> <cMW>
-291.532174499927
-
 > <AFP2>
 12480400099e01a82c1021022102021308000000000201400010820240400024
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-270
 
 $$$$
 
@@ -4724,6 +4724,18 @@ $$$$
   9 17  1  0  0  0  0
  17 18  2  0  0  0  0
 M  END
+> <cMW>
+296.085717694832
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2727
+
 > <JC_XSMILES>
 ClCC(=O)NC1=CC=C(CN2CCCCC2)C=C1
 
@@ -4763,20 +4775,8 @@ Hydrochloride
 > <TPSA>
 32
 
-> <cMW>
-296.085717694832
-
 > <AFP2>
 020204100050012a00100003010042010080400601004000002400004c802100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2727
 
 $$$$
 
@@ -4821,6 +4821,18 @@ $$$$
  16 17  1  0  0  0  0
  17 18  2  0  0  0  0
 M  END
+> <cMW>
+285.275398865562
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2760
+
 > <JC_XSMILES>
 CN(C)CCCNC1=CC(C)=NC2=CC=CC=C12
 
@@ -4860,20 +4872,8 @@ Hydrochloride
 > <TPSA>
 28
 
-> <cMW>
-285.275398865562
-
 > <AFP2>
 0201802a0006128880100286011002110401000000008404a080480800000000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2760
 
 $$$$
 
@@ -4937,6 +4937,18 @@ $$$$
  15 26  1  0  0  0  0
  26 27  2  0  0  0  0
 M  END
+> <cMW>
+371.216903355155
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2783
+
 > <JC_XSMILES>
 COC1=CC=C2N=C3C=C(Cl)C=CC3=C(NCCN(CCN)CCN)C2=C1
 
@@ -4976,20 +4988,8 @@ Hydrochloride
 > <TPSA>
 89
 
-> <cMW>
-371.216903355155
-
 > <AFP2>
 020900610196306cc4002083031082110103000000000440a000c00000521004
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2783
 
 $$$$
 
@@ -5056,6 +5056,18 @@ $$$$
   6 27  1  0  0  0  0
  27 28  2  0  0  0  0
 M  END
+> <cMW>
+365.256475562876
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2821
+
 > <JC_XSMILES>
 COC1=CC=C(NC2=NC(NC3=CC=C(OC)C=C3)=C4C=CC=CC4=N2)C=C1
 
@@ -5095,20 +5107,8 @@ Hydrochloride
 > <TPSA>
 68
 
-> <cMW>
-365.256475562876
-
 > <AFP2>
 0200404830561240800000070010023100000000040058002000c00000400000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2821
 
 $$$$
 
@@ -5175,6 +5175,18 @@ $$$$
  26 27  1  0  0  0  0
  26 28  2  0  0  0  0
 M  END
+> <cMW>
+390.503699062327
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-2864
+
 > <JC_XSMILES>
 OC(CN1C(=N)N(CCN2CCCC2)C3=CC=CC=C13)C4=CC=C(Cl)C(Cl)=C4
 
@@ -5214,20 +5226,8 @@ Hydrochloride
 > <TPSA>
 57
 
-> <cMW>
-390.503699062327
-
 > <AFP2>
 100308100b040228340002030108420100800100000241001120800240141181
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-2864
 
 $$$$
 
@@ -5379,6 +5379,18 @@ $$$$
  67 68  1  0  0  0  0
  68 69  2  0  0  0  0
 M  END
+> <cMW>
+630.229839838384
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2867
+
 > <JC_XSMILES>
 CC[C@@]1(O)C[C@H](O[C@@H]2CC([C@@H](O[C@@H]3C[C@@H](O)[C@@H](O[C@@H]4CCC(=O)[C@@H](C)O4)C(C)O3)[C@@H](C)O2)N(C)C)C5=C(O)C6=C(C=C5[C@H]1C(=O)OC)C(=O)C7=C(O)C=CC(O)=C7C6=O
 
@@ -5418,20 +5430,8 @@ Hydrochloride
 > <TPSA>
 237
 
-> <cMW>
-630.229839838384
-
 > <AFP2>
 826309fd2020105809f8f383092802d974b042004820c44001a4820a04400145
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2867
 
 $$$$
 
@@ -5498,6 +5498,18 @@ $$$$
   8 27  1  0  0  0  0
  27 28  2  0  0  0  0
 M  END
+> <cMW>
+400.798948687222
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-2883
+
 > <JC_XSMILES>
 COC(=O)C1=CC=C(NC2=NC(NCC3=CC=CO3)=C4C=CC=CC4=N2)C=C1
 
@@ -5537,20 +5549,8 @@ Hydrochloride
 > <TPSA>
 89
 
-> <cMW>
-400.798948687222
-
 > <AFP2>
 0a004868300612088010100701122a310000400184005880a00cc00000200010
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-2883
 
 $$$$
 
@@ -5623,6 +5623,18 @@ $$$$
  30 31  1  0  0  0  0
 M  CHG  2  26   1  27  -1
 M  END
+> <cMW>
+401.257556020555
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2946
+
 > <JC_XSMILES>
 CC1=CC=C(NC(=O)C2=CC=C(NCCCN3CCCCCC3)C(=C2)[N+]([O-])=O)C=C1F
 
@@ -5662,20 +5674,8 @@ Hydrochloride
 > <TPSA>
 87
 
-> <cMW>
-401.257556020555
-
 > <AFP2>
 024208b00042102900190006010842010881680a1204c40020a4100054803128
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2946
 
 $$$$
 
@@ -5724,6 +5724,18 @@ $$$$
  18 19  1  0  0  0  0
  18 20  1  0  0  0  0
 M  END
+> <cMW>
+345.426810095392
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-2976
+
 > <JC_XSMILES>
 CC(CC1=CC=CC=C1SC2=CC=CC=C2O)N(C)C
 
@@ -5763,20 +5775,8 @@ Hydrochloride
 > <TPSA>
 23
 
-> <cMW>
-345.426810095392
-
 > <AFP2>
 0001010000441208260820820000028940028000000000000140022112011300
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-2976
 
 $$$$
 
@@ -5850,6 +5850,18 @@ $$$$
  30 31  1  0  0  0  0
  31 32  2  0  0  0  0
 M  END
+> <cMW>
+382.168982084747
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3033
+
 > <JC_XSMILES>
 CCN(CC)CCCC(C)NC1=NC(C=CC2=CC=CC=C2OC)=NC3=CC(Cl)=CC=C13
 
@@ -5889,20 +5901,8 @@ Hydrochloride
 > <TPSA>
 50
 
-> <cMW>
-382.168982084747
-
 > <AFP2>
 4209406101041228a4020083011006314582100980080508e800c80402b11001
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3033
 
 $$$$
 
@@ -5962,6 +5962,18 @@ $$$$
  23 24  1  0  0  0  0
  24 25  2  0  0  0  0
 M  END
+> <cMW>
+383.04505558153
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3081
+
 > <JC_XSMILES>
 CCCCN1C(=N)N(CC(O)C2=CC=C(Cl)C(Cl)=C2)C3=CC=CC=C13
 
@@ -6001,20 +6013,8 @@ Hydrochloride
 > <TPSA>
 53
 
-> <cMW>
-383.04505558153
-
 > <AFP2>
 100108800b04122834000203012002010c000100400245000100800200141081
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3081
 
 $$$$
 
@@ -6074,6 +6074,18 @@ $$$$
  23 24  1  0  0  0  0
  23 25  2  0  0  0  0
 M  END
+> <cMW>
+313.044803148241
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3165
+
 > <JC_XSMILES>
 CC1(C)N=C(N)N=C(N)N1C2=CC=C(OC3=CC=C(Cl)C=C3)C(Cl)=C2
 
@@ -6113,20 +6125,8 @@ Hydrochloride
 > <TPSA>
 89
 
-> <cMW>
-313.044803148241
-
 > <AFP2>
 03400020295014200605a002090002011000080c0008100801248000004010d4
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3165
 
 $$$$
 
@@ -6182,6 +6182,18 @@ $$$$
  21 22  1  0  0  0  0
  22 23  1  0  0  0  0
 M  END
+> <cMW>
+315.198334426129
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3176
+
 > <JC_XSMILES>
 COC1=CC2=NC(NC3=CC=CC(F)=C3)=NC(N)=C2C=C1OC
 
@@ -6221,20 +6233,8 @@ Hydrochloride
 > <TPSA>
 82
 
-> <cMW>
-315.198334426129
-
 > <AFP2>
 4281007010041001800000060131031180002000240811002110c00040200004
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3176
 
 $$$$
 
@@ -6277,6 +6277,18 @@ $$$$
  15 16  1  0  0  0  0
  15 17  1  0  0  0  0
 M  END
+> <cMW>
+260.088717914513
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3179
+
 > <JC_XSMILES>
 CC1=CC=CC(=C1)N2C(N)=NC(N)=NC2(C)C
 
@@ -6316,20 +6328,8 @@ Hydrochloride
 > <TPSA>
 80
 
-> <cMW>
-260.088717914513
-
 > <AFP2>
 03480000284410000004a00201000209100000000008100805a00000000000d4
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3179
 
 $$$$
 
@@ -6398,6 +6398,18 @@ $$$$
  27 28  1  0  0  0  0
  27 29  2  0  0  0  0
 M  END
+> <cMW>
+390.503699062327
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3199
+
 > <JC_XSMILES>
 OC(CN1C(=N)N(CCN2CCCCC2)C3=CC=CC=C13)C4=CC=C(Cl)C(Cl)=C4
 
@@ -6437,20 +6449,8 @@ Hydrochloride
 > <TPSA>
 57
 
-> <cMW>
-390.503699062327
-
 > <AFP2>
 100308100b040228340002030108420100800102000241001120800240141181
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3199
 
 $$$$
 
@@ -6513,6 +6513,18 @@ $$$$
  16 25  1  0  0  0  0
  13 26  1  0  0  0  0
 M  END
+> <cMW>
+337.723375317516
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3206
+
 > <JC_XSMILES>
 CC12CN(CC3=CC=CC=C3)CC(C)(CN(CC4=CC=CC(Br)=C4)C1)C2
 
@@ -6552,20 +6564,8 @@ Hydrochloride
 > <TPSA>
 6
 
-> <cMW>
-337.723375317516
-
 > <AFP2>
 025004008014120a0000200a01000a0121800004010000000220000000804140
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3206
 
 $$$$
 
@@ -6616,6 +6616,18 @@ $$$$
  19 20  1  0  0  0  0
  20 21  2  0  0  0  0
 M  END
+> <cMW>
+323.611497413149
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3253
+
 > <JC_XSMILES>
 CC(C)N(C(C)C)C(=O)CN1C=CC(=N)C2=CC=CC=C12
 
@@ -6655,20 +6667,8 @@ Hydrochloride
 > <TPSA>
 49
 
-> <cMW>
-323.611497413149
-
 > <AFP2>
 1001000012041208943000038000021180024200006000002006028000308004
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3253
 
 $$$$
 
@@ -6728,6 +6728,18 @@ $$$$
  24 25  1  0  0  0  0
  24 26  2  0  0  0  0
 M  END
+> <cMW>
+318.444085701654
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-330
+
 > <JC_XSMILES>
 CCCCCCCCCCCCOCCCNC(=O)C1=CC=CC(N)=C1
 
@@ -6767,20 +6779,8 @@ Hydrochloride
 > <TPSA>
 64
 
-> <cMW>
-318.444085701654
-
 > <AFP2>
 020108040006104910120012016102410c414800200004002604800002000104
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-330
 
 $$$$
 
@@ -6849,6 +6849,18 @@ $$$$
  27 28  2  0  0  0  0
  28 29  1  0  0  0  0
 M  END
+> <cMW>
+361.446576110791
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3302
+
 > <JC_XSMILES>
 COC1=CC(=CC=C1OCC2=CC=CC=C2)C=C(C#N)C3=NC4=CC=CC=C4N3
 
@@ -6888,20 +6900,8 @@ Hydrochloride
 > <TPSA>
 70
 
-> <cMW>
-361.446576110791
-
 > <AFP2>
 0a4004782004122ca89210020d10033148000014030000000400c00200600084
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3302
 
 $$$$
 
@@ -6957,6 +6957,18 @@ $$$$
  21 22  2  0  0  0  0
   7 23  2  0  0  0  0
 M  END
+> <cMW>
+309.899507293873
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3383
+
 > <JC_XSMILES>
 COC1=CC=CC(NC2=NC(NCCO)=C3C=CC=CC3=N2)=C1
 
@@ -6996,20 +7008,8 @@ Hydrochloride
 > <TPSA>
 79
 
-> <cMW>
-309.899507293873
-
 > <AFP2>
 02080068100633c8800000070110063180010000040018802100c00004400020
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3383
 
 $$$$
 
@@ -7063,6 +7063,18 @@ $$$$
  12 21  1  0  0  0  0
  21 22  2  0  0  0  0
 M  END
+> <cMW>
+345.286860914332
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3397
+
 > <JC_XSMILES>
 CCOC1=CC=C2N=C(C)C=C(NC3=CC=CC(O)=C3)C2=C1
 
@@ -7102,20 +7114,8 @@ Hydrochloride
 > <TPSA>
 54
 
-> <cMW>
-345.286860914332
-
 > <AFP2>
 020080a00496100881108286011002098e000000000084402190c00000402000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3397
 
 $$$$
 
@@ -7169,6 +7169,18 @@ $$$$
  20 21  1  0  0  0  0
  21 22  2  0  0  0  0
 M  END
+> <cMW>
+307.068052101011
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3400
+
 > <JC_XSMILES>
 OCCNC1=NC(NC2=CC=CC(O)=C2)=NC3=CC=CC=C13
 
@@ -7208,20 +7220,8 @@ Hydrochloride
 > <TPSA>
 90
 
-> <cMW>
-307.068052101011
-
 > <AFP2>
 02080028100603c8800080070110063980010000040018c02100400000002000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3400
 
 $$$$
 
@@ -7294,6 +7294,18 @@ $$$$
   7 31  2  0  0  0  0
 M  CHG  2  28   1  29  -1
 M  END
+> <cMW>
+407.107223048702
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3461
+
 > <JC_XSMILES>
 COC1=CC=CC(NC(=O)C2=CC=C(NCCCC3CCCCCC3)C(=C2)[N+]([O-])=O)=C1
 
@@ -7333,20 +7345,8 @@ Hydrochloride
 > <TPSA>
 93
 
-> <cMW>
-407.107223048702
-
 > <AFP2>
 824209600046316800190006010802118801480a020084002085900014402120
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3461
 
 $$$$
 
@@ -7418,6 +7418,18 @@ $$$$
  28 31  2  0  0  0  0
 M  CHG  2  18   1  19  -1
 M  END
+> <cMW>
+455.890051798703
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3479
+
 > <JC_XSMILES>
 CCCN(CCC)CCCNC1=CC=C(C=C1[N+]([O-])=O)C(=O)NC2=CC=CC(OC)=C2
 
@@ -7457,20 +7469,8 @@ Hydrochloride
 > <TPSA>
 96
 
-> <cMW>
-455.890051798703
-
 > <AFP2>
 02410860004630e800190006030802118d01480802008400a084900014c42120
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3479
 
 $$$$
 
@@ -7539,6 +7539,18 @@ $$$$
  26 28  2  0  0  0  0
 M  CHG  1  18   1
 M  END
+> <cMW>
+363.766688124676
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3485
+
 > <JC_XSMILES>
 OC(CN1C2=CC=CC=C2C3=CC=CC=C13)C[N+]4=CC=CC5=CC=CC(O)=C45
 
@@ -7578,20 +7590,8 @@ Hydrochloride
 > <TPSA>
 49
 
-> <cMW>
-363.766688124676
-
 > <AFP2>
 000048000204060c348824021100021960c04004000000402100010001141000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3485
 
 $$$$
 
@@ -7643,6 +7643,18 @@ $$$$
  19 20  1  0  0  0  0
  20 21  2  0  0  0  0
 M  END
+> <cMW>
+311.010432218862
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+5
+
+> <NN_nearGn>
+GNF-Pf-3493
+
 > <JC_XSMILES>
 OCCNC1=NC(NC2=CC=CC=C2)=NC3=CC=CC=C13
 
@@ -7682,20 +7694,8 @@ Hydrochloride
 > <TPSA>
 70
 
-> <cMW>
-311.010432218862
-
 > <AFP2>
 02084028100603c8800000070010063180010004040018802100400000000000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-5
-
-> <NN_nearGn>
-GNF-Pf-3493
 
 $$$$
 
@@ -7756,6 +7756,18 @@ $$$$
  23 24  2  0  0  0  0
   6 25  2  0  0  0  0
 M  END
+> <cMW>
+349.48247890958
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3539
+
 > <JC_XSMILES>
 ClC1=CC=CC(NC2=NC(NCC3=CC=CO3)=C4C=CC=CC4=N2)=C1
 
@@ -7795,20 +7807,8 @@ Hydrochloride
 > <TPSA>
 62
 
-> <cMW>
-349.48247890958
-
 > <AFP2>
 0a000828310602288000108701102a318000000084001880a008400100001010
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3539
 
 $$$$
 
@@ -7853,6 +7853,18 @@ $$$$
  15 17  1  0  0  0  0
  17 18  2  0  0  0  0
 M  END
+> <cMW>
+285.275398865562
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3594
+
 > <JC_XSMILES>
 CN(C)CCNC1=CC(C)=NC2=CC=C(C)C=C12
 
@@ -7892,20 +7904,8 @@ Hydrochloride
 > <TPSA>
 28
 
-> <cMW>
-285.275398865562
-
 > <AFP2>
 020180200002100c80100286111002090281000000008404a2a0480800000000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3594
 
 $$$$
 
@@ -7946,6 +7946,18 @@ $$$$
  14 15  1  0  0  0  0
  15 16  2  0  0  0  0
 M  END
+> <cMW>
+260.088717914513
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3611
+
 > <JC_XSMILES>
 CC1(C)N=C(N)N=C(N)N1C2=CC=CC=C2
 
@@ -7985,20 +7997,8 @@ Hydrochloride
 > <TPSA>
 80
 
-> <cMW>
-260.088717914513
-
 > <AFP2>
 03400000284412000800a00201000201100000040008100801200000000000d4
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3611
 
 $$$$
 
@@ -8054,6 +8054,18 @@ $$$$
   7 22  1  0  0  0  0
  22 23  2  0  0  0  0
 M  END
+> <cMW>
+300.173254207042
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3618
+
 > <JC_XSMILES>
 CCOC1=CC=C(NC2=CC(C)=NC3=C(C)C=C(C)C=C23)C=C1
 
@@ -8093,20 +8105,8 @@ Hydrochloride
 > <TPSA>
 34
 
-> <cMW>
-300.173254207042
-
 > <AFP2>
 020040804410100883100286110002090c0900000004c0002080c00000400010
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3618
 
 $$$$
 
@@ -8171,6 +8171,18 @@ $$$$
  25 26  1  0  0  0  0
  26 27  2  0  0  0  0
 M  END
+> <cMW>
+373.530195303312
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3695
+
 > <JC_XSMILES>
 COC1=CC=CC=C1NC2=NC(NCC3=CC=CC=C3)=C4C=CC=CC4=N2
 
@@ -8210,20 +8222,8 @@ Hydrochloride
 > <TPSA>
 59
 
-> <cMW>
-373.530195303312
-
 > <AFP2>
 020004683006160880000007001002310000100c0c0098802000c00008200200
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3695
 
 $$$$
 
@@ -8287,6 +8287,18 @@ $$$$
  25 26  1  0  0  0  0
  26 27  2  0  0  0  0
 M  END
+> <cMW>
+345.426810095392
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3718
+
 > <JC_XSMILES>
 CCCCCN(CCCCC)C(O)C1=CC2=C(CCCC2)C3=CC=CC=C13
 
@@ -8326,20 +8338,8 @@ Hydrochloride
 > <TPSA>
 23
 
-> <cMW>
-345.426810095392
-
 > <AFP2>
 000308008204320864400202012002510d00020000024420a110020100000104
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3718
 
 $$$$
 
@@ -8400,6 +8400,18 @@ $$$$
  23 24  1  0  0  0  0
  24 25  2  0  0  0  0
 M  END
+> <cMW>
+362.008998539821
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3723
+
 > <JC_XSMILES>
 CN1CCN(CC1)C2=NC(NC3=CC=C(O)C=C3)=NC4=CC=CC=C24
 
@@ -8439,20 +8451,8 @@ Hydrochloride
 > <TPSA>
 64
 
-> <cMW>
-362.008998539821
-
 > <AFP2>
 12005008100692008014a0060010025b00000020040050002130400040400100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3723
 
 $$$$
 
@@ -8521,6 +8521,18 @@ $$$$
   5 28  1  0  0  0  0
  28 29  2  0  0  0  0
 M  END
+> <cMW>
+383.04505558153
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-3760
+
 > <JC_XSMILES>
 CC1=CC=C(CN2C(=N)N(CC(O)C3=CC=C(Cl)C(Cl)=C3)C4=CC=CC=C24)C=C1
 
@@ -8560,20 +8572,8 @@ Hydrochloride
 > <TPSA>
 53
 
-> <cMW>
-383.04505558153
-
 > <AFP2>
 100104000b041328341002030100020900000100000241004380800200145081
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-3760
 
 $$$$
 
@@ -8620,6 +8620,18 @@ $$$$
  16 17  2  0  0  0  0
  17 18  1  0  0  0  0
 M  END
+> <cMW>
+345.426810095392
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3768
+
 > <JC_XSMILES>
 O[C@]1(CN2CCC1CC2)C3=CC4=CC=CC=C4S3
 
@@ -8659,20 +8671,8 @@ Hydrochloride
 > <TPSA>
 23
 
-> <cMW>
-345.426810095392
-
 > <AFP2>
 8250010001140201300000020100020305204001000800018120049041000124
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3768
 
 $$$$
 
@@ -8741,6 +8741,18 @@ $$$$
  26 28  1  0  0  0  0
  28 29  2  0  0  0  0
 M  END
+> <cMW>
+404.51478336338
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3823
+
 > <JC_XSMILES>
 COC1=CC=CC=C1C(N2CCN(C)CC2)C3=NN=NN3CC4=CC=C(F)C=C4
 
@@ -8780,20 +8792,8 @@ Hydrochloride
 > <TPSA>
 59
 
-> <cMW>
-404.51478336338
-
 > <AFP2>
 004414601004131dd41400020000021100007040000109100030800dd020c301
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3823
 
 $$$$
 
@@ -8848,6 +8848,18 @@ $$$$
   7 22  1  0  0  0  0
  22 23  2  0  0  0  0
 M  END
+> <cMW>
+367.430301336062
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-3839
+
 > <JC_XSMILES>
 NC(=N)C1=CC=C(OCCCOC2=CC=C(C=C2)C(N)=N)C=C1
 
@@ -8887,20 +8899,8 @@ Hydrochloride
 > <TPSA>
 118
 
-> <cMW>
-367.430301336062
-
 > <AFP2>
 100008002010000800100002004202210800004000000f002000800010400004
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-3839
 
 $$$$
 
@@ -8962,6 +8962,18 @@ $$$$
  24 25  1  0  0  0  0
  25 26  1  0  0  0  0
 M  END
+> <cMW>
+371.003229125134
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-4000
+
 > <JC_XSMILES>
 CCOC(=O)C1=CN=C2C=CC(C)=CC2=C1NCCCN3CCOCC3
 
@@ -9001,20 +9013,8 @@ Hydrochloride
 > <TPSA>
 63
 
-> <cMW>
-371.003229125134
-
 > <AFP2>
 020000a10480904884100022151a02090c9340403010045022a5800060001122
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-4000
 
 $$$$
 
@@ -9075,6 +9075,18 @@ $$$$
   5 24  1  0  0  0  0
  24 25  2  0  0  0  0
 M  END
+> <cMW>
+349.48247890958
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-4012
+
 > <JC_XSMILES>
 FC1=CC=C(NC2=NC(NCC3=CC=CO3)=C4C=CC=CC4=N2)C=C1
 
@@ -9114,20 +9126,8 @@ Hydrochloride
 > <TPSA>
 62
 
-> <cMW>
-349.48247890958
-
 > <AFP2>
 0a004028300602098000100700102a310000200084005880a018400400000011
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-4012
 
 $$$$
 
@@ -9184,6 +9184,18 @@ $$$$
  21 22  1  0  0  0  0
  22 23  1  0  0  0  0
 M  END
+> <cMW>
+341.113706790631
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-4076
+
 > <JC_XSMILES>
 ClC1=CC=C2N(CC3=CC=CC=C3)C(=NC2=C1)N4CCNCC4
 
@@ -9223,20 +9235,8 @@ Hydrochloride
 > <TPSA>
 33
 
-> <cMW>
-341.113706790631
-
 > <AFP2>
 0208040003040228941804820110828900000004000091004030408060105300
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-4076
 
 $$$$
 
@@ -9292,6 +9292,18 @@ $$$$
  21 22  1  0  0  0  0
  22 23  1  0  0  0  0
 M  END
+> <cMW>
+315.198334426129
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-4102
+
 > <JC_XSMILES>
 COC1=CC2=NC(NC3=CC=C(F)C=C3)=NC(N)=C2C=C1OC
 
@@ -9331,20 +9343,8 @@ Hydrochloride
 > <TPSA>
 82
 
-> <cMW>
-315.198334426129
-
 > <AFP2>
 4201407010001001800000060131031100002000240050002110c00440200005
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-4102
 
 $$$$
 
@@ -9398,6 +9398,18 @@ $$$$
  20 21  1  0  0  0  0
  21 22  2  0  0  0  0
 M  END
+> <cMW>
+311.010432218862
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+3
+
+> <NN_nearGn>
+GNF-Pf-4111
+
 > <JC_XSMILES>
 OCCNC1=NC(NC2=CC=C(F)C=C2)=NC3=CC=CC=C13
 
@@ -9437,20 +9449,8 @@ Hydrochloride
 > <TPSA>
 70
 
-> <cMW>
-311.010432218862
-
 > <AFP2>
 02084028100603c9800000070010063100012000040058802110400400000001
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-3
-
-> <NN_nearGn>
-GNF-Pf-4111
 
 $$$$
 
@@ -9513,6 +9513,18 @@ $$$$
  24 25  2  0  0  0  0
   7 26  2  0  0  0  0
 M  END
+> <cMW>
+349.48247890958
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+3
+
+> <NN_nearGn>
+GNF-Pf-412
+
 > <JC_XSMILES>
 CC1=CC=C(C)C(NC2=NC(NCC3=CC=CO3)=C4C=CC=CC4=N2)=C1
 
@@ -9552,20 +9564,8 @@ Hydrochloride
 > <TPSA>
 62
 
-> <cMW>
-349.48247890958
-
 > <AFP2>
 0a000028302612088000100701102a390001000884049880a2a8400040000010
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-3
-
-> <NN_nearGn>
-GNF-Pf-412
 
 $$$$
 
@@ -9628,6 +9628,18 @@ $$$$
   6 25  1  0  0  0  0
  25 26  2  0  0  0  0
 M  END
+> <cMW>
+369.029706773365
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-415
+
 > <JC_XSMILES>
 COC1=CC=C(NC2=NC(NCC3=CC=CO3)=C4C=CC=CC4=N2)C=C1
 
@@ -9667,20 +9679,8 @@ Hydrochloride
 > <TPSA>
 72
 
-> <cMW>
-369.029706773365
-
 > <AFP2>
 0a004068305612488000100700102a310000000084005880a008c00000400010
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-415
 
 $$$$
 
@@ -9732,6 +9732,18 @@ $$$$
  11 20  1  0  0  0  0
  20 21  2  0  0  0  0
 M  END
+> <cMW>
+345.286860914332
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-4202
+
 > <JC_XSMILES>
 COC1=CC=C2N=C(C)C=C(NC3=CC=CC(O)=C3)C2=C1
 
@@ -9771,20 +9783,8 @@ Hydrochloride
 > <TPSA>
 54
 
-> <cMW>
-345.286860914332
-
 > <AFP2>
 0200806000963048811082860110021982000000000084402180c00000402000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-4202
 
 $$$$
 
@@ -9835,6 +9835,18 @@ $$$$
  19 20  1  0  0  0  0
  20 21  2  0  0  0  0
 M  END
+> <cMW>
+323.611497413149
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-4223
+
 > <JC_XSMILES>
 CCCN(CCC)C(=O)CN1C=CC(=N)C2=CC=CC=C12
 
@@ -9874,20 +9886,8 @@ Hydrochloride
 > <TPSA>
 49
 
-> <cMW>
-323.611497413149
-
 > <AFP2>
 100101001204120890320003000002118e00420000200000a006008000340002
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-4223
 
 $$$$
 
@@ -9954,6 +9954,18 @@ $$$$
  26 27  1  0  0  0  0
  26 28  2  0  0  0  0
 M  END
+> <cMW>
+383.04505558153
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-4240
+
 > <JC_XSMILES>
 OC(CN1C(=N)N(CC2=CC=CC=C2)C3=CC=CC=C13)C4=CC=C(Cl)C(Cl)=C4
 
@@ -9993,20 +10005,8 @@ Hydrochloride
 > <TPSA>
 53
 
-> <cMW>
-383.04505558153
-
 > <AFP2>
 120104000b040228341002030100020100000104000241000100800200145081
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-4240
 
 $$$$
 
@@ -10070,6 +10070,18 @@ $$$$
  24 25  1  0  0  0  0
  25 26  1  0  0  0  0
 M  END
+> <cMW>
+327.245112965531
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-429
+
 > <JC_XSMILES>
 C1CCN(CC1)CC2=CC=C(C=C2)C3=CC4=CC=CC=C4C5=NCCN35
 
@@ -10109,20 +10121,8 @@ Hydrochloride
 > <TPSA>
 18
 
-> <cMW>
-327.245112965531
-
 > <AFP2>
 020a45130005030a10000c0241104201009000020100c000812080a240800144
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-429
 
 $$$$
 
@@ -10190,6 +10190,18 @@ $$$$
  27 28  1  0  0  0  0
  28 29  1  0  0  0  0
 M  END
+> <cMW>
+341.113706790631
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-4293
+
 > <JC_XSMILES>
 COC1=CC=C(CCNC2(CC(C)N(C)CC2C)CC3=CC=CC=C3)C=C1OC
 
@@ -10229,20 +10241,8 @@ Hydrochloride
 > <TPSA>
 33
 
-> <cMW>
-341.113706790631
-
 > <AFP2>
 8242956020041308884040020948031510090004000081400420800002a80100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-4293
 
 $$$$
 
@@ -10300,6 +10300,18 @@ $$$$
  22 23  1  0  0  0  0
  23 24  2  0  0  0  0
 M  END
+> <cMW>
+383.04505558153
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-4298
+
 > <JC_XSMILES>
 CCCCN1C(=N)N(CC(O)C2=CC=C(Br)C=C2)C3=CC=CC=C13
 
@@ -10339,20 +10351,8 @@ Hydrochloride
 > <TPSA>
 53
 
-> <cMW>
-383.04505558153
-
 > <AFP2>
 10010c800204130834001203012002010c0200004002440001008000001410c1
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-4298
 
 $$$$
 
@@ -10417,6 +10417,18 @@ $$$$
  25 26  2  0  0  0  0
   7 27  2  0  0  0  0
 M  END
+> <cMW>
+363.766688124676
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-4301
+
 > <JC_XSMILES>
 CC1=CC=C(C)C(NC2=NC(NCC3=CC=CC=C3)=C4C=CC=CC4=N2)=C1
 
@@ -10456,20 +10468,8 @@ Hydrochloride
 > <TPSA>
 49
 
-> <cMW>
-363.766688124676
-
 > <AFP2>
 020004283026160880000007011002390001000c0404988022a0400048000000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-4301
 
 $$$$
 
@@ -10542,6 +10542,18 @@ $$$$
  30 31  1  0  0  0  0
  25 32  2  0  0  0  0
 M  END
+> <cMW>
+381.639129968675
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-4303
+
 > <JC_XSMILES>
 CCN(CC)CC1=CC(=CC(CC=C)=C1O)C2=CC(CC=C)=C(O)C(CN(CC)CC)=C2
 
@@ -10581,20 +10593,8 @@ Hydrochloride
 > <TPSA>
 46
 
-> <cMW>
-381.639129968675
-
 > <AFP2>
 1001000210001058220008001100020905a00001000003000108080100100000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-4303
 
 $$$$
 
@@ -10661,6 +10661,18 @@ $$$$
  26 27  1  0  0  0  0
  27 28  1  0  0  0  0
 M  END
+> <cMW>
+444.650933841658
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-4309
+
 > <JC_XSMILES>
 CCCC(N1CCN(CC1)C(=O)C2=CC=CO2)C3=NN=NN3C4CCCCC4
 
@@ -10700,20 +10712,8 @@ Hydrochloride
 > <TPSA>
 80
 
-> <cMW>
-444.650933841658
-
 > <AFP2>
 880e054004c41018d410200200102a013d10630200010082002d088042008380
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-4309
 
 $$$$
 
@@ -10801,6 +10801,18 @@ $$$$
  36 37  2  0  0  0  0
 M  CHG  2   1  -1   2   1
 M  END
+> <cMW>
+476.428761382298
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-433
+
 > <JC_XSMILES>
 [O-][N+](=O)C1=CC=C(C=C1)N2CCN(CC2)C3=NC(NCCC4=CNC5=CC=CC=C45)=C6C=CC=CC6=N3
 
@@ -10840,20 +10852,8 @@ Hydrochloride
 > <TPSA>
 103
 
-> <cMW>
-476.428761382298
-
 > <AFP2>
 42400028010683289249008322104275101100200100a0842034500254002108
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-433
 
 $$$$
 
@@ -10914,6 +10914,18 @@ $$$$
   5 24  1  0  0  0  0
  24 25  2  0  0  0  0
 M  END
+> <cMW>
+349.48247890958
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+3
+
+> <NN_nearGn>
+GNF-Pf-4331
+
 > <JC_XSMILES>
 ClC1=CC=C(NC2=NC(NCC3=CC=CO3)=C4C=CC=CC4=N2)C=C1
 
@@ -10953,20 +10965,8 @@ Hydrochloride
 > <TPSA>
 62
 
-> <cMW>
-349.48247890958
-
 > <AFP2>
 0a004028310602288401100700102a310000000084005880a008400000001010
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-3
-
-> <NN_nearGn>
-GNF-Pf-4331
 
 $$$$
 
@@ -11044,6 +11044,18 @@ $$$$
  31 32  1  0  0  0  0
  32 33  2  0  0  0  0
 M  END
+> <cMW>
+408.362355864979
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-4339
+
 > <JC_XSMILES>
 COC1=CC=C(C=C1)C(=O)O[C@H](C2CC3CCN2CC3C=C)C4=CC=NC5=CC=CC=C45
 
@@ -11083,20 +11095,8 @@ Hydrochloride
 > <TPSA>
 51
 
-> <cMW>
-408.362355864979
-
 > <AFP2>
 81008d4824541240a699801200120a910405c0218080002021e4a80151400100
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-4339
 
 $$$$
 
@@ -11152,6 +11152,18 @@ $$$$
  12 22  1  0  0  0  0
  22 23  2  0  0  0  0
 M  END
+> <cMW>
+350.899766590249
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-437
+
 > <JC_XSMILES>
 CCOC1=CC=C2N=C(C)C=C(NC3=CC=C(OC)C=C3)C2=C1
 
@@ -11191,20 +11203,8 @@ Hydrochloride
 > <TPSA>
 43
 
-> <cMW>
-350.899766590249
-
 > <AFP2>
 0200c0c004d2104881100286011002110e0000000000c4002090c00000400000
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-437
 
 $$$$
 
@@ -11270,6 +11270,18 @@ $$$$
  26 27  1  0  0  0  0
  27 28  2  0  0  0  0
 M  END
+> <cMW>
+383.04505558153
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+2
+
+> <NN_nearGn>
+GNF-Pf-4436
+
 > <JC_XSMILES>
 CCCCCCCN1C(=N)N(CC(O)C2=CC=C(Cl)C(Cl)=C2)C3=CC=CC=C13
 
@@ -11309,20 +11321,8 @@ Hydrochloride
 > <TPSA>
 53
 
-> <cMW>
-383.04505558153
-
 > <AFP2>
 100108800b04122834000213012002010c000100000245002100a00200141081
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-2
-
-> <NN_nearGn>
-GNF-Pf-4436
 
 $$$$
 
@@ -11367,6 +11367,18 @@ $$$$
  16 17  1  0  0  0  0
  16 18  1  0  0  0  0
 M  END
+> <cMW>
+313.044803148241
+
+> <NN_nearTc>
+1.0000
+
+> <NN_Tc75NN>
+1
+
+> <NN_nearGn>
+GNF-Pf-4467
+
 > <JC_XSMILES>
 COC1=CC=CC(=C1)N2C(N)=NC(N)=NC2(C)C
 
@@ -11406,19 +11418,7 @@ Hydrochloride
 > <TPSA>
 89
 
-> <cMW>
-313.044803148241
-
 > <AFP2>
 03400040284430400004a00201000211100000000008100801208000004000f4
-
-> <NN_nearTc>
-1.0000
-
-> <NN_Tc75NN>
-1
-
-> <NN_nearGn>
-GNF-Pf-4467
 
 $$$$

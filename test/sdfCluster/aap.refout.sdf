@@ -72,10 +72,10 @@ Hydrochloride
 > <TPSA>
 8
 
-> <clusterIdx>
+> <centroidIdx>
 0
 
-> <centroidIdx>
+> <clusterIdx>
 0
 
 > <NNSim>
@@ -159,10 +159,10 @@ Hydrochloride
 > <TPSA>
 80
 
-> <clusterIdx>
+> <centroidIdx>
 1
 
-> <centroidIdx>
+> <clusterIdx>
 1
 
 > <NNSim>
@@ -682,10 +682,10 @@ Hydrochloride
 > <TPSA>
 28
 
-> <clusterIdx>
+> <centroidIdx>
 2
 
-> <centroidIdx>
+> <clusterIdx>
 2
 
 > <NNSim>
@@ -952,10 +952,10 @@ Hydrochloride
 > <TPSA>
 50
 
-> <clusterIdx>
+> <centroidIdx>
 3
 
-> <centroidIdx>
+> <clusterIdx>
 3
 
 > <NNSim>
@@ -1045,10 +1045,10 @@ Hydrochloride
 > <TPSA>
 60
 
-> <clusterIdx>
+> <centroidIdx>
 4
 
-> <centroidIdx>
+> <clusterIdx>
 4
 
 > <NNSim>
@@ -1138,10 +1138,10 @@ Hydrochloride
 > <TPSA>
 23
 
-> <clusterIdx>
+> <centroidIdx>
 5
 
-> <centroidIdx>
+> <clusterIdx>
 5
 
 > <NNSim>
@@ -1229,10 +1229,10 @@ Hydrochloride
 > <TPSA>
 32
 
-> <clusterIdx>
+> <centroidIdx>
 6
 
-> <centroidIdx>
+> <clusterIdx>
 6
 
 > <NNSim>
@@ -1330,10 +1330,10 @@ Hydrochloride
 > <TPSA>
 36
 
-> <clusterIdx>
+> <centroidIdx>
 7
 
-> <centroidIdx>
+> <clusterIdx>
 7
 
 > <NNSim>
@@ -1428,10 +1428,10 @@ Hydrochloride
 > <TPSA>
 70
 
-> <clusterIdx>
+> <centroidIdx>
 8
 
-> <centroidIdx>
+> <clusterIdx>
 8
 
 > <NNSim>
@@ -3785,10 +3785,10 @@ Hydrochloride
 > <TPSA>
 54
 
-> <clusterIdx>
+> <centroidIdx>
 9
 
-> <centroidIdx>
+> <clusterIdx>
 9
 
 > <NNSim>
@@ -4393,10 +4393,10 @@ Hydrochloride
 > <TPSA>
 60
 
-> <clusterIdx>
+> <centroidIdx>
 10
 
-> <centroidIdx>
+> <clusterIdx>
 10
 
 > <NNSim>
@@ -4490,10 +4490,10 @@ Hydrochloride
 > <TPSA>
 60
 
-> <clusterIdx>
+> <centroidIdx>
 11
 
-> <centroidIdx>
+> <clusterIdx>
 11
 
 > <NNSim>
@@ -4587,10 +4587,10 @@ Hydrochloride
 > <TPSA>
 49
 
-> <clusterIdx>
+> <centroidIdx>
 12
 
-> <centroidIdx>
+> <clusterIdx>
 12
 
 > <NNSim>
@@ -4776,10 +4776,10 @@ Hydrochloride
 > <TPSA>
 23
 
-> <clusterIdx>
+> <centroidIdx>
 13
 
-> <centroidIdx>
+> <clusterIdx>
 13
 
 > <NNSim>
@@ -4874,10 +4874,10 @@ Hydrochloride
 > <TPSA>
 115
 
-> <clusterIdx>
+> <centroidIdx>
 14
 
-> <centroidIdx>
+> <clusterIdx>
 14
 
 > <NNSim>
@@ -5070,10 +5070,10 @@ Hydrochloride
 > <TPSA>
 118
 
-> <clusterIdx>
+> <centroidIdx>
 15
 
-> <centroidIdx>
+> <clusterIdx>
 15
 
 > <NNSim>
@@ -5172,10 +5172,10 @@ Hydrochloride
 > <TPSA>
 41
 
-> <clusterIdx>
+> <centroidIdx>
 16
 
-> <centroidIdx>
+> <clusterIdx>
 16
 
 > <NNSim>
@@ -5277,10 +5277,10 @@ Hydrochloride
 > <TPSA>
 28
 
-> <clusterIdx>
+> <centroidIdx>
 17
 
-> <centroidIdx>
+> <clusterIdx>
 17
 
 > <NNSim>
@@ -5488,10 +5488,10 @@ Hydrochloride
 > <TPSA>
 75
 
-> <clusterIdx>
+> <centroidIdx>
 18
 
-> <centroidIdx>
+> <clusterIdx>
 18
 
 > <NNSim>
@@ -5591,10 +5591,10 @@ Hydrochloride
 > <TPSA>
 33
 
-> <clusterIdx>
+> <centroidIdx>
 19
 
-> <centroidIdx>
+> <clusterIdx>
 19
 
 > <NNSim>
@@ -5690,10 +5690,10 @@ Hydrochloride
 > <TPSA>
 83
 
-> <clusterIdx>
+> <centroidIdx>
 20
 
-> <centroidIdx>
+> <clusterIdx>
 20
 
 > <NNSim>
@@ -5800,10 +5800,10 @@ Hydrochloride
 > <TPSA>
 18
 
-> <clusterIdx>
+> <centroidIdx>
 21
 
-> <centroidIdx>
+> <clusterIdx>
 21
 
 > <NNSim>
@@ -5912,10 +5912,10 @@ Hydrochloride
 > <TPSA>
 31
 
-> <clusterIdx>
+> <centroidIdx>
 22
 
-> <centroidIdx>
+> <clusterIdx>
 22
 
 > <NNSim>
@@ -6020,10 +6020,10 @@ Hydrochloride
 > <TPSA>
 63
 
-> <clusterIdx>
+> <centroidIdx>
 23
 
-> <centroidIdx>
+> <clusterIdx>
 23
 
 > <NNSim>
@@ -6126,10 +6126,10 @@ Hydrochloride
 > <TPSA>
 64
 
-> <clusterIdx>
+> <centroidIdx>
 24
 
-> <centroidIdx>
+> <clusterIdx>
 24
 
 > <NNSim>
@@ -6236,10 +6236,10 @@ Hydrochloride
 > <TPSA>
 23
 
-> <clusterIdx>
+> <centroidIdx>
 25
 
-> <centroidIdx>
+> <clusterIdx>
 25
 
 > <NNSim>
@@ -6351,10 +6351,10 @@ Hydrochloride
 > <TPSA>
 49
 
-> <clusterIdx>
+> <centroidIdx>
 26
 
-> <centroidIdx>
+> <clusterIdx>
 26
 
 > <NNSim>
@@ -6464,10 +6464,10 @@ Hydrochloride
 > <TPSA>
 68
 
-> <clusterIdx>
+> <centroidIdx>
 27
 
-> <centroidIdx>
+> <clusterIdx>
 27
 
 > <NNSim>
@@ -6894,10 +6894,10 @@ Hydrochloride
 > <TPSA>
 89
 
-> <clusterIdx>
+> <centroidIdx>
 28
 
-> <centroidIdx>
+> <clusterIdx>
 28
 
 > <NNSim>
@@ -7000,10 +7000,10 @@ Hydrochloride
 > <TPSA>
 53
 
-> <clusterIdx>
+> <centroidIdx>
 29
 
-> <centroidIdx>
+> <clusterIdx>
 29
 
 > <NNSim>
@@ -7769,10 +7769,10 @@ Hydrochloride
 > <TPSA>
 70
 
-> <clusterIdx>
+> <centroidIdx>
 30
 
-> <centroidIdx>
+> <clusterIdx>
 30
 
 > <NNSim>
@@ -7882,10 +7882,10 @@ Hydrochloride
 > <TPSA>
 80
 
-> <clusterIdx>
+> <centroidIdx>
 31
 
-> <centroidIdx>
+> <clusterIdx>
 31
 
 > <NNSim>
@@ -7992,10 +7992,10 @@ Hydrochloride
 > <TPSA>
 89
 
-> <clusterIdx>
+> <centroidIdx>
 32
 
-> <centroidIdx>
+> <clusterIdx>
 32
 
 > <NNSim>
@@ -8107,10 +8107,10 @@ Hydrochloride
 > <TPSA>
 59
 
-> <clusterIdx>
+> <centroidIdx>
 33
 
-> <centroidIdx>
+> <clusterIdx>
 33
 
 > <NNSim>
@@ -8221,10 +8221,10 @@ Hydrochloride
 > <TPSA>
 33
 
-> <clusterIdx>
+> <centroidIdx>
 34
 
-> <centroidIdx>
+> <clusterIdx>
 34
 
 > <NNSim>
@@ -8337,10 +8337,10 @@ Hydrochloride
 > <TPSA>
 58
 
-> <clusterIdx>
+> <centroidIdx>
 35
 
-> <centroidIdx>
+> <clusterIdx>
 35
 
 > <NNSim>
@@ -8446,10 +8446,10 @@ Hydrochloride
 > <TPSA>
 6
 
-> <clusterIdx>
+> <centroidIdx>
 36
 
-> <centroidIdx>
+> <clusterIdx>
 36
 
 > <NNSim>
@@ -8569,10 +8569,10 @@ Hydrochloride
 > <TPSA>
 42
 
-> <clusterIdx>
+> <centroidIdx>
 37
 
-> <centroidIdx>
+> <clusterIdx>
 37
 
 > <NNSim>
@@ -8809,10 +8809,10 @@ Hydrochloride
 > <TPSA>
 93
 
-> <clusterIdx>
+> <centroidIdx>
 38
 
-> <centroidIdx>
+> <clusterIdx>
 38
 
 > <NNSim>
@@ -9157,10 +9157,10 @@ Hydrochloride
 > <TPSA>
 66
 
-> <clusterIdx>
+> <centroidIdx>
 39
 
-> <centroidIdx>
+> <clusterIdx>
 39
 
 > <NNSim>
@@ -9276,10 +9276,10 @@ Hydrochloride
 > <TPSA>
 46
 
-> <clusterIdx>
+> <centroidIdx>
 40
 
-> <centroidIdx>
+> <clusterIdx>
 40
 
 > <NNSim>
@@ -9396,10 +9396,10 @@ Hydrochloride
 > <TPSA>
 50
 
-> <clusterIdx>
+> <centroidIdx>
 41
 
-> <centroidIdx>
+> <clusterIdx>
 41
 
 > <NNSim>
@@ -9517,10 +9517,10 @@ Hydrochloride
 > <TPSA>
 44
 
-> <clusterIdx>
+> <centroidIdx>
 42
 
-> <centroidIdx>
+> <clusterIdx>
 42
 
 > <NNSim>
@@ -9643,10 +9643,10 @@ Hydrochloride
 > <TPSA>
 110
 
-> <clusterIdx>
+> <centroidIdx>
 43
 
-> <centroidIdx>
+> <clusterIdx>
 43
 
 > <NNSim>
@@ -9779,10 +9779,10 @@ Hydrochloride
 > <TPSA>
 52
 
-> <clusterIdx>
+> <centroidIdx>
 44
 
-> <centroidIdx>
+> <clusterIdx>
 44
 
 > <NNSim>
@@ -9913,10 +9913,10 @@ Hydrochloride
 > <TPSA>
 103
 
-> <clusterIdx>
+> <centroidIdx>
 45
 
-> <centroidIdx>
+> <clusterIdx>
 45
 
 > <NNSim>
@@ -10035,10 +10035,10 @@ Hydrochloride
 > <TPSA>
 23
 
-> <clusterIdx>
+> <centroidIdx>
 46
 
-> <centroidIdx>
+> <clusterIdx>
 46
 
 > <NNSim>
@@ -10181,10 +10181,10 @@ Hydrochloride
 > <TPSA>
 206
 
-> <clusterIdx>
+> <centroidIdx>
 47
 
-> <centroidIdx>
+> <clusterIdx>
 47
 
 > <NNSim>
@@ -10659,10 +10659,10 @@ Hydrochloride
 > <TPSA>
 72
 
-> <clusterIdx>
+> <centroidIdx>
 48
 
-> <centroidIdx>
+> <clusterIdx>
 48
 
 > <NNSim>

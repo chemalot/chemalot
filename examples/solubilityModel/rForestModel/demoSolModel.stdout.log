@@ -1,0 +1,179 @@
+ 
+Model name: demoSolModel
+Location: ./rForestModel
+randomForest 4.6-12
+Type rfNews() to see new features/changes/bug fixes.
+
+R square (out-of-bag): 0.39
+RMS error (out-of-bag): 0.7644 
+
+Call:
+ randomForest(x = x, y = y, nodesize = 5, importance = TRUE) 
+               Type of random forest: regression
+                     Number of trees: 500
+No. of variables tried at each split: 52
+
+          Mean of squared residuals: 0.5842423
+                    % Var explained: 38.38
+
+Size of training set: 1329
+Number of descriptors: 156 
+
+                 %IncMSE IncNodePurity
+ALogP_GNE          32.10         66.90
+ALogP_GCount_001    7.44          6.92
+ALogP_GCount_002   14.73         22.22
+ALogP_GCount_003    7.05          3.13
+ALogP_GCount_004    4.51          2.51
+ALogP_GCount_005    6.56          6.91
+ALogP_GCount_006   10.05         10.44
+ALogP_GCount_007    0.77          0.21
+ALogP_GCount_008    7.29          6.67
+ALogP_GCount_009   -1.00          0.05
+ALogP_GCount_011    4.63          1.35
+ALogP_GCount_012    1.38          0.08
+ALogP_GCount_013    2.41          0.61
+ALogP_GCount_014    0.55          0.17
+ALogP_GCount_015   -0.26          0.15
+ALogP_GCount_016    1.27          1.54
+ALogP_GCount_017    5.16          2.01
+ALogP_GCount_018    0.00          0.03
+ALogP_GCount_019    1.91          0.35
+ALogP_GCount_022    4.07          1.90
+ALogP_GCount_023    0.00          0.03
+ALogP_GCount_024   12.97         18.86
+ALogP_GCount_025    9.92         11.29
+ALogP_GCount_026   13.40         18.17
+ALogP_GCount_027    8.63          7.61
+ALogP_GCount_028    7.13          5.52
+ALogP_GCount_029    5.53          4.75
+ALogP_GCount_030    3.31          1.76
+ALogP_GCount_031    4.71          1.89
+ALogP_GCount_032    4.21          1.91
+ALogP_GCount_033    3.28          2.01
+ALogP_GCount_034    6.84          5.29
+ALogP_GCount_035    4.81          3.62
+ALogP_GCount_036   -1.09          0.02
+ALogP_GCount_037    0.00          0.02
+ALogP_GCount_038    8.13          4.92
+ALogP_GCount_039    2.90          1.62
+ALogP_GCount_040    8.48          6.47
+ALogP_GCount_042    2.83          1.43
+ALogP_GCount_043    4.68          2.88
+ALogP_GCount_044    2.87          2.42
+ALogP_GCount_046    7.40          8.39
+ALogP_GCount_047   18.51         39.29
+ALogP_GCount_048    3.50          2.53
+ALogP_GCount_049    7.38          8.94
+ALogP_GCount_050    9.61         10.74
+ALogP_GCount_051    6.96          5.90
+ALogP_GCount_052   13.73         17.20
+ALogP_GCount_053    9.36          5.95
+ALogP_GCount_054    2.10          0.41
+ALogP_GCount_056    5.97          2.93
+ALogP_GCount_057   13.44         13.73
+ALogP_GCount_058    7.18          5.79
+ALogP_GCount_059    8.37          5.96
+ALogP_GCount_060    8.44          7.44
+ALogP_GCount_061    1.11          0.36
+ALogP_GCount_066    4.85          1.67
+ALogP_GCount_067    7.12          4.41
+ALogP_GCount_068    8.10          7.51
+ALogP_GCount_069    3.31          1.46
+ALogP_GCount_070    4.53          5.29
+ALogP_GCount_071    7.38          4.17
+ALogP_GCount_072    4.06          2.59
+ALogP_GCount_073    7.70          4.51
+ALogP_GCount_074    1.40          1.19
+ALogP_GCount_075    6.68          8.12
+ALogP_GCount_076    0.82          0.29
+ALogP_GCount_079    0.00          0.00
+ALogP_GCount_081    1.12          0.65
+ALogP_GCount_082    1.38          0.06
+ALogP_GCount_083    2.79          0.93
+ALogP_GCount_084    3.37          2.12
+ALogP_GCount_085    1.57          0.20
+ALogP_GCount_086    0.00          0.01
+ALogP_GCount_087    0.00          0.01
+ALogP_GCount_089    4.12          3.25
+ALogP_GCount_090    2.17          1.06
+ALogP_GCount_094    0.72          0.36
+ALogP_GCount_095   -1.26          0.51
+ALogP_GCount_099    0.00          0.02
+ALogP_GCount_106    0.00          0.01
+ALogP_GCount_107    4.23          2.92
+ALogP_GCount_108    0.00          0.02
+ALogP_GCount_110    3.43          1.16
+ES_Count_07         9.53          9.12
+ES_Count_08         1.44          0.17
+ES_Count_09        12.71         18.23
+ES_Count_10         5.06          3.23
+ES_Count_11        -0.38          1.27
+ES_Count_12        14.63         24.55
+ES_Count_13         7.73          8.15
+ES_Count_15         0.99          0.89
+ES_Count_16         8.21          6.90
+ES_Count_17        20.29         37.90
+ES_Count_18        10.05         11.60
+ES_Count_19         5.42          2.35
+ES_Count_21         4.76          2.36
+ES_Count_23         1.25          0.13
+ES_Count_24         6.03          4.83
+ES_Count_25         3.01          1.89
+ES_Count_26         2.58          0.69
+ES_Count_28         0.38          0.80
+ES_Count_29         6.65          6.99
+ES_Count_30         8.73          4.26
+ES_Count_31         1.65          0.34
+ES_Count_32         4.71          2.98
+ES_Count_34        11.84         12.96
+ES_Count_35         9.12          5.83
+ES_Count_36        10.50         14.35
+ES_Count_37         3.66          1.92
+ES_Count_38         3.89          3.24
+ES_Count_48         0.00          0.02
+ES_Count_49         0.00          0.01
+ES_Count_50         0.36          0.94
+ES_Count_51         4.15          2.21
+ES_Count_52         0.00          0.02
+ES_Count_53         3.51          1.85
+ES_Count_54         4.54          2.96
+ES_Count_70        -0.20          0.69
+ES_Count_75         0.00          0.01
+ES_Sum_07          17.63         31.98
+ES_Sum_08          -0.05          0.09
+ES_Sum_09          23.52         54.44
+ES_Sum_10           6.06          3.92
+ES_Sum_11           3.28          2.50
+ES_Sum_12          19.21         43.46
+ES_Sum_13          16.73         29.04
+ES_Sum_15           7.09          3.80
+ES_Sum_16          26.72         61.42
+ES_Sum_17          18.07         39.45
+ES_Sum_18          15.34         35.27
+ES_Sum_19           7.54          7.77
+ES_Sum_21          12.01         12.71
+ES_Sum_23           0.88          0.62
+ES_Sum_24          13.68         28.31
+ES_Sum_25           5.30          8.45
+ES_Sum_26           5.12          1.36
+ES_Sum_28          -0.25          1.66
+ES_Sum_29          17.44         43.21
+ES_Sum_30          18.59         24.57
+ES_Sum_31           0.80          0.54
+ES_Sum_32          11.84         15.06
+ES_Sum_34          14.48         24.30
+ES_Sum_35          18.47         35.89
+ES_Sum_36          20.72         39.77
+ES_Sum_37           6.92          6.12
+ES_Sum_38           7.19         10.24
+ES_Sum_48           0.00          0.03
+ES_Sum_49           0.00          0.02
+ES_Sum_50           2.86          3.08
+ES_Sum_51           6.47          7.71
+ES_Sum_52           0.00          0.07
+ES_Sum_53           5.34          9.04
+ES_Sum_54           5.84         11.57
+ES_Sum_70          -1.98          1.75
+ES_Sum_75           0.00          0.01
+[1] "R version 3.3.2 (2016-10-31)"

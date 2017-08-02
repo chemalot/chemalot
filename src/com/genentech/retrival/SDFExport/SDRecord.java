@@ -23,13 +23,17 @@ public class SDRecord {
    private final StringBuilder data;
    private final String mol;
    private static final Pattern NLEndPat = Pattern.compile("[\r\n]+$");
+   private static final Pattern REMOVEDollars = Pattern.compile("\\s+\\$\\$\\$\\$\\s*$");
+
    static final String NEWLINE = "\r\n";  // windows stile for now unix: "\n"
-   
+
    public SDRecord(String mol, String data) {
       // normalize newline characters to unix mode
       mol  = mol.replace("\r\n", "\n").replace("\n\r", "\n");
       data = data.replace("\r\n", "\n").replace("\n\r", "\n");
-      
+
+      mol = REMOVEDollars.matcher(mol).replaceAll("");
+
       //normalize newline characters to windows.
       mol = mol.replace("\n", NEWLINE);
       data = data.replace("\n", NEWLINE);
@@ -51,7 +55,7 @@ public class SDRecord {
       if( value != null && value.length() > 0 )
          data.append(NEWLINE);
    }
-   
+
    /**
     * Get molfile.
     */
@@ -62,6 +66,7 @@ public class SDRecord {
    /**
     * sdf record without terminating "\n".
     */
+   @Override
    public String toString() {
       return mol+data+"$$$$";
    }

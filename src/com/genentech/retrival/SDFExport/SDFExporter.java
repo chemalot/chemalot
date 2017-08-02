@@ -289,11 +289,16 @@ public class SDFExporter
                }else
                {  Record molRec = molSel.next();
                   molStrOrID = molRec.getStrg(0);
+                  if( molStrOrID.length() == 0 ) molStrOrID = EMPTY_MOLFILE;
                }
             }
 
             if ("SMILES".equals(molType))
-               molStrOrID = smiTalk.smi2Mol(molStrOrID);
+            {  if(molStrOrID.length() == 0)
+                  molStrOrID = EMPTY_MOLFILE;
+               else
+                  molStrOrID = smiTalk.smi2Mol(molStrOrID);
+            }
          }
 
          if (removeSalt)

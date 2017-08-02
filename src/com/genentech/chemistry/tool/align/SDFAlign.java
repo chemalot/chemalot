@@ -47,7 +47,7 @@ public class SDFAlign
       opt = new Option("method", true, "fss|sss|MCS|clique (default mcs).");
       options.addOption(opt);
 
-      opt = new Option("ref", true, "reference molecule if not given first in file is used. If multiple ref molecules are read the min RMSD is reported");
+      opt = new Option("ref", true, "reference molecule (if not given first molecule in '-in' is used). If multiple ref molecules are read the min RMSD is reported.");
       options.addOption(opt);
 
       opt = new Option("mirror", false, "If given and the molecule is not chiral, return best mirror image.");

@@ -26,7 +26,7 @@ import openeye.oechem.OEGraphMol;
 
 public class groupIdx  implements AggInterface
 {  public static final String DESCRIPTION
-         = "outName = groupIdx(): returns of each group defiend by the groupby.\n";
+         = "outName = groupIdx(): returns index of each group defiend by the groupby in order of input.\n";
 
    private final String outTag;
 

@@ -43,6 +43,7 @@ public class SdfRMSDSphereExclusion
    private static final String OPT_MIRROR  = "mirror";
    private static final String OPT_GROUPBY = "groupBy";
    private static final String OPT_DONotOpt= "doNotOptimize";
+   private static final String OPT_MAXDEVIATION = "useMaxDeviation";
 
    private final oemolothread outputOEThread;
    private final double radius;
@@ -52,16 +53,19 @@ public class SdfRMSDSphereExclusion
    private final boolean doMirror;
    private final String  groupByTag;
    private final boolean doOptimize;
-
+   private final boolean useMaxDeviation;
 
    private SdfRMSDSphereExclusion(String refFile, String outFile, double radius,
-               boolean printAll, boolean doMirror, boolean doOptimize, String groupBy)
+               boolean printAll, boolean doMirror, boolean doOptimize, boolean useMaxDeviation, String groupBy)
    {
       this.radius = radius;
       this.printAll = printAll;
       this.doMirror = doMirror;
       this.groupByTag = groupBy;
       this.doOptimize = doOptimize;
+      this.useMaxDeviation = useMaxDeviation;
+
+
 
       if( refFile != null && groupBy != null)
          throw new Error("groupBy and refFile may not be used together!");
@@ -114,16 +118,34 @@ public class SdfRMSDSphereExclusion
             createMirror(mirMol);
          }
 
+
+
+         // loop over already selected centroids and  check if mol is inside sphere
          for(int i=selected.size()-1; i>=0; i--)
-         {  double rmsd = oechem.OERMSD(mol, selected.get(i), true, true, doOptimize);
+         {
+            OEMolBase currentMol = selected.get(i);
+
+            double rmsd;
+            if (! useMaxDeviation)
+               rmsd = oechem.OERMSD(mol, currentMol, true, true, doOptimize);
+            else
+               rmsd = computeMaxDeviation(mol, currentMol);
+
+
             if( rmsd < 0D ) System.err.println("OERMSD returned -1 are you comparing two different structures?");
 
             if( mirMol != null )
-            {  double mirRmsd = oechem.OERMSD(mirMol, selected.get(i), true, true, doOptimize);
+            {
+               double mirRmsd;
+               if (!useMaxDeviation)
+                  mirRmsd = oechem.OERMSD(mirMol, currentMol, true, true, doOptimize);
+               else
+                  mirRmsd = computeMaxDeviation(mirMol, currentMol);
+
                if( mirRmsd < rmsd ) rmsd = mirRmsd;
             }
 
-            if( rmsd < radius )
+            if( rmsd < radius ) // mol is inside sphere
             {  if( printAll )
                {  oechem.OESetSDData(mol, "sphereIdx", Integer.toString(i) );
                   oechem.OESetSDData(mol, "centroidRMSD", DataFormat.formatNumber(rmsd, "si3") );
@@ -132,6 +154,7 @@ public class SdfRMSDSphereExclusion
                continue inLoop;
             }
 
+            // mol is not inside sphere make it a new cnetorid
             if( rmsd < minRMSD ) minRMSD = rmsd;
          }
 
@@ -168,6 +191,94 @@ public class SdfRMSDSphereExclusion
       }
       it.delete();
       return false;
+   }
+
+
+   public double computeMaxDeviation(OEMolBase mol1, OEMolBase mol2)
+   {  // make deepcopies of mol1 and mol2
+      OEMolBase m1 = new OEGraphMol(mol1);
+      OEMolBase m2 = new OEGraphMol(mol2);
+
+      double rmat[] = new double[9];
+      double trans[] = new double[3];
+
+      @SuppressWarnings("unused")
+      double rmsd = oechem.OERMSD(m1, m2, true, true, doOptimize, rmat, trans);
+      oechem.OERotate(m2, rmat);
+      oechem.OETranslate(m2, trans);
+
+      hideCHydrogens(m1);  // suppress C-H hydrogens
+      hideCHydrogens(m2);
+      m1.Sweep();  // collect garbage otherwise it would be buggy.
+      m2.Sweep();
+
+      double coords1[] = new double[m1.NumAtoms() * 3];
+      double coords2[] = new double[m2.NumAtoms() * 3];
+      m1.GetCoords(coords1);
+      m2.GetCoords(coords2);
+
+      double maxDev = 0.0;
+      double matchPairMaxDev, xDev, yDev, zDev;
+      double minMatchPairRMSD;
+      double matchPairRMSD;
+      int Idx1, Idx2;
+
+      OEQMol qMol1 = new OEQMol(m1);
+      qMol1.BuildExpressions(OEExprOpts.DefaultAtoms, OEExprOpts.DefaultBonds);
+      OESubSearch newSearch = new OESubSearch(qMol1);
+      oechem.OEPrepareSearch(m2, newSearch);
+      OEMatchBaseIter matchIter = newSearch.Match(m2);
+
+      while (matchIter.hasNext())   // loop over matching searches
+      {  OEMatchBase pair = matchIter.next();
+         OEMatchPairAtomIter iter = pair.GetAtoms();
+         // for every pair:
+         matchPairRMSD   = 0.0;
+         matchPairMaxDev = 0.0;
+         minMatchPairRMSD = Double.MAX_VALUE;
+         while (iter.hasNext())    // loop over matching atom-pair
+         {  // pattern is original; target is the arg taken from OESubSearch.Match(arg)
+            OEMatchPairAtom atomPair = iter.next();
+            Idx1 = atomPair.getPattern().GetIdx(); // from mol1
+            Idx2 = atomPair.getTarget().GetIdx();  // from mol2
+            xDev = Math.abs(coords1[Idx1*3]  -coords2[Idx2*3]);
+            yDev = Math.abs(coords1[Idx1*3+1]-coords2[Idx2*3+1]);
+            zDev = Math.abs(coords1[Idx1*3+2]-coords2[Idx2*3+2]);
+            double atomDev = Math.pow(xDev, 2) + Math.pow(yDev, 2) + Math.pow(zDev, 2);
+            matchPairRMSD += atomDev;
+            double atomDistance = Math.sqrt(atomDev);
+            if( atomDistance > matchPairMaxDev )
+            {  matchPairMaxDev = atomDistance;  }
+         }
+         matchPairRMSD = matchPairRMSD / m1.NumAtoms();  // divided by num of atoms
+         matchPairRMSD = Math.sqrt(matchPairRMSD);                // take square root; now we have real RMSD
+
+         if (matchPairRMSD < minMatchPairRMSD)
+         {  minMatchPairRMSD = matchPairRMSD;
+            maxDev = matchPairMaxDev;
+         }
+         iter.delete();  // destructor
+      }
+
+      // calling destructors
+      matchIter.delete();
+      newSearch.delete();
+      qMol1.delete();
+      m1.delete();
+      m2.delete();
+
+      return maxDev;
+   }
+
+
+   private static void hideCHydrogens(OEMolBase m1)
+   {
+      OEAtomBaseIter atIt = m1.GetAtoms();
+      while(atIt.hasNext())
+      {  OEAtomBase at = atIt.next();
+         if( at.GetAtomicNum() == 6 ) oechem.OESuppressHydrogens(at);
+      }
+      atIt.delete();
    }
 
 
@@ -233,10 +344,13 @@ public class SdfRMSDSphereExclusion
       opt = new Option(OPT_DONotOpt, false, "If specified the RMSD is computed without trying to optimize the alignment.");
       options.addOption(opt);
 
-      opt = new Option(OPT_PRINT_All,false, "print all molecule, check includeIdx tag");
+      opt = new Option(OPT_PRINT_All, false, "print all molecule, check includeIdx tag");
       options.addOption(opt);
 
-      opt = new Option(OPT_MIRROR,false, "For non-chiral molecules also try mirror image");
+      opt = new Option(OPT_MIRROR, false, "For non-chiral molecules also try mirror image");
+      options.addOption(opt);
+
+      opt = new Option(OPT_MAXDEVIATION, false, "Using Max Deviation Method");
       options.addOption(opt);
 
       CommandLineParser parser = new PosixParser();
@@ -265,10 +379,11 @@ public class SdfRMSDSphereExclusion
       double radius = Double.parseDouble(cmd.getOptionValue(OPT_RADIUS));
       boolean printAll = cmd.hasOption(OPT_PRINT_All);
       boolean doMirror = cmd.hasOption(OPT_MIRROR);
+      boolean useMaxDeviation = cmd.hasOption(OPT_MAXDEVIATION);
 
 
       SdfRMSDSphereExclusion sphereExclusion = new SdfRMSDSphereExclusion(
-               refFile, outFile, radius, printAll, doMirror, doOptimize, groupBy);
+               refFile, outFile, radius, printAll, doMirror, doOptimize, useMaxDeviation, groupBy);
 
       sphereExclusion.run(inFile);
       sphereExclusion.close();

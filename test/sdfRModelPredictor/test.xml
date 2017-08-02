@@ -10,7 +10,8 @@
   ; \
   sdfRModelPredictor.pl -in ../inputFiles/100.sdf -out .sdf \
       -modelLocation ./out -modelName test \
-      -NNSimAbove 0.75 -NNFieldPrefix NN
+      -NNSimAbove 0.75 -NNFieldPrefix NN \
+  | sdfTagTool.csh -in .sdf -out .sdf -reorder 'cMW|NN_nearTc|NN_Tc75NN|NN_nearGn' 
   <diff ref="100.refout.sdf"/>
 </test>
 

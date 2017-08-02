@@ -1,7 +1,7 @@
 sdfEnumerator.csh -out outFile [-hydrogenExplicit] [-correctValences] [-regenerate2D] [-reactAllSites] [-maxAtoms n] [-randomFraction 0.n] smirks pos1Reagent1 pos2Reagent2 ....
   pos1Reagent<n> are either file names (of any oe type) or smiles and provide the list
      of reagent(s) to be used in the <n>th position.
-     Note: These fiels are read into memory. If they are very large sdfEnumerator might run out of memory.
+     Note: These files are read into memory. If they are very large sdfEnumerator might run out of memory.
            Consider breaking up the files or using sdfMultiplexer to do so.
   Smirks can be a filename containing a smirks or a string containing a smirks 
   Smirks can alternatively be a scaffold definition containing [U+n] for the rgroups

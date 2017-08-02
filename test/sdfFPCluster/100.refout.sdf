@@ -75,10 +75,10 @@ Hydrochloride
 > <AFP2>
 008000480204120430000022000002010a980028000080003000010000050000
 
-> <clusterIdx>
+> <centroidIdx>
 0
 
-> <centroidIdx>
+> <clusterIdx>
 0
 
 > <NNSim>
@@ -165,10 +165,10 @@ Hydrochloride
 > <AFP2>
 03400000284412000800a00201000201100000040008100801200000000000d4
 
-> <clusterIdx>
+> <centroidIdx>
 1
 
-> <centroidIdx>
+> <clusterIdx>
 1
 
 > <NNSim>
@@ -706,10 +706,10 @@ Hydrochloride
 > <AFP2>
 0201802a0006128880100286011002110401000000008404a080480800000000
 
-> <clusterIdx>
+> <centroidIdx>
 2
 
-> <centroidIdx>
+> <clusterIdx>
 2
 
 > <NNSim>
@@ -985,10 +985,10 @@ Hydrochloride
 > <AFP2>
 03004020200112188080202601000221054021004108000020a0400000100004
 
-> <clusterIdx>
+> <centroidIdx>
 3
 
-> <centroidIdx>
+> <clusterIdx>
 3
 
 > <NNSim>
@@ -1081,10 +1081,10 @@ Hydrochloride
 > <AFP2>
 0380826000251048a400080611800211000b4000000684002882800002400104
 
-> <clusterIdx>
+> <centroidIdx>
 4
 
-> <centroidIdx>
+> <clusterIdx>
 4
 
 > <NNSim>
@@ -1177,10 +1177,10 @@ Hydrochloride
 > <AFP2>
 8250010001140201300000020100020305204001000800018120049041000124
 
-> <clusterIdx>
+> <centroidIdx>
 5
 
-> <centroidIdx>
+> <clusterIdx>
 5
 
 > <NNSim>
@@ -1271,10 +1271,10 @@ Hydrochloride
 > <AFP2>
 020204100050012a00100003010042010080400601004000002400004c802100
 
-> <clusterIdx>
+> <centroidIdx>
 6
 
-> <centroidIdx>
+> <clusterIdx>
 6
 
 > <NNSim>
@@ -1375,10 +1375,10 @@ Hydrochloride
 > <AFP2>
 02000080200402240608010240100711010000210820a0002804000204000040
 
-> <clusterIdx>
+> <centroidIdx>
 7
 
-> <centroidIdx>
+> <clusterIdx>
 7
 
 > <NNSim>
@@ -1476,10 +1476,10 @@ Hydrochloride
 > <AFP2>
 02084028100603c8800000070010063180010004040018802100400000000000
 
-> <clusterIdx>
+> <centroidIdx>
 8
 
-> <centroidIdx>
+> <clusterIdx>
 8
 
 > <NNSim>
@@ -1979,10 +1979,10 @@ Hydrochloride
 > <AFP2>
 0200806000963048811082860110021982000000000084402180c00000402000
 
-> <clusterIdx>
+> <centroidIdx>
 9
 
-> <centroidIdx>
+> <clusterIdx>
 9
 
 > <NNSim>
@@ -2180,10 +2180,10 @@ Hydrochloride
 > <AFP2>
 0209040100440be8000000020110023100090000206000102100000200040040
 
-> <clusterIdx>
+> <centroidIdx>
 10
 
-> <centroidIdx>
+> <clusterIdx>
 10
 
 > <NNSim>
@@ -2280,10 +2280,10 @@ Hydrochloride
 > <AFP2>
 030200600a401000a01000220900033101004114000000100404800000b10000
 
-> <clusterIdx>
+> <centroidIdx>
 11
 
-> <centroidIdx>
+> <clusterIdx>
 11
 
 > <NNSim>
@@ -2380,10 +2380,10 @@ Hydrochloride
 > <AFP2>
 1001000012041208943000038000021180024200006000002006028000308004
 
-> <clusterIdx>
+> <centroidIdx>
 12
 
-> <centroidIdx>
+> <clusterIdx>
 12
 
 > <NNSim>
@@ -2575,10 +2575,10 @@ Hydrochloride
 > <AFP2>
 0001010000441208260820820000028940028000000000000140022112011300
 
-> <clusterIdx>
+> <centroidIdx>
 13
 
-> <centroidIdx>
+> <clusterIdx>
 13
 
 > <NNSim>
@@ -2681,10 +2681,10 @@ Hydrochloride
 > <AFP2>
 12024008100682008000a0060010421b00000020060050002130400040400100
 
-> <clusterIdx>
+> <centroidIdx>
 14
 
-> <centroidIdx>
+> <clusterIdx>
 14
 
 > <NNSim>
@@ -2998,10 +2998,10 @@ Hydrochloride
 > <AFP2>
 020040804410100883100286110002090c0900000004c0002080c00000400010
 
-> <clusterIdx>
+> <centroidIdx>
 15
 
-> <centroidIdx>
+> <clusterIdx>
 15
 
 > <NNSim>
@@ -3099,10 +3099,10 @@ Hydrochloride
 > <AFP2>
 0082000000120000c40000020911420130200002600024002124400060000114
 
-> <clusterIdx>
+> <centroidIdx>
 16
 
-> <centroidIdx>
+> <clusterIdx>
 16
 
 > <NNSim>
@@ -3301,10 +3301,10 @@ Hydrochloride
 > <AFP2>
 100008002010000800100002004202210800004000000f002000800010400004
 
-> <clusterIdx>
+> <centroidIdx>
 17
 
-> <centroidIdx>
+> <clusterIdx>
 17
 
 > <NNSim>
@@ -3406,10 +3406,10 @@ Hydrochloride
 > <AFP2>
 8222412004040208648100020180023118015002000000022109808002000100
 
-> <clusterIdx>
+> <centroidIdx>
 18
 
-> <centroidIdx>
+> <clusterIdx>
 18
 
 > <NNSim>
@@ -3511,10 +3511,10 @@ Hydrochloride
 > <AFP2>
 4281007010041001800000060131031180002000240811002110c00040200004
 
-> <clusterIdx>
+> <centroidIdx>
 19
 
-> <centroidIdx>
+> <clusterIdx>
 19
 
 > <NNSim>
@@ -3721,10 +3721,10 @@ Hydrochloride
 > <AFP2>
 020340810402300080000086711002190000021000044464a2a0401000020500
 
-> <clusterIdx>
+> <centroidIdx>
 20
 
-> <centroidIdx>
+> <clusterIdx>
 20
 
 > <NNSim>
@@ -3828,10 +3828,10 @@ Hydrochloride
 > <AFP2>
 0201c0810492100881100286211002010e0000000000c400a090c00000400400
 
-> <clusterIdx>
+> <centroidIdx>
 21
 
-> <centroidIdx>
+> <clusterIdx>
 21
 
 > <NNSim>
@@ -4149,10 +4149,10 @@ Hydrochloride
 > <AFP2>
 0600400000c01000c41210301a82001500024300104b00200424200040000104
 
-> <clusterIdx>
+> <centroidIdx>
 22
 
-> <centroidIdx>
+> <clusterIdx>
 22
 
 > <NNSim>
@@ -4255,10 +4255,10 @@ Hydrochloride
 > <AFP2>
 0208040003040228941804820110828900000004000091004030408060105300
 
-> <clusterIdx>
+> <centroidIdx>
 23
 
-> <centroidIdx>
+> <clusterIdx>
 23
 
 > <NNSim>
@@ -4365,10 +4365,10 @@ Hydrochloride
 > <AFP2>
 0a000028300612088000100701902a398000000084001880a4a8400000000010
 
-> <clusterIdx>
+> <centroidIdx>
 24
 
-> <centroidIdx>
+> <clusterIdx>
 24
 
 > <NNSim>
@@ -5010,10 +5010,10 @@ Hydrochloride
 > <AFP2>
 12480400099e01a82c1021022102021308000000000201400010820240400024
 
-> <clusterIdx>
+> <centroidIdx>
 25
 
-> <centroidIdx>
+> <clusterIdx>
 25
 
 > <NNSim>
@@ -5122,10 +5122,10 @@ Hydrochloride
 > <AFP2>
 020004683006060880002007081002394000000c040098802100400008000000
 
-> <clusterIdx>
+> <centroidIdx>
 26
 
-> <centroidIdx>
+> <clusterIdx>
 26
 
 > <NNSim>
@@ -5666,10 +5666,10 @@ Hydrochloride
 > <AFP2>
 020a45130005030a10000c0241104201009000020100c000812080a240800144
 
-> <clusterIdx>
+> <centroidIdx>
 27
 
-> <centroidIdx>
+> <clusterIdx>
 27
 
 > <NNSim>
@@ -5781,10 +5781,10 @@ Hydrochloride
 > <AFP2>
 830010002024323880200442610003a1198100340008d00000b8020350900105
 
-> <clusterIdx>
+> <centroidIdx>
 28
 
-> <centroidIdx>
+> <clusterIdx>
 28
 
 > <NNSim>
@@ -5893,10 +5893,10 @@ Hydrochloride
 > <AFP2>
 8202016a102612088011001710100231001010082c0098802000c00010300300
 
-> <clusterIdx>
+> <centroidIdx>
 29
 
-> <centroidIdx>
+> <clusterIdx>
 29
 
 > <NNSim>
@@ -6220,10 +6220,10 @@ Hydrochloride
 > <AFP2>
 020000a10480904884100022151a02090c9340403010045022a5800060001122
 
-> <clusterIdx>
+> <centroidIdx>
 30
 
-> <centroidIdx>
+> <clusterIdx>
 30
 
 > <NNSim>
@@ -6329,10 +6329,10 @@ Hydrochloride
 > <AFP2>
 020108040006104910120012016102410c414800200004002604800002000104
 
-> <clusterIdx>
+> <centroidIdx>
 31
 
-> <centroidIdx>
+> <clusterIdx>
 31
 
 > <NNSim>
@@ -6442,10 +6442,10 @@ Hydrochloride
 > <AFP2>
 000308008204320864400202012002510d00020000024420a110020100000104
 
-> <clusterIdx>
+> <centroidIdx>
 32
 
-> <centroidIdx>
+> <clusterIdx>
 32
 
 > <NNSim>
@@ -6560,10 +6560,10 @@ Hydrochloride
 > <AFP2>
 000048000204060c348824021100021960c04004000000402100010001141000
 
-> <clusterIdx>
+> <centroidIdx>
 33
 
-> <centroidIdx>
+> <clusterIdx>
 33
 
 > <NNSim>
@@ -6676,10 +6676,10 @@ Hydrochloride
 > <AFP2>
 0200404830561240800000070010023100000000040058002000c00000400000
 
-> <clusterIdx>
+> <centroidIdx>
 34
 
-> <centroidIdx>
+> <clusterIdx>
 34
 
 > <NNSim>
@@ -7007,10 +7007,10 @@ Hydrochloride
 > <AFP2>
 03400020295014200605a002090002011000080c0008100801248000004010d4
 
-> <clusterIdx>
+> <centroidIdx>
 35
 
-> <centroidIdx>
+> <clusterIdx>
 35
 
 > <NNSim>
@@ -7116,10 +7116,10 @@ Hydrochloride
 > <AFP2>
 100108800b04122834000203012002010c000100400245000100800200141081
 
-> <clusterIdx>
+> <centroidIdx>
 36
 
-> <centroidIdx>
+> <clusterIdx>
 36
 
 > <NNSim>
@@ -7791,10 +7791,10 @@ Hydrochloride
 > <AFP2>
 0a4004782004122ca89210020d10033148000014030000000400c00200600084
 
-> <clusterIdx>
+> <centroidIdx>
 37
 
-> <centroidIdx>
+> <clusterIdx>
 37
 
 > <NNSim>
@@ -7907,10 +7907,10 @@ Hydrochloride
 > <AFP2>
 880e054004c41018d410200200102a013d10630200010082002d088042008380
 
-> <clusterIdx>
+> <centroidIdx>
 38
 
-> <centroidIdx>
+> <clusterIdx>
 38
 
 > <NNSim>
@@ -8020,10 +8020,10 @@ Hydrochloride
 > <AFP2>
 020900610196306cc4002083031082110103000000000440a000c00000521004
 
-> <clusterIdx>
+> <centroidIdx>
 39
 
-> <centroidIdx>
+> <clusterIdx>
 39
 
 > <NNSim>
@@ -8138,10 +8138,10 @@ Hydrochloride
 > <AFP2>
 0202c88000029008911002a601124201160040020380c44420b4c00040000100
 
-> <clusterIdx>
+> <centroidIdx>
 40
 
-> <centroidIdx>
+> <clusterIdx>
 40
 
 > <NNSim>
@@ -8256,10 +8256,10 @@ Hydrochloride
 > <AFP2>
 004414601004131dd41400020000021100007040000109100030800dd020c301
 
-> <clusterIdx>
+> <centroidIdx>
 41
 
-> <centroidIdx>
+> <clusterIdx>
 41
 
 > <NNSim>
@@ -8373,10 +8373,10 @@ Hydrochloride
 > <AFP2>
 8242956020041308884040020948031510090004000081400420800002a80100
 
-> <clusterIdx>
+> <centroidIdx>
 42
 
-> <centroidIdx>
+> <clusterIdx>
 42
 
 > <NNSim>
@@ -8492,10 +8492,10 @@ Hydrochloride
 > <AFP2>
 4b44050800041200809902020132020314700010200e00618065400120100106
 
-> <clusterIdx>
+> <centroidIdx>
 43
 
-> <centroidIdx>
+> <clusterIdx>
 43
 
 > <NNSim>
@@ -8604,10 +8604,10 @@ Hydrochloride
 > <AFP2>
 025004008014120a0000200a01000a0121800004010000000220000000804140
 
-> <clusterIdx>
+> <centroidIdx>
 44
 
-> <centroidIdx>
+> <clusterIdx>
 44
 
 > <NNSim>
@@ -8730,10 +8730,10 @@ Hydrochloride
 > <AFP2>
 8140094c04051244a631609201120a91aa00c025a080002020e5c80150000180
 
-> <clusterIdx>
+> <centroidIdx>
 45
 
-> <centroidIdx>
+> <clusterIdx>
 45
 
 > <NNSim>
@@ -8852,10 +8852,10 @@ Hydrochloride
 > <AFP2>
 824209600046316800190006010802118801480a020084002085900014402120
 
-> <clusterIdx>
+> <centroidIdx>
 46
 
-> <centroidIdx>
+> <clusterIdx>
 46
 
 > <NNSim>
@@ -9092,10 +9092,10 @@ Hydrochloride
 > <AFP2>
 024208b00042102900190006010842010881680a1204c40020a4100054803128
 
-> <clusterIdx>
+> <centroidIdx>
 47
 
-> <centroidIdx>
+> <clusterIdx>
 47
 
 > <NNSim>
@@ -9219,10 +9219,10 @@ Hydrochloride
 > <AFP2>
 81008d4824541240a699801200120a910405c0218080002021e4a80151400100
 
-> <clusterIdx>
+> <centroidIdx>
 48
 
-> <centroidIdx>
+> <clusterIdx>
 48
 
 > <NNSim>
@@ -9339,10 +9339,10 @@ Hydrochloride
 > <AFP2>
 1022081003141228348102020108c22108800002000040003120800040541101
 
-> <clusterIdx>
+> <centroidIdx>
 49
 
-> <centroidIdx>
+> <clusterIdx>
 49
 
 > <NNSim>
@@ -9576,10 +9576,10 @@ Hydrochloride
 > <AFP2>
 1001000210001058220008001100020905a00001000003000108080100100000
 
-> <clusterIdx>
+> <centroidIdx>
 50
 
-> <centroidIdx>
+> <clusterIdx>
 50
 
 > <NNSim>
@@ -9699,10 +9699,10 @@ Hydrochloride
 > <AFP2>
 4209406101041228a4020083011006314582100980080508e800c80402b11001
 
-> <clusterIdx>
+> <centroidIdx>
 51
 
-> <centroidIdx>
+> <clusterIdx>
 51
 
 > <NNSim>
@@ -9823,10 +9823,10 @@ Hydrochloride
 > <AFP2>
 820209302d0601e8009848020908c20100814806200001020625800040001100
 
-> <clusterIdx>
+> <centroidIdx>
 52
 
-> <centroidIdx>
+> <clusterIdx>
 52
 
 > <NNSim>
@@ -9952,10 +9952,10 @@ Hydrochloride
 > <AFP2>
 82824138100f0208a000002a0191021300004200240101002004400050002504
 
-> <clusterIdx>
+> <centroidIdx>
 53
 
-> <centroidIdx>
+> <clusterIdx>
 53
 
 > <NNSim>
@@ -10091,10 +10091,10 @@ Hydrochloride
 > <AFP2>
 800100603000100910a8500009800391458003000000e0204060888440210540
 
-> <clusterIdx>
+> <centroidIdx>
 54
 
-> <centroidIdx>
+> <clusterIdx>
 54
 
 > <NNSim>
@@ -10228,10 +10228,10 @@ Hydrochloride
 > <AFP2>
 42400028010683289249008322104275101100200100a0842034500254002108
 
-> <clusterIdx>
+> <centroidIdx>
 55
 
-> <centroidIdx>
+> <clusterIdx>
 55
 
 > <NNSim>
@@ -10353,10 +10353,10 @@ Hydrochloride
 > <AFP2>
 080d040000041b083400001a012102110d00400000000421a950000500800040
 
-> <clusterIdx>
+> <centroidIdx>
 56
 
-> <centroidIdx>
+> <clusterIdx>
 56
 
 > <NNSim>
@@ -10502,10 +10502,10 @@ Hydrochloride
 > <AFP2>
 a66200fc1404104801d858824120039920b450000040c0600106900a04a00104
 
-> <clusterIdx>
+> <centroidIdx>
 57
 
-> <centroidIdx>
+> <clusterIdx>
 57
 
 > <NNSim>
@@ -10791,10 +10791,10 @@ Hydrochloride
 > <AFP2>
 9001106011087c400020582209000319f41313220080c0000120c82954a08100
 
-> <clusterIdx>
+> <centroidIdx>
 58
 
-> <centroidIdx>
+> <clusterIdx>
 58
 
 > <NNSim>
@@ -10992,10 +10992,10 @@ Hydrochloride
 > <AFP2>
 826309fd2020105809f8f383092802d974b042004820c44001a4820a04400145
 
-> <clusterIdx>
+> <centroidIdx>
 59
 
-> <centroidIdx>
+> <clusterIdx>
 59
 
 > <NNSim>

@@ -51,18 +51,18 @@ M  END
 1
 
 > <r_mmod_RMS_Derivative-OPLS-2005>
-0.0213198978453875
+0.0213198997080326
 
-> <MinMethod>
-MACROMODEL_OPLS_2005_VACUUM
+> <Program>
+MACROMODEL
 
 > <ForceField>
 OPLS_2005
 
+> <MinMethod>
+MACROMODEL_OPLS_2005_VACUUM
+
 > <Solvent>
 VACUUM
-
-> <Program>
-MACROMODEL
 
 $$$$

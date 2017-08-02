@@ -157,7 +157,10 @@ public class sdf2DAlign
             System.err.printf("%s matched %s with %frmsd\n",
                      OETools.molToCanSmi(mol,true),ss.GetPattern().GetTitle(), aRes.GetRMSD());
          aRes.delete();
-         if( matches ) return;
+         if( matches )
+         {  oechem.OEMDLPerceiveBondStereo(mol); // requirted to fix stereochemsitry bug that should be solved in June 2017
+            return;
+         }
       }
       //did not find any substructure matches if code gets here
       if( debug )

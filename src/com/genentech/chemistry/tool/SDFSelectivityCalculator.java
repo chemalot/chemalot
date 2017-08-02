@@ -239,6 +239,13 @@ public class SDFSelectivityCalculator
    {  float  numerator;
       float  denominator;
       
+      if( numeratorInput == null || numeratorInput.length() == 0  || 
+          denominatorInput == null || denominatorInput.length() == 0 )
+      {  selectivityOP = "";
+         selectivity = "";
+         return;
+      }
+      
       selectivityOP = numeratorOPInput;
       if( numeratorOPInput.length() == 0 && denominatorOPInput.length() == 0 )
       {  selectivityOP = "";

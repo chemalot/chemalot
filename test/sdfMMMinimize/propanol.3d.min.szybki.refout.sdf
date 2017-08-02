@@ -29,16 +29,16 @@ M  END
 > <Total_energy>
 -1.8102
 
-> <MinMethod>
-SZYBKI_MMFF94S_VACUUM
+> <Program>
+SZYBKI
 
 > <ForceField>
 MMFF94S
 
+> <MinMethod>
+SZYBKI_MMFF94S_VACUUM
+
 > <Solvent>
 VACUUM
-
-> <Program>
-SZYBKI
 
 $$$$
