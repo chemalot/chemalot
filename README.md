@@ -209,6 +209,7 @@ modified wrappers might be required.
 The authors do not currently have experience with other environments
 but would welcome reports describing the setup. For the time being, this
 package should be considered LINUX only.
+Update: Chemalot also runs on Mac OSX.
 
 
 Brief Description of Command Line Programs
