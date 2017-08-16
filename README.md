@@ -152,7 +152,6 @@ All other files
 
  Compiling
 ------------------
-
 In order to compile this package you must have the **oechem Java
 toolkit** installed as described under "Installation on LINUX".
 In addition you must have [ant](http://ant.apache.org/)
