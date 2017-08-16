@@ -124,8 +124,9 @@ All other files
 
  Installation on LINUX
 ----------------------------
-* Unpack the chemalot_XXX.tgz file
-
+* Clone or download chemalot github repostory 
+   git clone https://github.com/chemalot/chemalot.git
+   
 * Contact [OpenEye](http://www.eyesopen.com/contact-us)
   for a copy of their oechem Java toolkit.
 
@@ -151,9 +152,6 @@ All other files
 
  Compiling
 ------------------
-
-Note: there is no need to compile the chemalot package as it already include a compiled
-jar file. This description is for developers wjo whish to make changes to the code.
 
 In order to compile this package you must have the **oechem Java
 toolkit** installed as described under "Installation on LINUX".
