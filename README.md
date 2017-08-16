@@ -116,6 +116,9 @@ R (The R Foundation for Statistical Computing):
   [GNU General Public License, version 2](http://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html).
   More information on R is available at:
   [https://www.r-project.org/foundation/](https://www.r-project.org/foundation/)
+  R packages hmeasure, pROC
+  To install R packages, start R as root and execute these commands.  If you don't have root access, you can install these library in your home directory
+  install.packages(c("hmeasure", "pROC"))
 
 All other files
 > are released under the
