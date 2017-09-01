@@ -53,7 +53,6 @@ public class SDFEnumerator
       for( int i=0; i< nPositions; i++)
       {  readSmiOrFile( smiOrFiles[i], i, reactAllSites );
       }
-
    }
 
 
@@ -68,7 +67,7 @@ public class SDFEnumerator
          OETools.smiToMol(mol, smiOrFile);
          if( mol.IsValid() && mol.NumAtoms() > 0)
          {  oechem.OEAddSDData(mol, uniqueTag+pos, Integer.toString(counter));
-            reactants[pos].put(Integer.toString(counter), new OEGraphMol(mol)); // create a copy to be outputted later
+            reactants[pos].put(Integer.toString(counter), new OEGraphMol(mol)); // create a copy to be outputed later
             counter++;
             libgen.AddStartingMaterial(mol, pos, ! reactAllSites );
             mol.delete();
@@ -82,7 +81,7 @@ public class SDFEnumerator
       oemolithread ifs = new oemolithread(smiOrFile);
       while(oechem.OEReadMolecule(ifs, mol))
       {  oechem.OEAddSDData(mol, uniqueTag+pos, Integer.toString(counter));
-         reactants[pos].put(Integer.toString(counter), new OEGraphMol(mol)); // create a copy to be outputted later
+         reactants[pos].put(Integer.toString(counter), new OEGraphMol(mol)); // create a copy to be outputed later
          counter++;
          libgen.AddStartingMaterial(mol, pos, ! reactAllSites );
       }
@@ -95,27 +94,28 @@ public class SDFEnumerator
                                  final int maxAtoms, final double randomFract, final boolean regenerate2D, final String unreactedFile)
    {  oemolothread ofs = new oemolothread(outName);
       for (OEMolBase mol : libgen.GetProducts())
-      {  if( maxAtoms > 0 ) oechem.OESuppressHydrogens(mol);
+      {  if( (randomFract > 1D || randomFract >= Math.random())
+             && (maxAtoms == 0 || mol.NumAtoms() <= maxAtoms) )
+         {  oechem.OESuppressHydrogens(mol);
 
-         if (regenerate2D == true) oedepict.OEPrepareDepiction(mol, true, true);
+            if (regenerate2D == true) oedepict.OEPrepareDepiction(mol, true, true);
 
-         if( (randomFract > 1D || randomFract >= Math.random())
-          && (maxAtoms == 0 || mol.NumAtoms() <= maxAtoms) )
             oechem.OEAddSDData(mol, enumerated, "Yes");
             oechem.OEWriteMolecule(ofs, mol);
+         }
+         
+         if (unreactedFile != null)
+         {  // get uniqueTag of mol, remove that entry from reactants hashmap
 
-            if (unreactedFile != null)
-            {  // get uniqueTag of mol, remove that entry from reactants hashmap
-
-               for(int i=0; i<nPositions; i++)
-               {  String mol_key = oechem.OEGetSDData(mol, uniqueTag+i);
-                  OEMolBase r = reactants[i].get(mol_key);
-                  if (r != null)
-                  {  reactants[i].remove(mol_key);
-                     r.delete();
-                  }
+            for(int i=0; i<nPositions; i++)
+            {  String mol_key = oechem.OEGetSDData(mol, uniqueTag+i);
+               OEMolBase r = reactants[i].get(mol_key);
+               if (r != null)
+               {  reactants[i].remove(mol_key);
+                  r.delete();
                }
             }
+         }
          mol.delete();
       }
 
@@ -158,6 +158,9 @@ public class SDFEnumerator
       opt = new Option("randomFraction",true, "Only output a fraction of the products.");
       options.addOption(opt);
 
+      opt = new Option("approxOutCount",true, "Tune randomFraction to output this number of compounds. Only correcect not reactAllSites.");
+      options.addOption(opt);
+
       opt = new Option("maxAtoms",true, "Only output products with <= maxAtoms.");
       options.addOption(opt);
 
@@ -191,6 +194,8 @@ public class SDFEnumerator
 
 
       String outFile = cmd.getOptionValue("out");
+      boolean reactAllSites = cmd.hasOption("reactAllSites");
+
       OELibraryGen lg = new OELibraryGen();
       lg.Init(smirks);
       if( ! lg.IsValid() )
@@ -199,27 +204,49 @@ public class SDFEnumerator
       lg.SetExplicitHydrogens(cmd.hasOption("hydrogenExplicit"));
       lg.SetValenceCorrection(cmd.hasOption("correctValences"));
       lg.SetRemoveUnmappedFragments(true);
-
+      SDFEnumerator en = new SDFEnumerator(lg, reactAllSites, reagentSmiOrFiles);
+      
+      long combiSpace = en.getCombinatorialSize();
+      System.err.printf("Combinatorial Space sice = %d (excluding multiple reaction sites)\n", combiSpace);
+      
       boolean regenerate2D = cmd.hasOption("regenerate2D");
-	   boolean reactAllSites = cmd.hasOption("reactAllSites");
       String unreactedFile=null;
 	   if (cmd.hasOption("notReacted")) {
 	      unreactedFile = cmd.getOptionValue("notReacted");
        }
 
+      if( cmd.hasOption("randomFraction" ) && cmd.hasOption("approxOutCount") )
+         exitWithHelp("approxOutCount and randomFraction are mutually exclusive", options);
+
       double randomFract = 2;
       if( cmd.hasOption("randomFraction" ) )
          randomFract = Double.parseDouble(cmd.getOptionValue("randomFraction"));
-
+      if( cmd.hasOption("approxOutCount" ) )
+      {  randomFract = Double.parseDouble(cmd.getOptionValue("approxOutCount"));
+         randomFract = randomFract / combiSpace;
+      }
+      
       int maxAtoms = 0;
       if( cmd.hasOption( "maxAtoms" ))
          maxAtoms = Integer.parseInt(cmd.getOptionValue("maxAtoms"));
 
-      SDFEnumerator en = new SDFEnumerator(lg, reactAllSites, reagentSmiOrFiles);
       en.generateLibrary( outFile, maxAtoms, randomFract, regenerate2D, unreactedFile);
       en.delete();
    }
 
+
+   /**
+    * 
+    * @return the combinatorial size of the library assuming each reactant reacts exactly once in each combination.
+    */
+   private long getCombinatorialSize()
+   {  long cSize = 1;
+      for( LinkedHashMap<String, OEMolBase> r : reactants)
+         cSize *= r.size();
+      return cSize;
+   }
+
+   
    private static final int SMIFlags = OESMILESFlag.AtomStereo|OESMILESFlag.BondStereo
             |OESMILESFlag.AtomMaps  |OESMILESFlag.Isotopes;
 
