@@ -1,0 +1,25 @@
+<tests>
+
+<!-- filter by TPSA and MW --> 
+    <!--sdfGroovy.csh -in .sdf -out .sdf -c 'return (f($MW)>100 && f($TPSA)>50)' -->
+    <!-- need to use escape characters for < (%lt;) and && (&amp;&amp; --> 
+<test in="../inputFiles/100.sdf" out="out/5.out.sdf">
+    sdfSplicer.csh -in .sdf -out .sdf -count 5 -readAll
+    <diff ref="5.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/10.out.sdf">
+    sdfSplicer.csh -in .sdf -out .sdf -start 5 -count 10 -readAll
+    <diff ref="10.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/0.5.out.sdf">
+    sdfSplicer.csh -in .sdf -out .sdf -rndFract .5 -rndSeed 5 -readAll
+    <diff ref="0.5.refout.sdf"/>
+</test>
+<test in="../inputFiles/100.sdf" out="out/rndGrp.out.sdf">
+    sdfSplicer.csh -in .sdf -out .sdf -rndFract .5 -rndSeed 5 -rndTag 'Powder data?' -readAll
+    <diff ref="rndGrp.refout.sdf"/>
+</test>
+
+
+
+</tests>
