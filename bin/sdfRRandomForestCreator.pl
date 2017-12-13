@@ -53,7 +53,7 @@ sdfRRandomForestCreator.pl
          specified, no descriptor will be removed. Note that
          descriptor with zero variance will always be removed.
    -conversionScript <arg>   File name plus the path to the script.
-         This R script contains two functions. The function
+         This R script contains three functions. The function
          "convertInput" is used by this script to convert the input
          response before creating the model. The function 
          "descriptorManipulation" can be used to manipulate the descriptor
@@ -62,6 +62,9 @@ sdfRRandomForestCreator.pl
          to generate the additional output. If not specified, response
          is used as it is and no instruction for additional output is
          stored for the RModelScript to use.
+   -descriptorPruning If set descriptors will be pruned based on low %IncMSE
+         and the model is rebuild excluding these descriptors.
+         the threshold is abs(quantil(%IndMSE, 0.25)).
    -printRScript   Output R script before execution.
    -writeInTab <fname>   To write the input table to a file for
          debugging
@@ -87,7 +90,7 @@ $nodeSize = "5";
 $logImportance = "";
 $printRScript = "";
 $predictionColName = "";
-GetOptions( 'in=s' => \$input,
+if( ! GetOptions( 'in=s' => \$input,
             'out=s' => \$output,
             'modelLocation=s' => \$modelLocation,
             'modelName=s' => \$modelName, 
@@ -103,9 +106,14 @@ GetOptions( 'in=s' => \$input,
             'seed=s' => \$seed,
             'correlationCutoff=f' => \$correlationCutoff,
             'conversionScript=s' => \$conversionScript,
+                  'descriptorPruning' => \$doDescriptorPruning,
             'printRScript' => \$printRScript,
             'writeInTab=s' => \$writeInTab,
-            'h' => \$help );
+                  'h' => \$help ))
+{  warn("\n$use");
+   exit(0);
+}
+
 if( $help )
 {  warn( "$use");
    exit();
@@ -176,6 +184,11 @@ if( $mTry )
 }
 if( $nodeSize )
 { $modelOptions .= ", nodesize=$nodeSize";
+}
+if( $doDescriptorPruning )
+{  $logImportance = 1;
+}else
+{ $doDescriptorPruning = 0;
 }
 if( $logImportance )
 {  $modelOptions .= ", importance=TRUE";
@@ -324,6 +337,41 @@ $com = <<com;
 
       model <- randomForest( x, y $modelOptions )
       
+      xOrg <- x
+      modelOrg <- model
+
+      if( $doDescriptorPruning )
+      {  save.image(sub("RDATA", "savePoint.RDATA", modelFile))
+
+         # prune out descritors that are considered noise in the first model
+         # descriptors are considered noise if their %IncMSE in the imporance is < 0 or
+         # if they have small positive %IncMSE (smaller than |75% quantile of (smallest_%IncMSE)| 
+         # keep any descriptor with IncNodePurity > 0.1
+
+         imp<-model\$importance
+         pctMSEInc<-sort(imp[,1])
+         noiseMSEInc<-pctMSEInc[pctMSEInc<0]
+         noiseTreshold<-abs(quantile(noiseMSEInc,0.25))
+         significantDescNames <- names( pctMSEInc[ pctMSEInc > noiseTreshold | imp[,2] >= 0.1 ])
+
+         if( length(significantDescNames) > 5 && length(significantDescNames) / ncol(x) > 0.1 )
+         {  
+            #Compute Rsquare (out-of-bag) and RMS error (out-of-bag)
+            Rsquare <- cor( model\$predicted, y, use="complete.obs", method="pearson" )^2
+            RMS <- sqrt( mean( ( model\$predicted - y )^2, na.rm = TRUE ) )
+            cat( "\nR square (out-of-bag):", format( Rsquare, digits=4 ) )
+            cat( "\nRMS error (out-of-bag):", format( RMS, digits=4 ), "\n" )
+            writeLines( sprintf( "Pruning descriptors based on low %%IncMSE from %i to %i\n",
+               ncol(x), length(significantDescNames)))
+
+            x <- x[,significantDescNames]
+            model <- randomForest( x, y, importance=TRUE )
+
+            save.image(sub("RDATA", "savePoint.RDATA", modelFile))
+         }
+         remove( imp, pctMSEInc, noiseMSEInc, noiseTreshold, significantDescNames )
+      }
+      
       #Compute Rsquare (out-of-bag) and RMS error (out-of-bag)
       Rsquare <- cor( model\$predicted, y, use="complete.obs", method="pearson" )^2
       RMS <- sqrt( mean( ( model\$predicted - y )^2, na.rm = TRUE ) )
@@ -340,7 +388,7 @@ $com = <<com;
       
       modelDescriptors <- colnames(x)
       save.image(sub("RDATA", "savePoint.RDATA", modelFile))
-      remove( dataFile, responseField, x, y )
+      remove( dataFile, responseField, x, y, xOrg, modelOrg )
       save.image(modelFile)
 
       R.version.string
