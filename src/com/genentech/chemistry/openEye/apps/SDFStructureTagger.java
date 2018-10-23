@@ -94,7 +94,9 @@ public class SDFStructureTagger
       allTags,
       allTagPattern,
       firstTag,
-      firstTagPattern;
+      firstTagPattern,
+	  allSetNames,
+	  uniqueSetNames;
       public static OutputTag toOutputTag( String str )
       {  OutputTag[] outTags = OutputTag.values();
          for( int i=0; i<outTags.length; i++ )
@@ -122,7 +124,6 @@ public class SDFStructureTagger
    private boolean outputExists;
    private boolean onlyMatches;
    private boolean noMatches;
-   //private List<String> requestedTagFields;
 
 
    private SDFStructureTagger( String outFile )
@@ -138,7 +139,8 @@ public class SDFStructureTagger
 
 
    private void prepare( String smartsFile, String sdfFile, String setsForTagging,
-            String requestedTagInfo, boolean outputOccurrence, boolean outputExists, boolean onlyMatches, boolean noMatches )
+            String requestedTagInfo, boolean outputOccurrence, boolean outputExists, boolean onlyMatches, 
+            boolean noMatches /*, boolean addSetname */)
    throws IncorrectInputException, IOException
    {  if( ( smartsFile == null || smartsFile.length() == 0 ) &&
           ( sdfFile == null || sdfFile.length() == 0 ) )
@@ -398,6 +400,17 @@ public class SDFStructureTagger
       {  oechem.OESetSDData( mol, OutputTag.firstTagPattern.toString(),
                   structureTagger.getFirstTagPattern() );
       }
+      if( requestedOutFields.size() == 0 ||
+               requestedOutFields.contains( OutputTag.allSetNames ) )
+      {  oechem.OESetSDData( mol, OutputTag.allSetNames.toString(),
+                  structureTagger.getAllSetNames() );
+      }
+      if( requestedOutFields.size() == 0 ||
+               requestedOutFields.contains( OutputTag.uniqueSetNames ) )
+      {  oechem.OESetSDData( mol, OutputTag.uniqueSetNames.toString(),
+                  structureTagger.getUniqueSetNames() );
+      }
+
 
       return matched;
    }
@@ -509,7 +522,7 @@ public class SDFStructureTagger
       SDFStructureTagger tagger = new SDFStructureTagger( outFile );
 
       try
-      {  tagger.prepare( smartsFile, molPatternFile, tagSets, tagInfo, outputCount, outputExists, onlyMatches, noMatches );
+      {  tagger.prepare( smartsFile, molPatternFile, tagSets, tagInfo, outputCount, outputExists, onlyMatches, noMatches);
          tagger.run( inFile );
       } catch( IncorrectInputException iie )
       {  System.err.println( iie.toString() );
