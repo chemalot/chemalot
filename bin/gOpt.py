@@ -1,7 +1,11 @@
 #!/usr/bin/env python
+#Alberto
 from __future__ import print_function, division
 import os
+import glob
 import argparse
+from subprocess import Popen, PIPE
+from argparse import RawTextHelpFormatter
 import sys
 import re
 from textwrap import dedent
@@ -54,11 +58,11 @@ class GJob:
    GUESSPat  = re.compile("\s*guess(=\S+)", re.IGNORECASE)
 
    def __init__(self, start, command, middle, coords, end):
-      self.start = start
-      self.command = command
-      self.middle = middle
+      self.start = start       # % directives
+      self.command = command   # gaussian command line
+      self.middle = middle     # comment, charge and multiplicity
       self.coords = coords
-      self.end = end
+      self.end = end           # anything after the coordinates
 
    def __str__(self):
       return ''.join(
@@ -71,18 +75,21 @@ class GJob:
 
    def execute(self, outName):
       com = dedent("""
-         gaussian.csh >>%s<<'gJOBComs'
-         %s'gJOBComs'""") % (outName, str(self))
+         date>>%s;gaussian.csh >>%s<<'gJOBComs'
+         %s'gJOBComs'""") % (outName,outName, str(self))
       #warn(com)
       status = call(["/bin/csh", "-fc", com])
       if status > 0:
          raise IOError("Gaussian returned error code=%d" % status)
-      stdin,stdout = os.popen2("tail -n 10 "+outName)
+      p = Popen("tail -n 10 "+outName, shell=True, bufsize=2048, 
+                stdin=PIPE, stdout=PIPE, close_fds=True)
+      stdin,stdout= p.stdin, p.stdout
+      #stdin,stdout = os.popen2("tail -n 10 "+outName)
       stdin.close()
       lines = stdout.read()
       stdout.close()
 
-      return " Normal termination of Gaussian" in lines
+      return b" Normal termination of Gaussian" in lines
 
    def copy(self, chkGeom=False, optSteps='', optCalcFC=False, optReadFC=False):
       newCom = self.command
@@ -107,6 +114,7 @@ class GJob:
             if optArgs: optArgs += ","
             optArgs += "ReadFC"
          optArgs = optArgs.replace(",,",",")
+         if optArgs.startswith(",") : optArgs = optArgs[1:]
          newCom = GJob.OPTPat.sub(" opt=(%s)"%optArgs,newCom)
       if chkGeom:
          newCom = GJob.GEOMPat.sub("",newCom)
@@ -160,7 +168,6 @@ class GJob:
 
 
 
-optSteps=8
 desc = """Run guassian optimization run.
           Your gInFile may contain multiple jobs.
           Whenever an optimization job is found it will be executed in multiple
@@ -168,18 +175,24 @@ desc = """Run guassian optimization run.
           complete a frequency calculation is done with the final geometry.
           If the n-1'ed step was a freq job it's parameters will be retained,
           if not then the "CalcFC" option will be added to the opt keyword.
-          Note that gOpt will modify your gaussian options somewhat."""
+Note that gOpt will modify your gaussian options somewhat.
 
-parser = argparse.ArgumentParser(description=desc)
+Example: set n=myName.g ; set nCPU=4 ; mysub.py -q medium -jobName $n:r -nCPU $nCPU -totalMem 10 -- gOpt.py -in $n"""
+
+parser = argparse.ArgumentParser(description=desc, formatter_class=RawTextHelpFormatter)
 parser.add_argument('-in', dest='gInFileName', required=True,
        help='gaussian command file, out will be name.out')
-parser.add_argument('-optSteps', dest='optSteps', required=False,
-       help='Number of optimizaton steps to execute before recalculating freq (def=%d)'%optSteps)
+parser.add_argument('-optSteps', dest='optSteps', required=False, default=8,
+       help='Number of optimizaton steps to execute before recalculating freq (def=%d)'%8)
+parser.add_argument('-restartJob', metavar="<n>", type=int, required=False, default=0,
+       help='restart this computation with job number <n>. Only for opt jobs.')
 args = parser.parse_args()
 
 gInFileName = args.gInFileName
 gOutFileName, dummy = os.path.splitext(gInFileName)
 gOutFileName += ".out"
+restartJob = args.restartJob
+optSteps=args.__dict__.get('optSteps',8)
 
 gJobs = []
 with FileLineWrapper(open(gInFileName)) as gInFile:
@@ -190,7 +203,12 @@ with FileLineWrapper(open(gInFileName)) as gInFile:
 
 lastGJob = None
 for gJob in gJobs:
-   if gJob.isOpt():
+
+   restartJob -= 1
+   if restartJob > 0:
+       continue
+
+   if gJob.isOpt(): # and lastGJob != None:
       newGJob = gJob.copy(optSteps=optSteps)
       success = newGJob.execute(gOutFileName)
       while not success:

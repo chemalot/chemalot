@@ -100,7 +100,7 @@ gaussian:
 
 moebatch (MOE):
 > *MOE IS NOT INCLUDED IN THIS PACKAGE*
-  MOE is a program distributed by Chemical Computing Group
+  MOE is a program distributed by Chemical Computing Group Inc.
   For more information visit:
   [https://www.chemcomp.com/](https://www.chemcomp.com/)
 

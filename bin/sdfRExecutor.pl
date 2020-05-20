@@ -19,8 +19,11 @@ $progName
    -out <arg>     Supported file format: .sdf
    -RScript <arg> RScript to be executed. path is checked relative to current 
                   and relative to $installDir/R/RExecutor 
-                  For example look at $installDir/R/RExecutor/R2.sdfR
+                  For example look at $installDir/R/RExecutor/sdfRDemo.sdfR
+                  sdfRDemo.sdfR can be used to write a .rdata file for debuging in RStudio
    -dataFields    Pipe separated list of datafields to pass to R.
+   -fieldFile     Filename of fiel containing \\n separated dataFields.
+                  only one of -dataFields and -fieldFile may be given.
    -outMode <arg> computed|all all (default) outputs records if R has no results
    -chunkSize n   If given the input is passed in chunks to R to save memory
    -removeQualifier If given "[ ><~=]" will be removed from the input fields
@@ -51,7 +54,7 @@ printToCommandLogfile( "$commandLogFile", "$inputCommand" );
 my($rScript) = "";
 my($input) = "";
 my($output) = "";
-my($dataFields) = "";
+my($dataFields,$fieldFile) = ("","");
 my($outMode) = "-outAll";
 my($computeOutputScript) = "";
 my($params) = "";
@@ -64,6 +67,7 @@ GetOptions( 'in=s' => \$input,
             'out=s' => \$output, 
             'RScript=s' => \$rScript,
             'dataFields=s' => \$dataFields, 
+            'fieldFile=s' => \$fieldFile, 
             'outMode=s' => \$outMode, 
             'removeQualifier' => \$removeQualifier,
             'removeNA' => \$removeNA,
@@ -104,16 +108,33 @@ if( !$input )
 if( !$output )                                                                   
 {  $errMessage .= "out is reqired\n";
 }
-if( !$dataFields )                                                                   
-{  $errMessage .= "dataFields is reqired\n";
+if( !$dataFields && ! $fieldFile )                                                                   
+{  $errMessage .= "dataFields or fieldFile are reqired\n";
+}
+if($dataFields && $fieldFile )
+{  $errMessage .= "Only one of dataFields or fieldFile may be specified\n";
 }
 if( $outMode =~ /computed/i )
 {  $outMode = "";
 }else
 {  $outMode = "-outAll";
 }
-my($nDataFields) = split(/\|/,$dataFields);
+if($fieldFile)
+{  if(! -r $fieldFile)
+   {  $errMessage .= "$fieldFile cna not be read\n";
+   }
+   open( INFILE, "$fieldFile" ) || die "$!";
+   while($_=<INFILE>)
+   {  $dataFields .= $_;
+   }
+   close(INFILE);
+   chomp($dataFields);
+   $dataFields =~ s/^\s+|\s+$//g;
+   $dataFields =~ s/\n/|/g;
+}
+      
 $errMessage && &exitWithHelp( $use, $errMessage );
+my($nDataFields) = split(/\|/,$dataFields);
 
 if($params) { $params = ",$params "; }
 
@@ -123,7 +144,7 @@ if( !$computeOutputScript )
 
 my($inputFile)= "$tmpDir/Rin.$user.$$.sdf";
 my($dataFile) = "$tmpDir/Rmc.$user.$$";
-$chunkSize && ($chunkSize = ",nrows=$chunkSize");
+$chunkSize && ($chunkSize = -1);
 
 # make named pipe to start sdf2tab in background so we can run R in parrallel
 -e $dataFile && unlink($dataFile);
@@ -169,6 +190,7 @@ $com = <<com;
       outCon <- file(output)
       open(outCon,"w")
 
+      chunkSize<-$chunkSize
       ###### inserted below user supplied doCompute function
       $rScript
       ###### inserted above user supplied doCompute function
@@ -176,14 +198,14 @@ $com = <<com;
       # R write.table does nto output header for rowNames
       cat("$MERGEFieldName\\t",file=outCon)
 
-      data <- read.table(inCon, sep='\\t', header=1, as.is=TRUE, row.names=1 $chunkSize )
+      data <- read.table(inCon, sep='\\t', header=1, numerals='allow.loss', row.names=1, nrows=chunkSize )
       #save.image('t.RDATA')
       orgColNames <- colnames(data)
       printColNames=TRUE
       while ( nrow(data) > 0 )
       {  colnames(data) <- orgColNames
          
-         #save.image('t.R')
+         #save.image('t2.RDATA')
          p <- doCompute(data $params)
          write.table(p,sep='\\t',quote=FALSE,file=outCon,col.names=printColNames)
          printColNames = FALSE
@@ -191,7 +213,7 @@ $com = <<com;
          #Try-error need because if input record number is multiple of chunkSize
          #the read.table call following the last record will cause an error because
          #there is no more record.
-         data <- try(read.table(inCon, sep='\\t', header=0, as.is=TRUE, row.names=1 $chunkSize ))
+         data <- try(read.table(inCon, sep='\\t', header=0, as.is=TRUE, row.names=1, numerals='allow.loss' $chunkSize ))
          if(inherits(data, 'try-error')) data <- data.frame()
       } 
       close(outCon)
@@ -202,6 +224,9 @@ SCRIPT
 com
 
 
+if( $debug )
+{  $com =~ s/#\s*save.image/save.image/g;
+}
 if( $printRScript || $debug )
 {  warn( $com );
 }
@@ -220,8 +245,11 @@ if( $status != 0 )
 }
 
 
+my($quiet) = "";
+if( ! $debug ) { $quiet = "-quiet "; }
+
 $com = <<com;
-sdfTabMerger.csh -sdf $inputFile -tab $tmpOutput -out .sdf $outMode\\
+sdfTabMerger.csh $quiet -sdf $inputFile -tab $tmpOutput -out .sdf $outMode\\
    -addEmptyValues -mergeTag "$MERGEFieldName" -mergeCol "$MERGEFieldName" \\
    | sdfTagTool.csh -in .sdf -out $output -remove "$MERGEFieldName"
 com

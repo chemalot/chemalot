@@ -21,7 +21,18 @@
 #    https://cran.r-project.org/web/packages/hmeasure/hmeasure.pdf
 #    http://rd.springer.com/article/10.1007/s10994-009-5119-5
 
-library(hmeasure)
+# works only if full matrix is in memory: overwrite chunkSize
+chunkSize <- -1
+
+if (! require('hmeasure') ) 
+{  if (! require('hmeasure', lib="~/Rlib") )
+   {  dir.create("~/Rlib", showWarnings = FALSE)
+      install.packages('hmeasure', quiet=TRUE, lib="~/Rlib", repos='http://cran.us.r-project.org')
+      library('hmeasure', lib="~/Rlib")
+   }
+}
+
+library("psych")
 
 doCompute <- function(data, measuredThreshold=NULL, plotName=NULL, ...)
 {  Call <- match.call(expand.dots = TRUE)
@@ -32,7 +43,7 @@ doCompute <- function(data, measuredThreshold=NULL, plotName=NULL, ...)
 
    # convert regression into classification if measuredThreshold given
    if( ! is.null(measuredThreshold) )
-      Call$true.class <- data[,1]<measuredThreshold
+      Call$true.class <- data[,1]<=measuredThreshold
    else
       Call$true.class <- data[,1]
 
@@ -52,9 +63,16 @@ doCompute <- function(data, measuredThreshold=NULL, plotName=NULL, ...)
    }
    rocRes<- hmeas$metrics
 
-   res <- c(H=rocRes$H, Gini=rocRes$Gini, AUC=rocRes$AUC, AUCH=rocRes$AUCH,
+   pos <- data[data[,2]<=measuredThreshold,]
+   ppv <- sum(pos[,1]<=measuredThreshold)/length(pos[,2])
+   cls<-matrix(c(data[,2]<=measuredThreshold,data[,1]<=measuredThreshold), ncol=2)
+   kappa <- cohen.kappa(cls)
+
+   res <- round(
+          c(H=rocRes$H, Gini=rocRes$Gini, AUC=rocRes$AUC, AUCH=rocRes$AUCH,
+            PPV=ppv, KAPPA=kappa$kappa,
             KS=rocRes$KS, MER=rocRes$MER, MWL=rocRes$MWL, Spec.Sens95=rocRes$Spec.Sens95,
-            Sens.Spec95=rocRes$Sens.Spec95)
+            Sens.Spec95=rocRes$Sens.Spec95), 2)
    p<-matrix(res, nrow=nrow(data), ncol=length(res), byrow=TRUE)
    rownames(p) <- rownames(data)
    colnames(p) <- names(res)

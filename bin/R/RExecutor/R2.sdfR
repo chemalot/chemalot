@@ -4,7 +4,7 @@
 # Computes the correlation coeficients for two numerical columns and adds 
 # the results as fields. The default method is "pearson".
 # Depending on the method the following fields are added to your sdf file:
-# pearson:  R, R2
+# pearson:  R, R2, RMSE, MUE
 # kendal:   TAU
 # spearman: RHO
 #
@@ -15,21 +15,37 @@
 # Overwrite chunkSize since computing R2 does not make sense with chunks 
 # do not use .Machine$integer.max because read.table does not work
 
+# works only if full matrix is in memory: overwrite chunkSize
+chunkSize <- -1
+
 doCompute <- function(data, ...)
-{  Call <- match.call(expand.dots = TRUE)
+{  # expand "..." to argnames
+   Call <- match.call(expand.dots = TRUE)
+   # check that user did not pass x, or y as these data will be passed as x and y vectors
    for (argname in c("x", "y"))
       if (!is.null(Call[[argname]]))
          warning(gettextf("attempt to set '%s' ignored", argname), domain = NA)
+   # keep row names for later
    rn <- eval.parent(Call$row.names)
+
+   # pass data as "x" parameter to "cor"
    Call$x <- data
+
+   # reset "data" parameter to null so that we do not confuse "cor"
    Call[["data"]]<-NULL
    Call[[1L]] <- as.name("cor")
+   # execute call to "cor"; res gets the output
    res <- eval.parent(Call)[1,2]
 
    method <- Call[["method"]]
    if( is.null(method) || substr(method,1,1) == "p") 
-   {  fname<-c("R","R2")
-      res <- c(res,res^2)
+   {  fname<-c("R","R2","RMSE","MUE")
+      delta<-(data[,1]-data[,2])
+      nValues<-sum(! is.na(delta))
+      res <- c(res,res^2,
+               sqrt(sum(delta*delta)/nValues),
+               sum(abs(delta))/nValues
+              )
    }else if( substr(method,1,1) == "s" )
    {  fname <- "RHO"
    } else if( substr(method,1,1) == "k" )
@@ -37,7 +53,7 @@ doCompute <- function(data, ...)
    } else
    {  warning(paste("Unknown method ", method))
    }
-   p<-matrix(res, nrow=nrow(data),ncol=length(res), byrow=TRUE)
+   p<-round(matrix(res, nrow=nrow(data),ncol=length(res), byrow=TRUE),2)
    rownames(p) <- rownames(data)
    colnames(p) <- fname
    return(p)

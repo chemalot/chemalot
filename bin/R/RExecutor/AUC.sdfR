@@ -12,6 +12,9 @@
 
 library(pROC)
 
+# works only if full matrix is in memory: overwrite chunkSize
+chunkSize <- -1
+
 doCompute <- function(data, predThreshold=NULL,...)
 {  Call <- match.call(expand.dots = TRUE)
    for (argname in c("response", "prediction"))
