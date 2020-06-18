@@ -11,7 +11,10 @@
 # add those to all input rows.
 
 doCompute <- function(data, ...)
-{  # compute correlation coeficient R
+{  # save an RData file which can be imported into RStudio for debugging this or other sdfR scripts
+   save.image("sdfR.rData")
+
+   # compute correlation coeficient R
    res<-cor(data[,1],data[,2])
 
    # also compute R^2
