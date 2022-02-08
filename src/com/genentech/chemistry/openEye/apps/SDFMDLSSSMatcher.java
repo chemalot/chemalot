@@ -153,7 +153,7 @@ public class SDFMDLSSSMatcher
    {  try
       {  oechem.OEUseJavaHeap(false);
       } catch(Exception e)
-      {  // ignore: new versions of oechem do not have this method;
+      {  // ignore: new versions of oechem do not have this method
       }
 
       // create command line Options object
