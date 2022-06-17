@@ -23,6 +23,7 @@ import java.util.List;
 import openeye.oechem.*;
 import openeye.oeszybki.*;
 
+import com.genentech.chemistry.openEye.MolSeparator;
 import com.genentech.chemistry.openEye.conformerSampler.ConformerSampler;
 import com.genentech.chemistry.openEye.util.AtomListFunctor;
 import com.genentech.oechem.tools.AtomIntPropertyFunctor;
@@ -45,7 +46,7 @@ public class TorsionScanner
    public  static final int FRAGNumTag = oechem.OEGetTag("fragNum");
 
    private static final String TORSION_SCANNER_ANGLE_FILENAME = "FixedTorsionExpansionPatterns.txt";
-   public static final String ANGLE_TAG                      = "ScanVar_1";
+   public static final String ANGLE_TAG                      = "ScanVar";
 
    private final String  torsionAtomsTag;
    private final String  coreFilename;
@@ -56,8 +57,8 @@ public class TorsionScanner
    private final boolean doMinimize;
    private final String  constraintStrength;
 
-   private final OEMolBase      bondMol;
-   private final OEAtomBase[] bondAtoms;
+   private final OEMolBase[]  bondMols; // one or two molecules each with 4 atoms defining the torsions by proximity
+   private final OEAtomBase[][] bondAtoms; // first index over bondMols  
 
    private ConformerSampler conformerSampler;
 
@@ -99,10 +100,13 @@ public class TorsionScanner
       this.constraintStrength = constraintStrength;
 
       // Set torsion bond mol object
-      this.bondMol  = readBondAtomsFromFile(bondFilename);
+      this.bondMols  = readBondAtomsFromFile(bondFilename);
 
       // Set torsion bond atoms
-      this.bondAtoms = getOrderedBondAtoms(bondMol);
+      this.bondAtoms = new OEAtomBase[bondMols.length][];
+      this.bondAtoms[0] = getOrderedBondAtoms(bondMols[0]);
+      if( bondMols.length == 2 ) this.bondAtoms[1] = getOrderedBondAtoms(bondMols[1]);
+      
 
       // Create a conformerSampler for generating new conformers
       if (nMaxConfsPerStep > 1)
@@ -149,9 +153,10 @@ public class TorsionScanner
       {
          szybki.delete();
       }
-      if (bondMol != null)
+      if (bondMols != null)
       {
-         bondMol.delete();
+         for(OEMolBase mol: bondMols)
+            mol.delete();
       }
       if (conformerSampler != null)
       {
@@ -183,7 +188,7 @@ public class TorsionScanner
       // loop over molecules, delete torsion bond,
       // store left side in firstFrag and right side in secndFrag
       for(OEMolBase mol: cachedInputMols)
-      {  OEAtomBase[] molBondAts = getTorsionAtoms(mol, bondAtoms);
+      {  OEAtomBase[] molBondAts = getTorsionAtoms(mol, bondMols[0], bondAtoms[0]);
          OEBondBase bd = mol.GetBond(molBondAts[1],molBondAts[2]);
          int bondType = bd.GetOrder();
          mol.DeleteBond(bd);
@@ -270,40 +275,49 @@ public class TorsionScanner
       {
          // Get the atoms for this molecule based on coords of the
          //   bondFile atoms
-         OEAtomBase[] torsionAtoms = getTorsionAtoms(inMol, bondAtoms);
+         OEAtomBase[] torsionAtoms0 = getTorsionAtoms(inMol, bondMols[0], bondAtoms[0]);
 
          // Mark these atoms as "fixed"
-         OEBondBase torBond = inMol.GetBond(torsionAtoms[1], torsionAtoms[2]);
-         torBond.SetBoolData(ConformerSampler.ISFixedBondTag, true);
+         OEBondBase torBond0 = inMol.GetBond(torsionAtoms0[1], torsionAtoms0[2]);
+         torBond0.SetBoolData(ConformerSampler.ISFixedBondTag, true);
 
          // Set the fixed atom SDF tag
-         setTorsionAtomSDTag(inMol, getTorsionAtomIndices(inMol, torsionAtoms));
+         setTorsionAtomSDTag(inMol, torsionAtomsTag, getTorsionAtomIndices(inMol, torsionAtoms0));
 
+         OEAtomBase[] torsionAtoms1 = null;
+         if( bondMols.length == 2 )
+         {  torsionAtoms1 = getTorsionAtoms(inMol, bondMols[1], bondAtoms[1]);;
+            OEBondBase torBond1 = inMol.GetBond(torsionAtoms1[1], torsionAtoms1[2]);
+            torBond1.SetBoolData(ConformerSampler.ISFixedBondTag, true);
+
+            // Set the fixed atom SDF tag
+            setTorsionAtomSDTag(inMol, torsionAtomsTag+"_2", getTorsionAtomIndices(inMol, torsionAtoms1));
+         }
          //
          // Main angular scan
          // Generate the fixed angle conformers around the torsion. (e.g. 0,10,20,30...)
          //
-         torsionConformers = generateScannedTorsionConformers (inMol, torsionAtoms);
+         torsionConformers = generateScannedTorsionConformers (inMol, torsionAtoms0, torsionAtoms1);
 
          // Possibly minimize or expand conformers
          if (this.nMaxConfsPerStep > 1)
          {
             // If nMaxConfsPerStep > 1,  generate more conformers at each rotatable bond outside the torsionAtoms bond.
             // These new confs will be written to torsionConformers
-            expandConformers (torsionConformers, torsionAtoms, doMinimize);
+            expandConformers (torsionConformers, torsionAtoms0, doMinimize);
          }
          else
          {
             if (doMinimize)
             {
                // Minimize each conformer
-               minimizeConformers (torsionConformers, torsionAtoms);
+               minimizeConformers (torsionConformers, torsionAtoms0);
             }
          }
 
          // Cleanup
-         torsionAtoms = null;
-         torBond = null;
+         torsionAtoms0 = null;
+         torBond0 = null;
       }
       catch(Exception e)
       {
@@ -327,13 +341,13 @@ public class TorsionScanner
     * Internal method to read a file containing four atoms defining
     * the torsion bond.
     * @param bondFilename filename of sdf file or mol with four torsion atoms
-    * @return a mol object containing the torsion atoms
+    * @return a mol object array containing the atoms for one or two torsions of 4 atoms
     * @throws Error
     */
-   private static OEMolBase readBondAtomsFromFile(String bondFilename) throws Error
+   private static OEMolBase[] readBondAtomsFromFile(String bondFilename) throws Error
    {
       oemolithread ifs = new oemolithread(bondFilename);
-      OEGraphMol   mol = new OEGraphMol();
+      OEMolBase   mol = new OEGraphMol();
 
       try
       {
@@ -350,19 +364,97 @@ public class TorsionScanner
       if (!mol.IsValid())
          throw new Error("BondMol is inValid");
 
-      if (mol.NumAtoms() != 4)
-         throw new Error("BondMol does not have 4 atoms");
-
-      return mol;
+      if( mol.NumAtoms() == 8)
+      {  MolSeparator ms = new MolSeparator();
+         int nMols = ms.separate(mol);
+         if( nMols > 2 )
+            throw new Error("BondMol has 8 and more than 2 fragments");
+         
+         
+         if(nMols == 2)
+         {  OEMolBase[] outMols = new OEMolBase[2];
+            mol.delete();
+            
+            mol = ms.getMol(0);
+            if (mol.NumAtoms() != 4)
+               throw new Error("BondMol for fragment 1 does not have 4 atoms");
+            outMols[0] = mol;
+            
+            mol = ms.getMol(1);
+            if (mol.NumAtoms() != 4)
+               throw new Error("BondMol for fragment 2 does not have 4 atoms");
+            outMols[1] = mol;
+            
+            return outMols;
+         }
+         ms.clear();
+      }
+      
+      if (mol.NumAtoms() > 8)
+         throw new Error("BondMol has more than 8 atoms");
+      
+      if (mol.NumAtoms() == 4)
+         return new OEMolBase[] { mol };
+      
+      OEAtomBase[] atoms = OETools.getMolAtoms(mol);
+      for(OEAtomBase at: atoms)
+         if( at.GetExplicitDegree() > 2)
+            throw new Error("Currently only linear chains are supported to define torsion");
+            
+      // keep copy to shorten the other side of the chain
+      OEGraphMol mol1 = new OEGraphMol(mol);
+      
+      // shorten mol to first 4 consecutive atoms
+      atoms = TorsionScanner.atomsInLinearOrder(mol, atoms);
+      for(int i=4; i<atoms.length; i++) mol.DeleteAtom(atoms[i]);
+      
+      // shorten mol1 to last 4 consecutive atoms
+      atoms = OETools.getMolAtoms(mol1);
+      atoms = TorsionScanner.atomsInLinearOrder(mol1, atoms);
+      for(int i=0; i<atoms.length-4; i++) mol1.DeleteAtom(atoms[i]);
+      
+      return new OEMolBase[] { mol, mol1 };
    }
 
+   private static OEAtomBase[] atomsInLinearOrder(OEMolBase mol, OEAtomBase[] atoms0) throws Error
+   {  // find atom with only on bond
+      int nAtoms = atoms0.length; 
+      int firstAtom = -1;
+      for(int i=0; i<nAtoms; i++)
+      {  if( atoms0[i].GetExplicitDegree() == 1 )
+         {  firstAtom = i;
+            break;
+         }
+      }
+      
+      // depth first search to find linear sequence
+      OEAtomBase[] atomsOrdered = new OEAtomBase[nAtoms];
+      atomsOrdered[0] = atoms0[firstAtom];
+      
+      for(int i=0; i<nAtoms-1; i++)
+      {  OEAtomBaseIter neighIt = atomsOrdered[i].GetAtoms();
+         while( neighIt.hasNext() )
+         {  OEAtomBase n=neighIt.next();
+            if( i==0 || n.GetIdx() != atomsOrdered[i-1].GetIdx() )
+            {  if( i+1 != nAtoms-1 && n.GetExplicitDegree() != 2 )
+                  throw new Error("Currently only linear chains are supported to define torsion");
+               atomsOrdered[i+1] = n;
+               break;
+            }
+         }
+         neighIt.delete();
+      }
+      return atomsOrdered;
+   }
+   
+   
    /**
     * Initialize SZYBKI as a minimizer
     * @param doMinimize true if a minimization should be used
     * @param constraintStrength
     * @return a szybki instance
     */
-   private OESzybki initializeSZYBKI(String constraintStrength)
+   private static OESzybki initializeSZYBKI(String constraintStrength)
    {
       OESzybki szybki = null;
 
@@ -598,12 +690,12 @@ public class TorsionScanner
    *  @param mol the input molecule
    *  @param torsionAtomIndices the indices to write out
    */
-   private void setTorsionAtomSDTag(OEMolBase mol, int[] torsionAtomIndices)
+   private static void setTorsionAtomSDTag(OEMolBase mol, String torsionAtomsTag, int[] torsionAtomIndices)
    {
       String torsionAtomsTagValue = String.format("%d %d %d %d",
                torsionAtomIndices[0], torsionAtomIndices[1], torsionAtomIndices[2], torsionAtomIndices[3]);
 
-      oechem.OESetSDData(mol, this.torsionAtomsTag, torsionAtomsTagValue);
+      oechem.OESetSDData(mol, torsionAtomsTag, torsionAtomsTagValue);
    }
 
    /*
@@ -754,21 +846,27 @@ public class TorsionScanner
     * Compute nSteps conformations starting from mol rotating around the torsion
     * defined by molBondAts
     * @param startMol input molecule
-    * @param molBondAts 4 atoms defining the torsion around the two central atoms
+    * @param molBondAts0 4 atoms defining the torsion around the two central atoms
+    * @param molBondAts0 4 atoms defining the torsion around the two central atoms for second bond may be null
     * @return a multiconf mol
     */
-   private OEMCMolBase generateScannedTorsionConformers (OEMolBase startMol, OEAtomBase[] molBondAts)
+   private OEMCMolBase generateScannedTorsionConformers (OEMolBase startMol, OEAtomBase[] molBondAts0, OEAtomBase[] molBondAts1)
    {
       // Creating new
       OEMCMolBase confMol = initMCMol(startMol);
 
       // if startTorsion was not supplied (NaN) use torsion in input mol
-      double myStartTorsion = nStartTor;
+      double myStartTorsion0 = nStartTor;
+      double myStartTorsion1 = nStartTor;
 
       if( Double.isNaN(nStartTor) )
-         myStartTorsion = Math.toDegrees(oechem.OEGetTorsion(
-                  confMol,molBondAts[0],molBondAts[1], molBondAts[2],molBondAts[3]));
-
+      {  myStartTorsion0 = Math.toDegrees(oechem.OEGetTorsion(
+                  confMol,molBondAts0[0],molBondAts0[1], molBondAts0[2],molBondAts0[3]));
+         if( molBondAts1 != null )
+            myStartTorsion1 = Math.toDegrees(oechem.OEGetTorsion(
+               confMol,molBondAts1[0],molBondAts1[1], molBondAts1[2],molBondAts1[3]));
+      }
+      
       OEConfBaseIter confIt = confMol.GetConfs();
       OEConfBase baseConf = confIt.next();
       confIt.delete();
@@ -777,13 +875,25 @@ public class TorsionScanner
       {
          OEConfBase newConf = confMol.NewConf(baseConf);
          oechem.OEAddExplicitHydrogens(newConf, false, true);
-         double angle = myStartTorsion + s * this.nTorIncr;
+         double angle = myStartTorsion0 + s * this.nTorIncr;
 
-         oechem.OESetSDData( newConf, ANGLE_TAG, String.format("%.1f", angle));
+         oechem.OESetSDData( newConf, ANGLE_TAG + "_1", String.format("%.1f", angle));
 
-         oechem.OESetTorsion(newConf, molBondAts[0],molBondAts[1],
-                                      molBondAts[2],molBondAts[3], Math.toRadians(angle));
+         oechem.OESetTorsion(newConf, molBondAts0[0],molBondAts0[1],
+                                      molBondAts0[2],molBondAts0[3], Math.toRadians(angle));
 
+         if( molBondAts1 != null )
+         {  for(int s1 = 0; s1 < nSteps; s1++)
+            {  OEConfBase newConf1 = confMol.NewConf(newConf);
+               double angle1 = myStartTorsion1 + s1 * this.nTorIncr;
+   
+               oechem.OESetSDData( newConf1, ANGLE_TAG + "_2", String.format("%.1f", angle1));
+   
+               oechem.OESetTorsion(newConf1, molBondAts1[0],molBondAts1[1],
+                                             molBondAts1[2],molBondAts1[3], Math.toRadians(angle1));               
+            }
+            confMol.DeleteConf(newConf);
+         }
       }
 
       // Now delete the starting molecule which was passed in
@@ -796,7 +906,7 @@ public class TorsionScanner
    /**
     * get atoms closest to bondAtoms in mol
     */
-   private OEAtomBase[] getTorsionAtoms(OEMolBase mol, OEAtomBase[] bondAtoms) throws IllegalArgumentException
+   private static OEAtomBase[] getTorsionAtoms(OEMolBase mol, OEMolBase bondMol, OEAtomBase[] bondAtoms) throws IllegalArgumentException
    {  OEAtomBase[] molBondAts = new OEAtomBase[bondAtoms.length];
 
       for (int i = 0; i < bondAtoms.length; i++)

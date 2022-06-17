@@ -17,7 +17,7 @@
 package com.genentech.chemistry.tool.sdfAggregator;
 
 /**
- * This class implements the standard deviation function.
+ * This class implements the standard error of mean function.
  * @author Ben Sellers Feb, 2015
  *
  */
@@ -28,15 +28,14 @@ import java.util.List;
 
 import com.aestel.utility.DataFormat;
 
-public class stddev extends AggFunction
+public class stderr extends AggFunction
 {  public static final String DESCRIPTION
-         = "[outName[:format] = ] stddev([distinct] Tag): returns the stddev of tag 'Tag'.\n";
+         = "[outName[:format] = ] stderr([distinct] Tag): returns the stderr of mean of tag 'Tag'.\n";
 
 
 
-   public stddev(String outTag, String resultFormat, String funcName, String funcArg)
-   {  
-      super(outTag, resultFormat == null ? "si2" : resultFormat, funcName, funcArg);
+   public stderr(String outTag, String resultFormat, String funcName, String funcArg)
+   {  super(outTag, resultFormat == null ? "si2" : resultFormat, funcName, funcArg);
    }
    
    private String getResult(String fmtStr)
@@ -77,17 +76,15 @@ public class stddev extends AggFunction
       //
       // Calculate the variance
       double sumOfSquaredDiffs = 0D;
-      double variance          = 0D;      
       for(Double value : numericValues)
       {       
          sumOfSquaredDiffs += (value - mean) * (value - mean);
       }
       
       
-      variance = sumOfSquaredDiffs / (numericValues.size()-1);
+      double stderr = Math.sqrt(sumOfSquaredDiffs / (numericValues.size() -1) / numericValues.size());
 
-      // Return sqrt of variance = mstdev
-      return DataFormat.formatNumber(Math.sqrt(variance), fmtStr);
+      return DataFormat.formatNumber(stderr, fmtStr);
    }
    
 

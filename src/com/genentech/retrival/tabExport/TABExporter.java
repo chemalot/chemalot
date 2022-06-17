@@ -16,14 +16,18 @@
 */
 package com.genentech.retrival.tabExport;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.regex.Pattern;
 
 import org.apache.commons.cli.*;
 import org.jdom.JDOMException;
 
+import com.aestel.io.dataAccess.DAError;
 import com.aestel.io.dataAccess.Record;
 import com.aestel.io.dataAccess.SQLStatement;
 import com.aestel.io.dataAccess.Selecter;
@@ -56,7 +60,7 @@ public class TABExporter
 
    public static void main(String [] args) throws ParseException, JDOMException, IOException
    {  long start = System.currentTimeMillis();
-      int nStruct = 0;
+      int nRows = 0;
 
       // create command line Options object
       Options options = new Options();
@@ -68,7 +72,11 @@ public class TABExporter
       opt.setRequired(true);
       options.addOption(opt);
 
-      opt = new Option("o",true, "output file");
+      opt = new Option("o", "out", true, "output file");
+      opt.setRequired(false);
+      options.addOption(opt);
+
+      opt = new Option("i", "in", true, "tab separated file with input arguments for query");
       opt.setRequired(false);
       options.addOption(opt);
 
@@ -86,78 +94,115 @@ public class TABExporter
       {  System.err.println(e.getMessage());
          exitWithHelp(options);
       }
-      args = cmd.getArgs();
-
+      
       String outFile = cmd.getOptionValue("o");
+      String inFile  = cmd.getOptionValue("i");
       String sqlFile = cmd.getOptionValue("sqlFile");
       String sqlName = cmd.getOptionValue("sqlName");
       String newLineReplacement = cmd.getOptionValue("newLineReplacement");
 
       args = cmd.getArgs();
+      if( inFile != null && args.length > 0)
+      {  System.err.println("-i does not work with additional arguments");
+         exitWithHelp(options);
+      }
+
 
       try {
          PrintStream out = System.out;
          if(outFile != null) out = new PrintStream(outFile);
 
+         boolean printHeader = ! cmd.hasOption("noHeader");
 
+         
          SQLStatement stmt = SQLStatement.createFromFile(new File(sqlFile), sqlName);
-         Object[] sqlArgs = args;
-         if(stmt.getParamTypes().length != args.length)
-         {  System.err.printf("\nWarining sql statement needs %d parameters but got only %d. Filling up with NULLs.\n",
-               stmt.getParamTypes().length, args.length);
-            sqlArgs = new Object[stmt.getParamTypes().length];
-            System.arraycopy(args, 0, sqlArgs, 0, args.length);
-         }
+         
+         if( inFile == null )
+         {  nRows = exportByArgs(stmt, args, out, printHeader, newLineReplacement);
+         }else
+         {  BufferedReader in;
+            if( ".tab".equalsIgnoreCase(inFile) )
+               in = new BufferedReader(new InputStreamReader(System.in));
+            else
+               in = new BufferedReader(new FileReader(inFile));
 
-         Selecter sel = Selecter.factory(stmt);
-         if(! sel.select(sqlArgs) )
-         {  System.err.println("No rows returned!");
-            System.exit(0);
-         }
-
-         String[] fieldNames = sel.getFieldNames();
-         if( fieldNames.length == 0)
-         {  System.err.println("Query did not return any columns");
-            exitWithHelp(options);
-         }
-
-         if( ! cmd.hasOption("noHeader") )
-         {  StringBuilder sb = new StringBuilder(200);
-            for(String f : fieldNames)
-               sb.append(f).append('\t');
-            if(sb.length() > 1) sb.setLength(sb.length()-1);  // chop last \t
-            String header = sb.toString();
-
-            out.println(header);
-         }
-
-         StringBuilder sb = new StringBuilder(200);
-         while ( sel.hasNext() )
-         {  Record sqlRec = sel.next();
-            sb.setLength(0);
-
-            for(int i=0; i<fieldNames.length; i++)
-            {  String fld = sqlRec.getStrg(i);
-               if( newLineReplacement != null )
-                  fld = NEWLinePattern.matcher(fld).replaceAll(newLineReplacement);
-
-               sb.append(fld).append('\t');
+            String line;
+            while((line=in.readLine()) != null)
+            {  args = line.split("\t");
+            
+               if( nRows > 0 ) printHeader = false;
+               
+               nRows += exportByArgs(stmt, args, out, printHeader, newLineReplacement);
             }
-
-            if(sb.length() > 1) sb.setLength(sb.length()-1);  // chop last \t
-            String row = sb.toString();
-
-            out.println(row);
-
-            nStruct++;
+            in.close();
          }
 
       } catch (Exception e) {
          throw new Error(e);
       }finally {
          System.err.printf("TABExporter: Exported %d records in %dsec\n",
-               nStruct, (System.currentTimeMillis()-start)/1000);
+               nRows, (System.currentTimeMillis()-start)/1000);
       }
+   }
+
+   private static int exportByArgs(SQLStatement stmt, String[] args,
+         PrintStream out, boolean printHeader, String newLineReplacement) throws DAError
+   {  int nRows = 0;
+   
+      Object[] sqlArgs = args;
+      if(stmt.getParamTypes().length != args.length)
+      {  System.err.printf("\nWarining sql statement needs %d parameters but got only %d. Filling up with NULLs.\n",
+            stmt.getParamTypes().length, args.length);
+         sqlArgs = new Object[stmt.getParamTypes().length];
+         System.arraycopy(args, 0, sqlArgs, 0, args.length);
+      }
+
+      Selecter sel = Selecter.factory(stmt);
+      if(! sel.select(sqlArgs) )
+      {  System.err.println("No rows returned!");
+         System.exit(0);
+      }
+
+      String[] fieldNames = sel.getFieldNames();
+      if( fieldNames.length == 0)
+      {  System.err.println("Query did not return any columns");
+         sel.close();
+         return 0;
+      }
+
+      if( printHeader )
+      {  StringBuilder sb = new StringBuilder(200);
+         for(String f : fieldNames)
+            sb.append(f).append('\t');
+         if(sb.length() > 1) sb.setLength(sb.length()-1);  // chop last \t
+         String header = sb.toString();
+
+         out.println(header);
+      }
+
+      StringBuilder sb = new StringBuilder(200);
+      while ( sel.hasNext() )
+      {  Record sqlRec = sel.next();
+         sb.setLength(0);
+
+         for(int i=0; i<fieldNames.length; i++)
+         {  String fld = sqlRec.getStrg(i);
+            if( newLineReplacement != null )
+               fld = NEWLinePattern.matcher(fld).replaceAll(newLineReplacement);
+
+            sb.append(fld).append('\t');
+         }
+
+         if(sb.length() > 1) sb.setLength(sb.length()-1);  // chop last \t
+         String row = sb.toString();
+
+         out.println(row);
+
+         nRows++;
+      }
+      sel.close();
+      
+      return nRows;
    }
 
    private static void exitWithHelp(Options options) {

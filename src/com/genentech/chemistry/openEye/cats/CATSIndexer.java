@@ -16,6 +16,10 @@
 */
 package com.genentech.chemistry.openEye.cats;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -40,12 +44,12 @@ public class CATSIndexer
 
    static final OESubSearch CARBONYLSS = new OESubSearch(CARBONYL);
 
-   static final int MAXBondDist = 9;
-
-   static final String[] allDescriptors = getAllDescriptorNames();
+   String[] allDescriptors = getAllDescriptorNames();
 
    private final String tagPrefix;
    private final AtomTyperInterface[] myTypes;
+   private final int maxBondDist;
+
 
    public static final AtomTyperInterface[] typers =
       {  new SSTyper(HDonor,0, "D"),
@@ -60,6 +64,38 @@ public class CATSIndexer
          new SSTyper(URANIUM, 5, "U")
       };
 
+   // Method to load a tab delimited SMARTS<tab>ID\n list of features for indexing
+   public static AtomTyperInterface[] featuresFromFile(String featureFilename) throws IOException
+   {
+      ArrayList<AtomTyperInterface> featureList = new ArrayList<AtomTyperInterface>();
+      if( featureFilename == null || featureFilename.length() == 0 )
+         throw new FileNotFoundException("Invalid feature File Name: null");
+
+      BufferedReader featReader = new BufferedReader( new FileReader( featureFilename ) );
+      String line = "";
+
+      int featCount = 0;
+      while( ( line = featReader.readLine() ) != null )
+      {
+         if( line.length() < 1 || line.startsWith( "#" ) || line.startsWith( "\"#" ) )
+            continue;
+
+         String[] items = line.split( "\t" ); //SMARTS<tab>FEAT_NAME
+
+         String featureSMARTS = items[0].trim();
+         String featureName   = items[1].trim();
+
+         featureList.add(new SSTyper(featureSMARTS, featCount, featureName));
+         featCount++;
+      }
+
+      featReader.close();
+      System.err.printf( "Read %d user features\n", featCount );
+
+      return featureList.toArray(new AtomTyperInterface[featureList.size()]);
+   }
+
+
    private final OEGraphMol mCopy = new OEGraphMol();
 
    public static enum Normalization
@@ -68,9 +104,10 @@ public class CATSIndexer
       CountsPerFeature
    }
 
-   public CATSIndexer(AtomTyperInterface[] myTypes, String tagPrefix)
+   public CATSIndexer(AtomTyperInterface[] myTypes, String tagPrefix, int maxBondDistance)
    {  this.myTypes = myTypes;
       this.tagPrefix = tagPrefix + "CATS";
+      this.maxBondDist = maxBondDistance;
    }
 
 
@@ -88,7 +125,7 @@ public class CATSIndexer
       computeAtomTypes(mCopy, typedAtoms, atTypeList);
 
       // compute distance and pair count
-      int[][][] pairCount = new int[myTypes.length][myTypes.length][MAXBondDist+1];
+      int[][][] pairCount = new int[myTypes.length][myTypes.length][maxBondDist+1];
       int[] typeCount = new int[myTypes.length];
       compute2DPairCount(typedAtoms, atTypeList, pairCount, typeCount);
 
@@ -100,7 +137,7 @@ public class CATSIndexer
       {  String myTagPrefix = tagPrefix + "2C_";
          for(int i=0; i<myTypes.length; i++)
             for(int j=0; j<=i; j++)
-               for(int d=0; d<=MAXBondDist; d++)
+               for(int d=0; d<=maxBondDist; d++)
                   oechem.OESetSDData(mol,
                       myTagPrefix + d + "_" + myTypes[i].getTypeName() + myTypes[j].getTypeName(),
                       Integer.toString(pairCount[i][j][d]));
@@ -111,7 +148,7 @@ public class CATSIndexer
          double atCount = getAtCount(mol);
          for(int i=0; i<myTypes.length; i++)
             for(int j=0; j<=i; j++)
-               for(int d=0; d<=MAXBondDist; d++)
+               for(int d=0; d<=maxBondDist; d++)
                   oechem.OESetSDData(mol,
                       myTagPrefix + d + "_" + myTypes[i].getTypeName() + myTypes[j].getTypeName(),
                       DataFormat.round(pairCount[i][j][d]/atCount, 3));
@@ -121,7 +158,7 @@ public class CATSIndexer
       {  String myTagPrefix = tagPrefix + "2F_";
          for(int i=0; i<myTypes.length; i++)
             for(int j=0; j<=i; j++)
-               for(int d=0; d<=MAXBondDist; d++)
+               for(int d=0; d<=maxBondDist; d++)
                {  double val = pairCount[i][j][d];
                   if ( val > 0 )
                      val = val / (typeCount[i] + typeCount[j]);
@@ -163,7 +200,7 @@ public class CATSIndexer
       for(int i=0; i<atoms.length; i++)
       {  for(int j=0; j<i; j++)
          {  PathDescription desc = new PathDescription(mCopy, atoms[i], atoms[j]);
-            if( desc.getPathLength() > MAXBondDist ) break;
+            if( desc.getPathLength() > maxBondDist ) break;
             desc.computeDescription();
 
             out.print(smi);
@@ -215,7 +252,7 @@ public class CATSIndexer
     * @param pairCount filled with count of ouccurence index by atom2Idx,atom2Idx,distanceBin
     * @param typeCount filled with occerence count of each atomType ove whole molecule
     */
-   private static void compute2DPairCount(List<OEAtomBase> typedAtoms, List<List<AtomTyperInterface>> atTypeList,
+   private void compute2DPairCount(List<OEAtomBase> typedAtoms, List<List<AtomTyperInterface>> atTypeList,
             int[][][] pairCount,
             int[] typeCount)
    {
@@ -234,8 +271,8 @@ public class CATSIndexer
             if( i == j )
                dist = 0;
             else
-            {  dist = oechem.OEGetPathLength(at1,at2, 9);
-               if( dist == 0 ) break;
+            {  dist = oechem.OEGetPathLength(at1,at2, maxBondDist);
+               if( dist == 0 ) continue;
             }
 
             // record paircount
@@ -325,7 +362,7 @@ public class CATSIndexer
    }
 
 
-   private static String[] getAllDescriptorNames()
+   private String[] getAllDescriptorNames()
    {  List<String> dNames = new ArrayList<String>();
       dNames.add("pathLen"      );
       dNames.add("vdwSum"       );
@@ -340,13 +377,13 @@ public class CATSIndexer
       dNames.add("nTripple"     );
       dNames.add("nArom"        );
 
-      for(int i=1; i<=MAXBondDist; i++)
+      for(int i=1; i<=maxBondDist; i++)
       {  dNames.add("atVal"+i);
          dNames.add("atSubst"+i);
          dNames.add("atIsRing"+i);
       }
 
-      for(int i=1; i<=MAXBondDist-1; i++)
+      for(int i=1; i<=maxBondDist-1; i++)
       {  dNames.add("bdType"+i);
          dNames.add("bdRingSize"+i);
       }
@@ -397,7 +434,6 @@ class PathDescription
       OEAtomBase lastAt = null;
       for(OEAtomBase at: pathAtoms)
       {  atNum++;
-         assert atNum <= CATSIndexer.MAXBondDist;
 
          vdwSum += Atom.VDW_RADIUS[at.GetAtomicNum()];
 

@@ -51,7 +51,9 @@ public class SDFAggregator
    private static oemolostream ofs;
    private static oemolistream ifs;
    private static oemolostream oss;
-   private static String[] functionArr = { "concatenate", "count", "max", "mean", "min", "rank", "sum", "stddev", "median" };
+   private static String[] functionArr = { "concatenate", "count", "max", "mean", 
+         "min", "rank", "rankPct", "sum", "stddev", "stderr", "median", 
+         "boltzmannAvg", "boltzmannProbability"};
 
    enum OUTPUTMODE
    {  FIRST, LAST, ALL }

@@ -27,8 +27,10 @@ import openeye.oechem.*;
 class SSSAlign extends AbstractAlign
 {  List<OESubSearch> sss = new ArrayList<OESubSearch>();
 
-   public SSSAlign(List<OEMol> refmols, OUTType oMolType, String rmsdTag, boolean doOptimize, boolean doMirror, int atomExpr, int bondExpr, boolean quiet)
-   {  super(oMolType,rmsdTag, doOptimize, doMirror, quiet);
+   public SSSAlign(List<OEMol> refmols, OUTType oMolType, String rmsdTag, String atomDevTag, String[] atomInfoTags,
+                   boolean doOptimize, boolean doMirror, 
+                   int atomExpr, int bondExpr, boolean quiet)
+   {  super(oMolType,rmsdTag, atomDevTag, atomInfoTags, doOptimize, doMirror, quiet);
 
       for( OEMol rMol : refmols)
       {  OEQMol qmol = new OEQMol();
@@ -37,7 +39,7 @@ class SSSAlign extends AbstractAlign
          if( atomExpr == OEExprOpts.DefaultAtoms && bondExpr == OEExprOpts.DefaultBonds )
             sss.add(new OESubSearch(qmol));
          else
-            // this will distrupt any mdl query features
+            // this will disrupt any mdl query features
             sss.add(new OESubSearch(qmol, atomExpr, bondExpr));
 
          qmol.delete();

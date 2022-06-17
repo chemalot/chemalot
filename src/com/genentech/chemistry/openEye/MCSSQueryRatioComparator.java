@@ -28,45 +28,38 @@ import openeye.oechem.oechem;
 import com.aestel.chemistry.openEye.SimComparator;
 
 /**
- * This computes similairities of two molecules by simply counting the atoms
- * and bonds of the MCSS and comparing them to the counts in the two moleucles:
- *
+ * Returns the ratio of matched atoms to query atoms as similarity.
+ * 
  * @author albertgo
  *
  */
-public final class MCSSComparator implements SimComparator<OEMolBase>
+public final class MCSSQueryRatioComparator implements SimComparator<OEMolBase>
 {  private final OEMCSSearch mcss;
    private final OEMolBase pattern;
    private final int nAtomQuery;
-   private final int nBondQuery;
 
-   MCSSComparator(OEMolBase pattern, int type, int atExpr, int bdExpr, OEMCSFunc mcsFunc, int minAt)
+   MCSSQueryRatioComparator(OEMolBase pattern, int type, int atExpr, int bdExpr, OEMCSFunc mcsFunc, int minAt)
    {  mcss = new OEMCSSearch(pattern, atExpr, bdExpr, type);
       this.pattern = new OEGraphMol(pattern);
 
       mcss.SetMCSFunc(mcsFunc);
       mcss.SetMinAtoms(minAt);
       nAtomQuery = pattern.NumAtoms();
-      nBondQuery = pattern.NumBonds();
    }
 
    @Override
    public double similarity(OEMolBase mol)
    {  int nAtomMatch = 0;
-      int nBondMatch = 0;
 
       OEMatchBaseIter mIt = mcss.Match(mol, true);
       if( mIt.hasNext() )
       {  OEMatchBase m = mIt.next();
          nAtomMatch = m.NumAtoms();
-         nBondMatch = m.NumBonds();
          m.delete();
       }
 
       mIt.delete();
-      double sim = nAtomMatch / (double)(nAtomQuery + mol.NumAtoms() - nAtomMatch);
-      sim = sim + nBondMatch / (double)(nBondQuery + mol.NumBonds() - nBondMatch);
-      sim /= 2;
+      double sim = nAtomMatch / (double)nAtomQuery;
 
       return sim;
    }
@@ -74,7 +67,7 @@ public final class MCSSComparator implements SimComparator<OEMolBase>
 
    @Override
    public double similarity(SimComparator<OEMolBase> other)
-   {  return similarity(((MCSSComparator) other).pattern);
+   {  return similarity(((MCSSQueryRatioComparator) other).pattern);
    }
 
    /**
@@ -95,15 +88,6 @@ public final class MCSSComparator implements SimComparator<OEMolBase>
    public static void main(String argv[])
    {  String smiPat;
       String smiTar;
-
-      // aa paper 1
-      smiPat = "c1ccn[nH]1";
-      smiTar = "Cc1ccno1";
-
-      // aa paper 2
-      smiPat = "c1ccnn1C(=O)N1CCC1";
-      smiTar = "c1cc[nH]c1C(=O)N1CCC1"; // 0.321
-      smiTar = "c1cc[nH]c1";       // 0.057
 
       smiPat = "c1cccn1C(=O)N1CCC1";
       smiTar = "c1cc[nH]c1";       // 0.194
@@ -131,7 +115,7 @@ public final class MCSSComparator implements SimComparator<OEMolBase>
       {  // check if similarity is atom order independent
          oechem.OEScrambleMolecule(mol2);
          double sim2 = simer.similarity(mol2);
-         if( sim2 != sim ) System.out.printf("Problem Sim is atom order dependent: %f\n", sim2);
+         if( sim2 != sim ) System.out.printf("Problem: sim is atom order dependent: %f\n", sim2);
       }
       System.err.printf("Done in %.3f\n", (System.currentTimeMillis()-start)/1000D);
       simer.close();

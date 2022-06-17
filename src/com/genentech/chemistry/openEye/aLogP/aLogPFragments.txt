@@ -40,10 +40,10 @@ ALogP_GCount_036	36	C	36	n	"[Ch](=[N,O,P,S,Se])A"	:Al-CH=X 	-0.132	39	39
 ALogP_GCount_037	37	C	37	n	"[Ch](=[N,O,P,S,Se])a"	:Ar-CH=X 	-0.0244	115	115		
 ALogP_GCount_038	38	C	38	n	"C(=[N,O,P,S,Se])(A)A"	:Al-C(=X)-Al 	-0.2405	55	65		
 ALogP_GCount_039	39	C	39	n	"C(=[N,O,P,S,Se])(a)[#6]"	:Ar-C(=X)-R 	-0.0909	434	492		
-ALogP_GCount_040	40	C	40	n	"[#6](=[N,O,P,S,Se])([#6])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	"::R-C(=X)-X,R-C#X,X=C=X "	-0.1002	4126	5998		
+ALogP_GCount_040	40	C	37.1	n	"[#6](=[N,O,P,S,Se])([#6])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	"::R-C(=X)-X,R-C#X,X=C=X "	-0.1002	4126	5998		
 ALogP_GCount_040	40	C	40	n	C(#N)[#6]	"::R-C(=X)-X,R-C#X,X=C=X "	-0.1002	4126	5998		
 ALogP_GCount_040	40	C	40	n	"C(=[N,O,P,S,Se])=[N,O,P,S,Se]"	"::R-C(=X)-X,R-C#X,X=C=X "	-0.1002	4126	5998		
-ALogP_GCount_041	41	C	41	n	"C(=[N,O,P,S,Se])([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:X-C(=X)-X 	0.4182	1399	1527		
+ALogP_GCount_041	41	C	37.2	n	"C(=[N,O,P,S,Se])([#7,#8,#9,#15,#16,#17,#34,#35,#53])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:X-C(=X)-X 	0.4182	1399	1527		
 ALogP_GCount_042	42	C	30.2	n	"[ch]([n&X3,o,s,se])[nX2]"	:X--CH...X 	-0.2147	381	383		
 ALogP_GCount_043	43	C	29.1	n	"c([#6])([n&X3,o,s,se])[nX2]"	:X--CR...X 	-0.0009	247	261		
 ALogP_GCount_044	44	C	32.1	n	"c([n&X3,o,s,se])([nX2])[#7,#8,#9,#15,#16,#17,#34,#35,#53]"	:X--CX...X 	0.1388	205	261		
@@ -65,16 +65,16 @@ ALogP_GCount_051	51	H	0	n	"[CX4!h0]C=,#[#8,#7,#16,#15,#34]"	:alpha-C {d}	0.5234	
 ALogP_GCount_051	51	H	0	n	[CX4!h0]C-[NX3]=O	:alpha-C {d}	0.5234	3072	8801		
 ALogP_GCount_052	52	H	52.9	n	"[CX4!h0][#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 1 X attached to next carbon "	0.6666	2891	13030		
 ALogP_GCount_053	53	H	52.8	n	"[CX4!h0][#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 2 X attached to next carbon "	0.5372	370	952		How about HC(CHF2)(CH3)CH3?
-ALogP_GCount_053	53	H	52.8	n	"[CX4!h0][#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])C[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 2 X attached to next carbon "	0.5372	370	952		How about HC(CHF2)(CH3)CH3?
+ALogP_GCount_053	53	H	52.8	n	"[CX4!h0]([#6][#8,#7,#16,#15,#34,F,Cl,Br,I])[#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 2 X attached to next carbon "	0.5372	370	952		How about HC(CHF2)(CH3)CH3?
 ALogP_GCount_054	54	H	52.7	n	"[CX4!h0]C([#8,#7,#16,#15,#34,F,Cl,Br,I])([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 3 X attached to next carbon "	0.6338	79	164		How about HC(CHF2)(CH2F)CH3 and HC(CF3)(CH3)CH3?
 ALogP_GCount_054	54	H	52.7	n	"[CX4!h0]([#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I])[#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 3 X attached to next carbon "	0.6338	79	164		How about HC(CHF2)(CH2F)CH3 and HC(CF3)(CH3)CH3?
-ALogP_GCount_054	54	H	52.7	n	"[CX4h](C[#8,#7,#16,#15,#34,F,Cl,Br,I])(C[#8,#7,#16,#15,#34,F,Cl,Br,I])C[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 3 X attached to next carbon "	0.6338	79	164		How about HC(CHF2)(CH2F)CH3 and HC(CF3)(CH3)CH3?
-ALogP_GCount_055	55	H	55.1	n	"[CX4!h0](C([#8,#7,#16,#15,#34,F,Cl,Br,I])([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I])[#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 4 or more X attached to next carbon "	0.362	2	4		"How about HC(CHF2)(CHF2)CH3 and HC(CF3)(CH2F)CH3 as well as the ""or more X"" requirement?"
+ALogP_GCount_054	54	H	52.7	n	"[CX4h]([#6][#8,#7,#16,#15,#34,F,Cl,Br,I])([#6][#8,#7,#16,#15,#34,F,Cl,Br,I])[#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 3 X attached to next carbon "	0.6338	79	164		How about HC(CHF2)(CH2F)CH3 and HC(CF3)(CH3)CH3?
+ALogP_GCount_055	55	H	55.1	n	"[CX4!h0]([#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I])[#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 4 or more X attached to next carbon "	0.362	2	4		"How about HC(CHF2)(CHF2)CH3 and HC(CF3)(CH2F)CH3 as well as the ""or more X"" requirement?"
 ALogP_GCount_055	55	H	55.1	n	"[CX4!h0]([#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I])[#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 4 or more X attached to next carbon "	0.362	2	4		"How about HC(CHF2)(CHF2)CH3 and HC(CF3)(CH2F)CH3 as well as the ""or more X"" requirement?"
 ALogP_GCount_055	55	H	55.1	n	"[CX4h]([#6]([#8,#7,#16,#15,#34,F,Cl,Br,I])[#8,#7,#16,#15,#34,F,Cl,Br,I])([#6][#8,#7,#16,#15,#34,F,Cl,Br,I])[#6][#8,#7,#16,#15,#34,F,Cl,Br,I]"	":C0sp3, having 4 or more X attached to next carbon "	0.362	2	4		"How about HC(CHF2)(CHF2)CH3 and HC(CF3)(CH2F)CH3 as well as the ""or more X"" requirement?"
 											
 # O in											
-ALogP_GCount_056	56	O	56	n	"[Oh][C;X4&!$(C([O,N,S,P,Se])O)]"	:alcohol 	-0.3567	953	1477		
+ALogP_GCount_056	56	O	57.5	n	"[Oh][C;X4]"	:alcohol 	-0.3567	953	1477		
 ALogP_GCount_057	57	O	57	n	"[Oh][c,CX3]"	":phenol, enol, carboxyl OH "	-0.0127	1048	1239		
 ALogP_GCount_058	58	O	58.5	n	[O;X1]	:=O 	-0.0233	5138	8248		
 ALogP_GCount_059	59	O	59.9	n	[O](-[A])-[A]	:Al-O-Al 	-0.1541	575	821		
@@ -95,7 +95,7 @@ ALogP_GCount_068	68	N	79.1	n	[N;X3]([A])([A])[A]	:Al3N	0.0132	457	481
 ALogP_GCount_069	69	N	79.1	n	"[Nh2;X3][a,#8,#7,#16,#15,#34,F,Cl,Br,I]"	":Ar-NH2,X-NH2"	-0.3883	687	859		
 ALogP_GCount_070	70	N	79.1	n	[Nh;X3]([a])[A]	:Ar-NH-Al	-0.0389	196	239		
 ALogP_GCount_071	71	N	79.1	n	[N;X3]([a])([A])[A]	:Ar-NAl2	0.1087	198	218		
-ALogP_GCount_072	72	N	66.1	n	"[N;X3;$(N-C(=O)C),$(N-[#7,#15]=[#8,#7,#16,#15,#34])]"	":RCO-N<,>N-X=X"	-0.5113	3717	5526		
+ALogP_GCount_072	72	N	66.1	n	"[N;X3;$(N-C(=O)[#6]),$(N-[#7,#15]=[#8,#7,#16,#15,#34])]"	":RCO-N<,>N-X=X"	-0.5113	3717	5526		
 ALogP_GCount_073	73	N	79.1	n	[Nh;X3](a)a	":Ar2NH,Ar3N,:Ar2N-Al,R...N...R {f} "	0.1259	1251	1264		
 ALogP_GCount_073	73	N	79.1	n	[N;X3](a)(a)a	":Ar2NH,Ar3N,:Ar2N-Al,R...N...R {f} "	0.1259	1251	1264		
 ALogP_GCount_073	73	N	79.1	n	[N;X3](a)(a)A	":Ar2NH,Ar3N,:Ar2N-Al,R...N...R {f} "	0.1259	1251	1264		

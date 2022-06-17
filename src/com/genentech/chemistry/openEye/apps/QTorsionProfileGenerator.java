@@ -160,22 +160,31 @@ public class QTorsionProfileGenerator
             while( cIt.hasNext() )
             {  OEConfBase conf = cIt.next();
                if( ofs != null ) oechem.OEWriteMolecule(ofs, conf);
-               String angle = oechem.OEGetSDData(conf, TorsionScanner.ANGLE_TAG);
+               String angle = oechem.OEGetSDData(conf, TorsionScanner.ANGLE_TAG+"_1");
+               String angle2 = oechem.OEGetSDData(conf, TorsionScanner.ANGLE_TAG + "_2");
+               
+               String sameAngleStr = angle;
+               if( angle2 != null && angle2.length() > 0)
+               {  sameAngleStr += '_' + angle;
+                  angle = String.format("%04.0f_%04.0f", Double.parseDouble(angle), Double.parseDouble(angle2));
+               }else
+               {  angle = String.format("%04.0f", Double.parseDouble(angle));
+               }
+               
                int countSameAngle = 0;
-               if( angleCountMap.containsKey(angle) )
-                  countSameAngle = angleCountMap.get(angle);
-               angleCountMap.put(angle,  ++countSameAngle);
+               if( angleCountMap.containsKey(sameAngleStr) )
+                  countSameAngle = angleCountMap.get(sameAngleStr);
+               angleCountMap.put(sameAngleStr,  ++countSameAngle);
 
                molNum++;
 
                String fName;
-               double dAngle = Double.parseDouble(angle);
                if( outPrefix != null )
-                  fName = String.format("%s_%02d.%04.0f_%03d", outPrefix, molNum, dAngle, countSameAngle);
+                  fName = String.format("%s_%03d.%s_%03d", outPrefix, molNum, angle, countSameAngle);
                else if( "TITLE".equals(outNameTag))
-                  fName = String.format("%s.%04.0f_%03d", mol.GetTitle(), dAngle, countSameAngle);
+                  fName = String.format("%s.%s_%03d", mol.GetTitle(), angle, countSameAngle);
                else
-                  fName = String.format("%s.%04.0f_%03d", oechem.OEGetSDData(mol, outNameTag), dAngle, countSameAngle);
+                  fName = String.format("%s.%s_%03d", oechem.OEGetSDData(mol, outNameTag), angle, countSameAngle);
 
                String xMat = getXMat(conf);
 
@@ -221,7 +230,16 @@ public class QTorsionProfileGenerator
 
 
    private static String getFrozenCoordinate(OEConfBase conf)
-   {  String[] fAtomStr = oechem.OEGetSDData(conf, FROZEN_ATOM_TAG).split(" ");
+   {  String res= getFrozenCoordinate(conf, FROZEN_ATOM_TAG);
+      
+      if( oechem.OEHasSDData(conf, FROZEN_ATOM_TAG + "_2"))
+         res = res + getFrozenCoordinate(conf, FROZEN_ATOM_TAG + "_2");
+
+      return res;
+   }
+
+   private static String getFrozenCoordinate(OEConfBase conf, String frozenAtomTag)
+   {  String[] fAtomStr = oechem.OEGetSDData(conf, frozenAtomTag).split(" ");
 
       // increment atoms by one because guassian uses 1 based indexes
       StringBuilder sb = new StringBuilder(fAtomStr.length+4);
@@ -230,7 +248,6 @@ public class QTorsionProfileGenerator
 
       return String.format("D %s F\n", sb.toString());
    }
-
 
 
    private String getXMat(OEMolBase mol)
@@ -312,7 +329,7 @@ public class QTorsionProfileGenerator
       opt = new Option(
                OPT_BONDFILE,
                true,
-               "Structure file containing 4 atoms defining the torsion. "
+               "Structure file containing 4-8 atoms defining 1 oer 2 torsions. The first bond is a2-a3 the second is a-2-a-3."
               +"In each input molecule the atoms colses these atoms are used to define the torsion.");
       opt.setRequired(true);
       options.addOption(opt);

@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import openeye.oechem.OEExprOpts;
 import openeye.oechem.OEMolBase;
 
 import org.apache.commons.cli.*;
@@ -68,6 +69,26 @@ public class SDFMCSSSphereExclusion
       opt.setRequired(false);
       options.addOption(opt);
 
+      opt = new Option("MCSSSimType",true, "DEFAULT|QueryRatio Compute MCSS and convert to sim using:. default=DEFAULT\n"
+                     + "   2 * Default = nAtMatch/(nAtQuery+nAtCand - nAtMatch) + nBdMatch/(nBdQuery+nBdCand - nBdMatch)\n" 
+                     + "   QueryRatio  = nAtMatch/nAtQuery");
+      opt.setRequired(false);
+      options.addOption(opt);
+
+      opt = new Option("MCSSSimType",true, "DEFAULT|QueryRatio Compute MCSS and convert to sim using:. default=DEFAULT\n"
+            + "   2 * Default = nAtMatch/(nAtQuery+nAtCand - nAtMatch) + nBdMatch/(nBdQuery+nBdCand - nBdMatch)\n" 
+            + "   QueryRatio  = nAtMatch/nAtQuery");
+      opt.setRequired(false);
+      options.addOption(opt);
+      
+      opt = new Option("atomMatch", true, "For MCSS only: Sequence of none|default|hcount|noAromatic specifing how atoms are matched cf. oe document.\n"
+              + "noAromatic can be used to make terminal atoms match aliphatic and aromatic atoms.\n"
+              + "Queryfeatures are considered only if default is used.");
+      options.addOption(opt);
+      
+      opt = new Option("bondMatch", true, "For MCSS only: Sequence of none|default specifing how bonds are matched cf. oe document.");
+      options.addOption(opt);
+      
       opt = new Option("printSphereMatchCount",false, "Assign non-centroids to all spheres with sim>= radius");
       options.addOption(opt);
 
@@ -123,7 +144,13 @@ public class SDFMCSSSphereExclusion
    {
       SimComparatorFactory<OEMolBase, OEMolBase, SimComparator<OEMolBase>> compFact;
       if( cmd.hasOption("AAPathSim") )
-      {  String aaPathSimType = cmd.getOptionValue("AAPathSim");
+      {  if( cmd.hasOption("MCSSSimType") )
+            throw new Error("-AAPathSim and -MCSSSimType may not be used together");
+      
+         if( cmd.hasOption("atomMatch") || cmd.hasOption("bondMatch") )
+            throw new Error("-AAPathSim does not support '-atomMatch' or '-bondMatch'");
+      
+         String aaPathSimType = cmd.getOptionValue("AAPathSim");
          int version = AAPathComparatorFact.DEFAULTVersion;
          if( aaPathSimType.matches(".*\\d") )
          {  version = aaPathSimType.charAt(aaPathSimType.length()-1) - '0';
@@ -133,7 +160,25 @@ public class SDFMCSSSphereExclusion
          compFact = new AAPathComparatorFact(type, version);
       }
       else
-      {  compFact = new MCSSComparatorFact(MCSSCompareType.DEFAULT);
+      {  int atExpr = OEExprOpts.DefaultAtoms;
+         String atomMatch = cmd.getOptionValue("atomMatch");
+         if( atomMatch == null ) atomMatch = "";
+         atomMatch = '|' + atomMatch.toLowerCase() + '|';
+         if( atomMatch.startsWith("|none") )      atExpr = 0;
+         if( atomMatch.contains("|hcount|") )     atExpr |= OEExprOpts.HCount;
+         if( atomMatch.contains("|noAromatic|") ) atExpr &= (~ OEExprOpts.Aromaticity);
+   
+         int bdExpr = OEExprOpts.DefaultBonds;
+         String bondMatch = cmd.getOptionValue("bondMatch");
+         if( bondMatch == null ) bondMatch = "";
+         bondMatch = '|' + bondMatch.toLowerCase() + '|';
+         if( bondMatch.startsWith("|none") ) bdExpr = 0;
+         
+         MCSSCompareType mcssType = MCSSCompareType.DEFAULT;
+         if( cmd.hasOption("MCSSSimType") )
+            mcssType = MCSSCompareType.toEnum(cmd.getOptionValue("MCSSSimType"));
+   
+         compFact = new MCSSComparatorFact(mcssType, atExpr, bdExpr);
       }
       return compFact;
    }

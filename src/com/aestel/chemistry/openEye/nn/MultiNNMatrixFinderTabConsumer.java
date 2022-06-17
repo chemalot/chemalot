@@ -26,7 +26,7 @@ import openeye.oechem.oechem;
 /**
  * output NN results in tab separated file.
  *
- * Thsi implementation internally stores the similarity matrix and outputs the
+ * This implementation internally stores the similarity matrix and outputs the
  * result in the close method.
  *
  * @author albertgo
@@ -82,11 +82,12 @@ public class MultiNNMatrixFinderTabConsumer  implements MultiNNMatrixFinderConsu
                      new BufferedOutputStream(new FileOutputStream(new File(outFile))));
 
          if( idTag != null )
-         {  for( int i=0; i<outMatrix.length-1; i++)
-            {  out.print(ids[i]);
-               out.print('\t');
+         {  out.print(idTag);
+            for( int i=0; i<outMatrix.length; i++)
+            {  out.print('\t');
+               out.print(ids[i]);
             }
-            out.println(ids[outMatrix.length-1]);
+            out.println();
          }
 
          for( int i=0; i<outMatrix.length; i++)

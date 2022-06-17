@@ -60,6 +60,15 @@ class rank extends AggFunction
 
    @Override
    public String getResult(int indxInGrp)
+   {  if( valueContainer.size() == 0 ) return "";
+   
+      int[] ranks = getRanks();
+
+      return Integer.toString(ranks[indxInGrp]);
+   }
+
+   
+   protected int[] getRanks()
    {  Double[] valD = new Double[valueContainer.size()];
       Iterator<String> it = valueContainer.iterator();
 
@@ -86,8 +95,6 @@ class rank extends AggFunction
             rank++;
          ranks[indexes[i]] = rank;
       }
-
-      if( ranks.length == 0 ) return "";
-      return Integer.toString(ranks[indxInGrp]);
+      return ranks;
    }
 }

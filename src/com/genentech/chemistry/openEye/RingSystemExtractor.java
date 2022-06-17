@@ -39,15 +39,24 @@ public final class RingSystemExtractor
 {  private OEMolBase compoundMol;
    private OEMolBase largestRingSystem;
    private OEMolBase basicRingSystems;
-
+   private OEMolBase largestRing;  // the largest ring in basicRingSystems
+   private boolean keepOneSideChainAtom = false;
    
    public RingSystemExtractor()
    {  compoundMol       = new OEGraphMol();
       largestRingSystem = new OEGraphMol();
       basicRingSystems  = new OEGraphMol();
+      largestRing       = new OEGraphMol();
    }
    
-   
+   public RingSystemExtractor(boolean keepOneSCAtom)
+   {  compoundMol       = new OEGraphMol();
+      largestRingSystem = new OEGraphMol();
+      basicRingSystems  = new OEGraphMol();
+      largestRing       = new OEGraphMol();
+      keepOneSideChainAtom = keepOneSCAtom;
+   }
+      
    public boolean hasLargestRingSystem()
    {  if( largestRingSystem.GetAtoms().hasNext() )
          return true;
@@ -56,6 +65,9 @@ public final class RingSystemExtractor
    
    public String getLargestRingSystemSMILES()
    {  return OETools.molToCanSmi( largestRingSystem, true); }
+   
+   public OEMolBase getLargestRingSystemMol()
+   {  return largestRingSystem;  }
    
    
    public int getBasicRingSystemCount()
@@ -68,6 +80,19 @@ public final class RingSystemExtractor
    
    public String getBasicRingSystemsSMILES()
    {  return OETools.molToCanSmi( basicRingSystems, true ); }
+   
+   
+   public boolean hasLargestRing()
+   {  if( largestRing.GetAtoms().hasNext() )
+         return true;
+      return false;
+   }
+   
+   public String getLargestRingSMILES()
+   {  return OETools.molToCanSmi( largestRing, true ); }
+   
+   public OEMolBase getLargestRingMol()
+   {  return largestRing; }
    
    
    /**
@@ -104,10 +129,11 @@ public final class RingSystemExtractor
       oechem.OEAssignAromaticFlags( compoundMol );
       
       extractLargestRingSystem();
-      extractbasicRingSystems();
-      
+      extractBasicRingSystems();
+      extractLargestRing();
    }
-   
+
+
    /**
     * Delete terminal chains from the molecule.
     * 
@@ -143,7 +169,9 @@ public final class RingSystemExtractor
          } else
             break;
       }
-      if( neigborAtomCount == 0 )    //Single atom, e.g. O for water
+      
+      // Remove single atom, e.g. O for water
+      if( neigborAtomCount == 0 )    
       {  largestRingSystem.DeleteAtom( atom );
          return;
       }
@@ -151,7 +179,8 @@ public final class RingSystemExtractor
       //Stop here if atom is not a non-terminal atom and an atom at one end of 
       //the exo-cyclic double bond
       if( neigborAtomCount > 1 ||
-          ( neigborBond.GetOrder() > 1 && neigborAtom.IsInRing() ) )
+          ( neigborBond.GetOrder() > 1 && neigborAtom.IsInRing() ) ||
+          ( keepOneSideChainAtom && neigborAtom.IsInRing()) )
          return;
       
       largestRingSystem.DeleteAtom( atom );
@@ -166,7 +195,7 @@ public final class RingSystemExtractor
     * 
     * Exo-cyclic double bond are considered as part of the ring.
     */
-   private void extractbasicRingSystems()
+   private void extractBasicRingSystems()
    {  basicRingSystems.Clear();
       oechem.OEAddMols( basicRingSystems, largestRingSystem );
       
@@ -178,10 +207,43 @@ public final class RingSystemExtractor
          //Keep the exo-cyclic double bond.
          OEAtomBase beginAtom = bond.GetBgn();
          OEAtomBase endAtom   = bond.GetEnd();
-         if( bond.GetOrder() > 1 )
+         
+         if( bond.GetOrder() > 1)
          {  if( beginAtom.IsInRing() || endAtom.IsInRing() )
                continue;
          }
+         
+         // If option to keep one side chain atom, keep if only one atom is in ring.
+         if( keepOneSideChainAtom )
+         {  if( beginAtom.IsInRing() != endAtom.IsInRing() )
+            {   continue; }
+            else if ( beginAtom.IsInRing() && endAtom.IsInRing() )
+            {                                           
+               // This is a bond between rings.  We want each ring attached to this bond
+               //  to keep a side chain atom.  This means duplicating the atoms and 
+               //  creating new bonds to them.
+               OEAtomBase beginCopy = basicRingSystems.NewAtom ( beginAtom );
+               OEAtomBase endCopy   = basicRingSystems.NewAtom ( endAtom );
+                              
+               int nOrigBondOrder = bond.GetOrder();
+               
+               // Delete original bond as we want to split these rings
+               basicRingSystems.DeleteBond( bond );
+               
+               basicRingSystems.NewBond (beginAtom, endCopy, nOrigBondOrder);
+               basicRingSystems.NewBond (endAtom, beginCopy, nOrigBondOrder);
+               
+               // Reset the new atom implicit hydrogens to the degree of the original atoms
+               beginCopy.SetImplicitHCount( beginAtom.GetDegree() - nOrigBondOrder );
+               endCopy.SetImplicitHCount  ( endAtom.GetDegree()   - nOrigBondOrder );                          
+               
+               // Re-perception of rings following atom deletions.
+               oechem.OEFindRingAtomsAndBonds (basicRingSystems);
+               
+               continue;
+            }
+         }
+         
          beginAtom.SetImplicitHCount( 
                   beginAtom.GetImplicitHCount() + bond.GetOrder() );
          endAtom.SetImplicitHCount( 
@@ -194,8 +256,56 @@ public final class RingSystemExtractor
             basicRingSystems.DeleteAtom( atom );
       }
    }
-   
-   
+      
+   private void extractLargestRing()
+   {
+      // Assumes basic ring systems have been extracted
+      if ( getBasicRingSystemCount() < 1)
+      { 
+         // Maybe it had not been extracted yet
+         extractBasicRingSystems();
+         
+         if ( getBasicRingSystemCount() < 1 )
+         { return; }
+      }
+      
+      // Make a copy of the basic ring systems
+      largestRing.Clear();
+      oechem.OEAddMols( largestRing, basicRingSystems );
+      
+      // Find all the basic rings
+      int[] parts = new int[largestRing.NumAtoms()];
+      int   count = oechem.OEDetermineComponents(largestRing, parts);
+            
+      // Find the largest ring
+      int largestRingSize  = 0;
+      int largestRingIndex = 0;
+      
+      // Iterate over all atoms, finding largest sized ring
+      for (OEAtomBase atom : largestRing.GetAtoms()) 
+      {
+         // Is this atom in a ring larger than the current largest?
+         int smallestRingSize = oechem.OEAtomGetSmallestRingSize(atom);
+         if ( smallestRingSize > largestRingSize )
+         {
+            largestRingSize = smallestRingSize;
+            largestRingIndex = parts[atom.GetIdx()];
+         }
+      }
+      
+      // Now delete all atoms not in largest ring component or 
+      //  atoms that are in smaller fused rings
+      for (OEAtomBase atom : largestRing.GetAtoms()) 
+      {
+         if (parts[atom.GetIdx()] != largestRingIndex 
+         || (!oechem.OEAtomIsInRingSize(atom, largestRingSize) && atom.IsInRing()))
+         {  largestRing.DeleteAtom(atom); }
+      }
+      
+      // Reperceive rings
+      oechem.OEFindRingAtomsAndBonds (largestRing);
+   }
+
    public static void main(String [] args) 
    throws IncorrectInputException
    {
@@ -207,8 +317,6 @@ public final class RingSystemExtractor
       System.out.println( "Input:\t" + smi1 + "\n\n" );
       System.out.println( "largest RS\t" + rsExtractor.getLargestRingSystemSMILES() + "\n\n" );
       System.out.println( "basic RSs\t" + rsExtractor.getBasicRingSystemsSMILES() + "\n\n" );
-      
-      
-      
+      System.out.println( "largest R\t" + rsExtractor.getLargestRingSMILES() + "\n\n" );      
    }
 }

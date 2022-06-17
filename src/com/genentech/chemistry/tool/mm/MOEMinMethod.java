@@ -78,6 +78,9 @@ public class MOEMinMethod extends MMMinMethod
       StringBuilder command = new StringBuilder();
       command.append("cd " + workDir.getAbsolutePath() + ";");    
       
+      // Temporary beta version if MOE which has some fixes for sdminimize
+      command.append("setenv PATH /gne/home/benjamds/workspace/programs/moe2014.0901/bin:$PATH" + ";");
+      command.append("setenv MOE /gne/home/benjamds/workspace/programs/moe2014.0901" + ";");
       command.append("cat " + job.getInputFilename() + " | sdminimize -o " + tempOutFilename);                
       
       String ffCmdLine = getForceFieldCmdLine(getForceFieldChoice());

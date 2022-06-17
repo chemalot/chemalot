@@ -1,5 +1,5 @@
 /*
-   Copyright 2008-2014 Genentech Inc.
+   Copyright 2008-2013 Man-Ling Lee & Alberto Gobbi
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -13,20 +13,14 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
+Contact: aestelSW@gmail.com
 */
-package com.genentech.chemistry.openEye;
+package com.aestel.chemistry;
 
+public class BadStructureException extends Exception
+{  private static final long serialVersionUID = 1L;
 
-public enum MCSSCompareType
-{  DEFAULT,
-   QUERYRatio;
-   
-   public static MCSSCompareType toEnum( String str )
-   {  String s = str.toUpperCase();
-      for( MCSSCompareType enumvar : MCSSCompareType.values() )
-         if( enumvar.name().toUpperCase().equals(s)) 
-            return enumvar;
-      
-      throw new Error(String.format("Unknonw MCSSComapreType: %s", str));
+   public BadStructureException(String s)
+   {  super(s);
    }
 }

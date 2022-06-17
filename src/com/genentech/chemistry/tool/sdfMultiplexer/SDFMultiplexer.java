@@ -31,7 +31,7 @@ public class SDFMultiplexer
    private final BlockingQueue<String> outQue;
    private final BlockingQueue<String> inQue;
    private final BufferedReader in;
-   private final Thread outputWriter;
+   private final OutputWriterThread outputWriter;
    private final boolean stopOnError;
    private final boolean groupByTitle;
    private final boolean groupByAtomCount;
@@ -208,8 +208,8 @@ public class SDFMultiplexer
                e.getMessage());
       }
 
-      System.err.printf("sdfMultiplexer completed. %d molecules read in %dsec (%d crashRecoveries)\n",
-                        molCount, (System.currentTimeMillis() - startTime)/1000, nCrashes.intValue());
+      System.err.printf("sdfMultiplexer completed. %d molecules read in %dsec (%d crashRecoveries outGroups=%d)\n",
+                        molCount, (System.currentTimeMillis() - startTime)/1000, nCrashes.intValue(), outputWriter.getOutCount());
    }
 
 
@@ -388,6 +388,7 @@ public class SDFMultiplexer
    static class OutputWriterThread extends Thread
    {  private final BlockingQueue<String> queue;
       private final PrintWriter out;
+      private int outCount = 0;
 
       OutputWriterThread(BlockingQueue<String> outQue, PrintWriter out)
       {  this.queue = outQue;
@@ -396,10 +397,13 @@ public class SDFMultiplexer
 
       @Override
       public void run()
-      {  try
+      {  int outCount = 0;
+         
+         try
          {  String mol;
             while( (mol=queue.take()) != ENDOfQueue )
             {  out.print(mol);
+               outCount++;
             }
             out.flush();
             out.close();
@@ -407,10 +411,13 @@ public class SDFMultiplexer
          catch (InterruptedException e)
          {  System.err.printf("Unexpected interrupt (%s) while fetching for output.\n",
                   e.getMessage());
+         }finally
+         {  this.outCount = outCount;
          }
       }
+      
+      public int getOutCount()
+      {  return outCount;
+      }
    }
-
-
-
 }

@@ -77,6 +77,8 @@ public class SDFCalculate {
       result.put("Csp3","number of sp3 carbons");
       result.put("Csp3Fraction","Fraction of sp3 carbons");
       result.put("NonSp3Fraction","fraction of non-sp3 atoms");
+      result.put("LargestRingSize","atom count of largest ring");      
+      result.put("TotalAtoms","atom count inlcuding any explicit hydrogens");      
       return Collections.unmodifiableMap(result);
   }
 
@@ -139,6 +141,17 @@ public class SDFCalculate {
          //oechem.OEFindRingAtomsAndBonds(mol); // doesn't seem to be necessary
          int numRings = oechem.OEDetermineRingSystems(mol, new int[mol.GetMaxAtomIdx()]);
          oechem.OESetSDData(mol, "Rings",      Integer.toString(numRings));
+      }
+      if (propsList.contains("LargestRingSize") || propsList.contains("all") ) {         
+         int maxRingSize     = 0;          
+         int currentRingSize = 0;
+         for (OEAtomBase atom : mol.GetAtoms()) {
+            currentRingSize = oechem.OEAtomGetSmallestRingSize(atom);
+            if (currentRingSize > maxRingSize) {
+               maxRingSize = currentRingSize;
+            }
+         }
+         oechem.OESetSDData(mol, "LargestRingSize",      Integer.toString(maxRingSize));               
       }
       if (propsList.contains("Heavy_Atoms") || propsList.contains("cIC50atLE0.3") || propsList.contains("all") ) {
          numHeavy = SmartsSearch.search(mol, smartsMap.get("HeavyAtom"));
@@ -264,6 +277,14 @@ public class SDFCalculate {
          int count = SmartsSearch.search(mol, smartsMap.get("Csp3"));
          double Csp3Fraction = (count / (heavyCount + 0.001)); // so you don't divide by zero
          oechem.OESetSDData(mol, "Csp3Fraction", String.format("%.2f", Csp3Fraction ));
+      }
+      if (propsList.contains("TotalAtoms") || propsList.contains("all") ) {
+         OEAtomBaseIter atIt = mol.GetAtoms();
+         int implH = 0;
+         while(atIt.hasNext())
+            implH += atIt.next().GetImplicitHCount();
+         atIt.delete();
+         oechem.OESetSDData(mol, "TotalAtoms", String.format("%d", mol.NumAtoms()+implH ));
       }
 
       

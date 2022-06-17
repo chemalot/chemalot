@@ -123,7 +123,7 @@ public class SDFTopologicalIndexer
                oechem.OESetSDData(mol, "Zagreb",Integer.toString(indexer.getZagrebIndex()));
 
          } catch(TimeoutException e)
-         {  System.err.println("Conmputing topological Index timeed out for: " + OETools.molToCanSmi(mol, true));
+         {  System.err.println("Conmputing topological Index timed out for: " + OETools.molToCanSmi(mol, true));
          } catch(NumberFormatException e)
          {  System.err.println("Conmputing topological Index caused NumberFormatException for: " + OETools.molToCanSmi(mol, true));
             e.printStackTrace(System.err);

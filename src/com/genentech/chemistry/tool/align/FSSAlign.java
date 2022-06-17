@@ -78,7 +78,7 @@ class FSSAlign implements AlignInterface
          }
       }
 
-      if( minRMSD < 9999 ) // no match
+      if( minRMSD == 9999 ) // no match
          return;
 
       if( isMirror )

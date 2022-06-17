@@ -93,11 +93,23 @@ public class SDFEnumerator
    public void generateLibrary(final String outName,
                                  final int maxAtoms, final double randomFract, final boolean regenerate2D, final String unreactedFile)
    {  oemolothread ofs = new oemolothread(outName);
+      String lastTitle = "";
+      String lastSmiles = "";
+      
       for (OEMolBase mol : libgen.GetProducts())
       {  if( (randomFract > 1D || randomFract >= Math.random())
              && (maxAtoms == 0 || mol.NumAtoms() <= maxAtoms) )
          {  oechem.OESuppressHydrogens(mol);
 
+            // Avoid outputting the same compound multiple times for same reagents
+            String title = mol.GetTitle();
+            String smi = OETools.molToCanSmi(mol, true);
+            if( title.equals(lastTitle) && lastSmiles.equals(smi) ) continue;
+            
+            lastTitle = title;
+            lastSmiles = smi;
+            
+            
             if (regenerate2D == true) oedepict.OEPrepareDepiction(mol, true, true);
 
             oechem.OEAddSDData(mol, enumerated, "Yes");
@@ -158,7 +170,7 @@ public class SDFEnumerator
       opt = new Option("randomFraction",true, "Only output a fraction of the products.");
       options.addOption(opt);
 
-      opt = new Option("approxOutCount",true, "Tune randomFraction to output this number of compounds. Only correcect not reactAllSites.");
+      opt = new Option("approxOutCount",true, "Tune randomFraction to output this number of compounds. Only correct if not reactAllSites.");
       options.addOption(opt);
 
       opt = new Option("maxAtoms",true, "Only output products with <= maxAtoms.");
@@ -207,7 +219,7 @@ public class SDFEnumerator
       SDFEnumerator en = new SDFEnumerator(lg, reactAllSites, reagentSmiOrFiles);
       
       long combiSpace = en.getCombinatorialSize();
-      System.err.printf("Combinatorial Space sice = %d (excluding multiple reaction sites)\n", combiSpace);
+      System.err.printf("sdfEnumerator: Combinatorial Space size = %d (excluding multiple reaction sites)\n", combiSpace);
       
       boolean regenerate2D = cmd.hasOption("regenerate2D");
       String unreactedFile=null;

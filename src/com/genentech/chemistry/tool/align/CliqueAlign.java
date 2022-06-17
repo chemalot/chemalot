@@ -26,8 +26,10 @@ import openeye.oechem.*;
 class CliqueAlign extends AbstractAlign
 {   List<OECliqueSearch> css = new ArrayList<OECliqueSearch>();
 
-   public CliqueAlign(List<OEMol> refmols, OUTType oMolType, String rmsdTag, boolean doOptimize, boolean doMirror, int atomExpr, int bondExpr, boolean quiet)
-   {  super(oMolType, rmsdTag, doOptimize, doMirror, quiet);
+   public CliqueAlign(List<OEMol> refmols, OUTType oMolType, String rmsdTag, String atomDevTag, 
+                      String[] atomInfoTags, boolean doOptimize, boolean doMirror, 
+                      int atomExpr, int bondExpr, boolean quiet)
+   {  super(oMolType, rmsdTag, atomDevTag, atomInfoTags, doOptimize, doMirror, quiet);
 
       for( OEMolBase rMol : refmols)
       {  OECliqueSearch cs = new OECliqueSearch(rMol, atomExpr, bondExpr);

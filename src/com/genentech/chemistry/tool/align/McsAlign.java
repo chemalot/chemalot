@@ -27,8 +27,10 @@ class McsAlign extends AbstractAlign
 {
    private List<OEMCSSearch> mcsss = new ArrayList<OEMCSSearch>();
 
-   public McsAlign(List<OEMol> refmols, OUTType oMolType, String rmsdTag, boolean doOptimize, boolean doMirror, int atomExpr, int bondExpr, boolean quiet)
-   {  super(oMolType, rmsdTag, doOptimize, doMirror, quiet);
+   public McsAlign(List<OEMol> refmols, OUTType oMolType, String rmsdTag, String atomDevTag,
+                   String[] atomInfoTags, boolean doOptimize, boolean doMirror, 
+                   int atomExpr, int bondExpr, boolean quiet)
+   {  super(oMolType, rmsdTag, atomDevTag, atomInfoTags, doOptimize, doMirror, quiet);
 
       int mcsstype = OEMCSType.Exhaustive;
       for( OEMol rMol : refmols)

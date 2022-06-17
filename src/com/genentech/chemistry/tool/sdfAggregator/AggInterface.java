@@ -28,6 +28,11 @@ interface AggInterface {
    public void init ();
    public void process (OEGraphMol mol);
    public String getOutTagName ();
+   
+   /*
+    * compute the aggravated value of this specific record in the group.
+    * indxInGrp is the index of this element in the group.
+    */
    public String getResult(int indxInGrp);
 
    /**

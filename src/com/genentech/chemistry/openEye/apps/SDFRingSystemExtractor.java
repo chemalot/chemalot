@@ -40,7 +40,7 @@ import com.genentech.chemistry.openEye.RingSystemExtractor;
 
 /**
  * Identify the rings systems of the input structure and append fields with
- * largest ring system and the basic ring systems to the SD file.
+ * largest ring system, largest ring, and the basic ring systems to the SD file.
  *
  * @author Man-Ling Lee / August 2, 2010
  * Copyright 2010 Genentech
@@ -49,7 +49,14 @@ public class SDFRingSystemExtractor
 {  private static final String MY_NAME = "SDFRingSystemExtraction";
    private static final String OPT_INFILE    = "in";
    private static final String OPT_OUTFILE   = "out";
-
+   private static final String OPT_REPLACE_OUTPUT_WITH_LARGEST_RING_SYSTEM = "replaceOutputWithLargestRingSystem";
+   private static final String OPT_REPLACE_OUTPUT_WITH_LARGEST_RING        = "replaceOutputWithLargestRing";
+   private static final String OPT_KEEP_ONE_SIDE_CHAIN_ATOM                = "keepOneSideChainAtom";
+   
+   private static boolean replaceOutputWithLargestRingSystem = false;
+   private static boolean replaceOutputWithLargestRing       = false;
+   private static boolean keepOneSideChainAtom               = false;
+   
    private final oemolothread outputOEThread;
 
 
@@ -69,17 +76,43 @@ public class SDFRingSystemExtractor
       int iCounter = 0; //Structures in the SD file.
 
       OEMolBase mol = new OEGraphMol();
-      RingSystemExtractor rsExtractor = new RingSystemExtractor();
+      RingSystemExtractor rsExtractor = new RingSystemExtractor(keepOneSideChainAtom);
       while( oechem.OEReadMolecule( ifs, mol ) )
       {  iCounter++;
          rsExtractor.extract( mol );
          if( rsExtractor.hasLargestRingSystem() )
-         {  oechem.OESetSDData( mol, "largestRingSystem",
-                                rsExtractor.getLargestRingSystemSMILES() );
+         {  
+            if( replaceOutputWithLargestRingSystem || replaceOutputWithLargestRing )
+            {               
+               // cache the current mol with sd tags
+               OEGraphMol oldMol = new OEGraphMol();      
+               oechem.OECopySDData(oldMol, mol);
+               
+               if ( replaceOutputWithLargestRingSystem )
+               {
+                  // Replace the current mol with the largest ring system mol
+                  mol = rsExtractor.getLargestRingSystemMol();
+               }
+               else if ( replaceOutputWithLargestRing )
+               {
+                  // Replace the current mol with the largest ring 
+                  mol = rsExtractor.getLargestRingMol();
+               }
+               
+               // Save the SD data back...
+               oechem.OECopySDData(mol, oldMol);
+            }
+            
+            oechem.OESetSDData( mol, "largestRingSystem",
+                                rsExtractor.getLargestRingSystemSMILES() );            
          }
          if( rsExtractor.getBasicRingSystemCount() > 0 )
          {   oechem.OESetSDData( mol, "basicRingSystems",
                                 rsExtractor.getBasicRingSystemsSMILES() );
+         }
+         if( rsExtractor.hasLargestRing() )
+         {   oechem.OESetSDData( mol, "largestRing",
+                                rsExtractor.getLargestRingSMILES() );
          }
          oechem.OEWriteMolecule( outputOEThread, mol );
 
@@ -120,6 +153,18 @@ public class SDFRingSystemExtractor
       opt.setRequired( false );
       options.addOption( opt );
 
+      opt = new Option(OPT_REPLACE_OUTPUT_WITH_LARGEST_RING_SYSTEM, false, "If given, the largest ring system will be written to the output file instead of the input structure (default)");
+      opt.setRequired(false);
+      options.addOption(opt);
+      
+      opt = new Option(OPT_REPLACE_OUTPUT_WITH_LARGEST_RING, false, "If given, the largest single ring will be written to the output file instead of the input structure (default)");
+      opt.setRequired(false);
+      options.addOption(opt);
+      
+      opt = new Option(OPT_KEEP_ONE_SIDE_CHAIN_ATOM, false, "If given, the ring systems will retain one atom outside the ring.");
+      opt.setRequired(false);
+      options.addOption(opt);
+      
       CommandLineParser parser = new PosixParser();
       CommandLine cmd = null;
       try
@@ -137,6 +182,16 @@ public class SDFRingSystemExtractor
 
       String inFile  = cmd.getOptionValue( OPT_INFILE );
       String outFile = cmd.getOptionValue( OPT_OUTFILE );
+      
+      if( cmd.hasOption( OPT_REPLACE_OUTPUT_WITH_LARGEST_RING_SYSTEM ) )
+      {  replaceOutputWithLargestRingSystem = true;}
+         
+      if( cmd.hasOption( OPT_REPLACE_OUTPUT_WITH_LARGEST_RING ) )
+      {  replaceOutputWithLargestRing = true;}
+      
+      if( cmd.hasOption( OPT_KEEP_ONE_SIDE_CHAIN_ATOM ) )
+      {  keepOneSideChainAtom = true;}
+      
       SDFRingSystemExtractor extractor = new SDFRingSystemExtractor( outFile );
       extractor.run( inFile );
       extractor.close();

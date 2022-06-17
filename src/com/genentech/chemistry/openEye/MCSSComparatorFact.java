@@ -27,9 +27,12 @@ import com.aestel.chemistry.openEye.SimComparatorFactory;
 
 public class MCSSComparatorFact implements SimComparatorFactory<OEMolBase, OEMolBase, SimComparator<OEMolBase>>
 {  private final MCSSCompareType type;
+   private final int atExpr, bdExpr;
 
-   public MCSSComparatorFact(MCSSCompareType type)
+   public MCSSComparatorFact(MCSSCompareType type, int atExpr, int bdExpr)
    {  this.type = type;
+      this.atExpr = atExpr;
+      this.bdExpr = bdExpr;
    }
 
    /** returns new objects which should be deleted separately */
@@ -37,16 +40,22 @@ public class MCSSComparatorFact implements SimComparatorFactory<OEMolBase, OEMol
    {  return new OEGraphMol(in); // OEMolBase is directly used for comparison
    }
 
-   public MCSSComparator createComparator(OEMolBase mol)
+   public SimComparator<OEMolBase> createComparator(OEMolBase mol)
    {  if( type == MCSSCompareType.DEFAULT )
       {  int type = OEMCSType.Approximate;
          int minAt = 2;
-         int atExpr = OEExprOpts.DefaultAtoms;
-         int bdExpr = OEExprOpts.DefaultBonds;
          OEMCSMaxAtoms mcsFunc = new OEMCSMaxAtoms();
 
 
-         return new MCSSComparator(mol, type, atExpr, bdExpr, mcsFunc, minAt);
+         return new MCSSComparator(mol, type, this.atExpr, bdExpr, mcsFunc, minAt);
+         
+      } else if( type == MCSSCompareType.QUERYRatio )
+      {  int type = OEMCSType.Approximate;
+         int minAt = 2;
+         OEMCSMaxAtoms mcsFunc = new OEMCSMaxAtoms();
+   
+   
+         return new MCSSQueryRatioComparator(mol, type, atExpr, bdExpr, mcsFunc, minAt);
       }
       throw new Error("Should not happen!");
    }

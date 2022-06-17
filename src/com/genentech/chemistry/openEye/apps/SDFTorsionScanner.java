@@ -122,7 +122,7 @@ public class SDFTorsionScanner
             // Cleanup
             torsionConformers.delete();
 
-            System.err.println(torsionScanner.getSteps() + " conformers generated at " + torsionScanner.getTorIncr() + " degree increments.");
+            System.err.println(nTotalConformers + " conformers generated at " + torsionScanner.getTorIncr() + " degree increments.");
             if (torsionScanner.getMaxConfsPerStep() > 1 && !torsionScanner.doMinimize())
             {
                System.err.println("Expanded to " + Integer.toString(nTotalConformers) + " total conformers.");
@@ -216,7 +216,7 @@ public class SDFTorsionScanner
       opt = new Option(
                OPT_BONDFILE,
                true,
-               "The file containing the bond atoms that define the torsion.");
+               "The file containing the bond atoms that define the torsion. this file must have 1-8 atoms defining 1 or two torsion. The first bond is a2-a3 the second is a-2-a-3.");
       opt.setRequired(true);
       options.addOption(opt);
 

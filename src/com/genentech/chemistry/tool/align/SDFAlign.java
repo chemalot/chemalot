@@ -19,9 +19,24 @@ package com.genentech.chemistry.tool.align;
 
 import java.util.ArrayList;
 
-import openeye.oechem.*;
+import org.apache.commons.cli.BasicParser;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
 
-import org.apache.commons.cli.*;
+import openeye.oechem.OEAtomBase;
+import openeye.oechem.OEAtomBaseIter;
+import openeye.oechem.OEExprOpts;
+import openeye.oechem.OEFormat;
+import openeye.oechem.OEGraphMol;
+import openeye.oechem.OEIFlavor;
+import openeye.oechem.OEMol;
+import openeye.oechem.OEMolBase;
+import openeye.oechem.oechem;
+import openeye.oechem.oemolistream;
+import openeye.oechem.oemolostream;
 
 public class SDFAlign
 {  public enum OUTType
@@ -55,7 +70,10 @@ public class SDFAlign
 
       opt = new Option("rmsdTag", true, "Tagname for output of rmsd, default: no output.");
       options.addOption(opt);
-
+      
+      opt = new Option("atomDeviationTag", true, "Tagname for output of csv with deviation of heavy atoms, default: no output.");
+      options.addOption(opt);
+      
       opt = new Option("atomMatch", true, "Sequence of none|default|hcount|noAromatic specifing how atoms are matched cf. oe document.\n"
                                          +"noAromatic can be used to make terminal atoms match aliphatic and aromatic atoms.\n"
                                          +"Queryfeatures are considered only if default is used.");
@@ -72,6 +90,19 @@ public class SDFAlign
 
       opt = new Option("doNotOptimize", false, "If specified the RMSD is computed without moving optimizing the overlay.");
       options.addOption(opt);
+
+      opt = new Option("atomMapTags", true, "'|' separated list of field names in the ref file, "
+                 + "containing ',' separated values per atom, "
+                 + "After mapping the values are transfered to fields with the same name in the output file, "
+                 + "reordered to be associated with the matched atoms. "
+                 + "Note: only info on heavy atoms is transfered!");
+      options.addOption(opt);
+
+      opt = new Option("atomTypeTag", true, "tagName containing ',' separated list of atom types."
+                 + " This is only used to verify that the atom types are in the same order as the atoms in the molecule."
+                 + " Thus valicdating that the values in atomMapTags are odred correctly." );
+      options.addOption(opt);
+      
 
       opt = new Option("quiet", false, "Reduced warining messages");
       options.addOption(opt);
@@ -104,6 +135,7 @@ public class SDFAlign
       String outFile = cmd.getOptionValue("out");
       String refFile = cmd.getOptionValue("ref");
       String method = cmd.getOptionValue("method");
+      String atomDevTag = cmd.getOptionValue("atomDeviationTag");
       String rmsdTag = cmd.getOptionValue("rmsdTag");
       String oMol = cmd.getOptionValue("outputMol");
       boolean doMirror = cmd.hasOption("mirror");
@@ -111,46 +143,34 @@ public class SDFAlign
       boolean quiet = cmd.hasOption("quiet");
 
       OUTType outputMol = oMol == null ? OUTType.ALIGNED : OUTType.valueOf(oMol.toUpperCase());
-
+      
+      if( atomDevTag != null && method != null && method.equals("fss") )
+            throw new Error("-atomDeviationTag is not supported for method = fss");
+      
+      String[] atomInfoTags = new String[0];
+      if( cmd.hasOption("atomMapTags"))
+         atomInfoTags = cmd.getOptionValue("atomMapTags").split("\\|");
+      if( atomInfoTags.length > 0 && method != null && method.equals("fss") )
+         throw new Error("-atomMapTags is not supported for method = fss");
+      if( refFile == null )
+         throw new Error("-atomMapTags is only works with -ref");
+      String atomTypeTag = cmd.getOptionValue("atomTypeTag"); 
+   
       if( atomMatch.startsWith("|none") )      atomExpr = 0;
       if( atomMatch.contains("|hcount|") )     atomExpr |= OEExprOpts.HCount;
       if( atomMatch.contains("|noAromatic|") ) atomExpr &= (~ OEExprOpts.Aromaticity);
 
       if( bondMatch.startsWith("|none") ) bondExpr = 0;
 
-      ArrayList<OEMol> refmols = new ArrayList<OEMol>();
-      if( refFile != null )
-      {  oemolistream reffs = new oemolistream(refFile);
-         if (!is3DFormat(reffs.GetFormat()))
-            oechem.OEThrow.Fatal("Invalid input format: need 3D coordinates");
-         reffs.SetFormat(OEFormat.MDL);
-
-         int aromodel = OEIFlavor.Generic.OEAroModelOpenEye;
-         int qflavor  = reffs.GetFlavor( reffs.GetFormat());
-         reffs.SetFlavor(reffs.GetFormat(),(qflavor|aromodel));
-
-         OEMol rmol = new OEMol();
-         while(oechem.OEReadMDLQueryFile(reffs,rmol))
-         {  if( ! cmd.hasOption("keepCoreHydrogens"))
-               oechem.OESuppressHydrogens(rmol);
-            refmols.add(rmol);
-            rmol = new OEMol();
-         }
-         rmol.delete();
-
-         if( refmols.size() == 0)
-            throw new Error("reference file had no entries");
-
-         reffs.close();
-      }
-
+      ArrayList<OEMol> refmols = getReferences(cmd.hasOption("keepCoreHydrogens"), refFile, atomInfoTags, atomTypeTag);
+            
       oemolistream fitfs = new oemolistream(inFile);
       if (!is3DFormat(fitfs.GetFormat()))
-         oechem.OEThrow.Fatal("Invalid input format: need 3D coordinates");
+         throw new Error("Invalid input format: need 3D coordinates");
 
       oemolostream ofs = new oemolostream(outFile);
       if (!is3DFormat(ofs.GetFormat()))
-         oechem.OEThrow.Fatal("Invalid output format: need 3D coordinates");
+         throw new Error("Invalid output format: need 3D coordinates");
 
       AlignInterface aligner = null;
       OEGraphMol fitmol = new OEGraphMol();
@@ -165,10 +185,10 @@ public class SDFAlign
          }
 
          if( "sss".equalsIgnoreCase(method))
-         {  aligner = new SSSAlign(refmols, outputMol, rmsdTag, doOptimize, doMirror, atomExpr, bondExpr, quiet);
+         {  aligner = new SSSAlign(refmols, outputMol, rmsdTag, atomDevTag, atomInfoTags, doOptimize, doMirror, atomExpr, bondExpr, quiet);
 
          } else if( "clique".equalsIgnoreCase(method))
-         {  aligner = new CliqueAlign(refmols, outputMol, rmsdTag, doOptimize, doMirror, atomExpr, bondExpr, quiet);
+         {  aligner = new CliqueAlign(refmols, outputMol, rmsdTag, atomDevTag, atomInfoTags, doOptimize, doMirror, atomExpr, bondExpr, quiet);
 
          }else if( "fss".equalsIgnoreCase(method))
          {  if( cmd.hasOption("atomMatch") || cmd.hasOption("bondMatch") )
@@ -176,7 +196,7 @@ public class SDFAlign
             aligner = new FSSAlign(refmols, outputMol, rmsdTag, doOptimize, doMirror);
 
          } else
-         {  aligner = new McsAlign(refmols, outputMol, rmsdTag, doOptimize, doMirror, atomExpr, bondExpr, quiet);
+         {  aligner = new McsAlign(refmols, outputMol, rmsdTag, atomDevTag, atomInfoTags, doOptimize, doMirror, atomExpr, bondExpr, quiet);
          }
 
          do
@@ -191,6 +211,114 @@ public class SDFAlign
       for( OEMolBase mol : refmols) mol.delete();
       fitfs.close();
       ofs.close();
+   }
+
+   protected static ArrayList<OEMol> getReferences(boolean keepCoreHydrogens, String refFile, 
+                                                   String[] atomInfoTags, String atomTypeTag) throws Error
+   {  ArrayList<OEMol> refmols = new ArrayList<OEMol>();
+    
+      if( refFile != null )
+      {  oemolistream reffs = new oemolistream(refFile);
+         if (!is3DFormat(reffs.GetFormat()))
+            throw new Error("Invalid input format: need 3D coordinates");
+         reffs.SetFormat(OEFormat.MDL);
+
+         int aromodel = OEIFlavor.Generic.OEAroModelOpenEye;
+         int qflavor  = reffs.GetFlavor( reffs.GetFormat());
+         reffs.SetFlavor(reffs.GetFormat(),(qflavor|aromodel));
+
+         OEMol rmol = new OEMol();
+         while(oechem.OEReadMDLQueryFile(reffs,rmol))
+         {  attachAtomData(rmol, atomInfoTags, atomTypeTag);
+         
+            if( ! keepCoreHydrogens )
+               oechem.OESuppressHydrogens(rmol);
+            refmols.add(rmol);
+            rmol = new OEMol();
+         }
+         rmol.delete();
+
+         if( refmols.size() == 0)
+            throw new Error("reference file had no entries");
+
+         reffs.close();
+      }
+      return refmols;
+   }
+
+   /**
+    * the tags in atomInfoTags contain "," separated values in atom order. Add them 
+    * as StringData to the atoms so they can be transfered to the matched atoms after
+    * alignment.
+    * 
+    * @param rmol refernce molecules
+    * @param atomInfoTags the tags point to "," separated values in atom order
+    * @param atomTypeTag field name of atom label in atom order. 
+    *                    Used to validate that atom and data order was not mixed up.
+    */
+   private static void attachAtomData(OEMol rmol, String[] atomInfoTags, String atomTypeTag)
+   {  checkAtomTypeTagSequence(rmol, atomTypeTag);
+   
+      for( String tag : atomInfoTags)
+      {  String atomTagVal = oechem.OEGetSDData(rmol, tag);
+         if( atomTagVal != null && atomTagVal.length() > 0)
+         {  String[] atomTagVals = atomTagVal.split(" *, *",-1);
+            if( atomTagVals.length != rmol.NumAtoms()) 
+               System.err.print(
+                  String.format("mol '%s' tag=%s number of values does not match atom count!\n",
+                     rmol.GetTitle(), tag ));
+            
+            OEAtomBaseIter atit = rmol.GetAtoms();
+            while( atit.hasNext())
+            {  OEAtomBase at = atit.next();
+               int idx = at.GetIdx();
+               if( idx < atomTagVals.length)
+                  at.SetStringData(tag, atomTagVals[idx]);
+            }
+            atit.delete();
+         }
+      }
+   }
+
+   /**
+    * Ensure that atom types in comma separated field atomTypeTag are in same order as 
+    * the atom types of this molecule.
+    * 
+    * This is a check to alert us if atoms have been reordered as compared to the
+    * values stored in the fields from  atomInfoTags
+    */
+   private static void checkAtomTypeTagSequence(OEMol rmol, String atomTypeTag) throws Error
+   {
+      if( atomTypeTag != null && atomTypeTag.length() > 0 )
+      {  String atomTypesCSV = oechem.OEGetSDData(rmol, atomTypeTag);
+         if( atomTypesCSV == null || atomTypesCSV.length() == 0)
+            return;
+         
+         String[] atomTypes = atomTypesCSV.toLowerCase().split(" *, *",-1);
+      
+         if( rmol.NumAtoms() < atomTypes.length )
+            throw new Error(String.format("molecule (%s) has less atoms (%d) than listed in atomTypes (%s)",
+                     rmol.GetTitle(), rmol.NumAtoms(), atomTypesCSV));
+         
+         if( rmol.NumAtoms() > atomTypes.length )
+            System.err.printf("molecule (%s) has more atoms (%d) than listed in atomTypes (%s)\n",
+                     rmol.GetTitle(), rmol.NumAtoms(), atomTypesCSV);
+               
+         OEAtomBaseIter atIt = rmol.GetAtoms();
+         while( atIt.hasNext() )
+         {  OEAtomBase at = atIt.next();
+            if(at.GetIdx() >= atomTypes.length ) continue;
+            
+            String sym = oechem.OEGetAtomicSymbol(at.GetAtomicNum()).toLowerCase();
+            if(atomTypes[at.GetIdx()].length() > 0 && ! sym.equals( atomTypes[at.GetIdx()]))
+            {  System.err.printf("molecule (%s) has more mismatch in atoms listed in %s, atom (%d) '%s'!='%s'\n",
+                  rmol.GetTitle(), atomTypeTag, at.GetIdx(), sym, atomTypes[at.GetIdx()]);
+               atIt.delete();
+               return;
+            }
+         }
+         atIt.delete();
+      }
    }
 
    private static void exitWithHelp(String msg, Options options)

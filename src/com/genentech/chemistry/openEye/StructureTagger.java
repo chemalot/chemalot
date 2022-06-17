@@ -17,7 +17,6 @@
 package com.genentech.chemistry.openEye;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -133,6 +132,7 @@ public class StructureTagger
       return sb.substring( 0, sb.length()-1 );
    }
    
+   
    public String getAllTagPattern()
    {  if( matchedPatterns.size() == 0 )
          return "";
@@ -141,33 +141,14 @@ public class StructureTagger
          sb.append( matchedPatterns.get(i).patternString ).append( ' ' );
       return sb.substring( 0, sb.length()-1 );
    }
-
-   public String getAllSetNames()
-   {  if( matchedPatterns.size() == 0 )
-         return "";
-      StringBuffer sb = new StringBuffer();
-      for( int i=0; i<matchedPatterns.size(); i++ )
-         sb.append( matchedPatterns.get(i).setName ).append( ';' );
-      return sb.substring( 0, sb.length()-1 );
-   }
-
-   public String getUniqueSetNames()
-   {  if( matchedPatterns.size() == 0 )
-         return "";
-      String sb = new String();
-      HashSet<String> uniqueSet = new HashSet<String>();
-      for( int i=0; i<matchedPatterns.size(); i++ )
-    	  uniqueSet.add(matchedPatterns.get(i).setName);
-      String[] set_list = uniqueSet.toArray(new String[0]);
-      sb = String.join(";", set_list);
-      return sb;
-   }
-
+   
+   
    public String getFirstTag()
    {  if( matchedPatterns.size() == 0 )
          return "";
       return matchedPatterns.get(0).tagName;
    }
+   
    
    public String getFirstTagPattern()
    {  if( matchedPatterns.size() == 0 )

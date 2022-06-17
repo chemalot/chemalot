@@ -43,13 +43,15 @@ public class SDFCatsIndexer
    private static final String OPT_INFILE    = "in";
    private static final String OPT_OUTFILE   = "out";
    private static final String OPT_NORMALIZATION = "normalization";
-   private static final String OPT_PRINTDESC = "printDescriptors";
-   private static final String OPT_RGROUPTYPES = "rGroups";
+   private static final String OPT_PRINTDESC    = "printDescriptors";
+   private static final String OPT_RGROUPTYPES  = "rGroups";
+   private static final String OPT_FEAT_FILE    = "featFile";
+   private static final String OPT_MAX_BOND_DIST = "maxBondDist";
 
    private final CATSIndexer indexer;
 
-   private SDFCatsIndexer(AtomTyperInterface[] myTypes, String tagPrefix)
-   {  indexer = new CATSIndexer(myTypes, tagPrefix);
+   private SDFCatsIndexer(AtomTyperInterface[] myTypes, String tagPrefix, int maxBondDist)
+   {  indexer = new CATSIndexer(myTypes, tagPrefix, maxBondDist);
    }
 
 
@@ -172,12 +174,23 @@ public class SDFCatsIndexer
       opt.setArgName("meth");
       options.addOption( opt );
 
+      opt = new Option( OPT_MAX_BOND_DIST, true,
+            "The maximum bond distance to be considered between atom types. (Default 9)" );
+      opt.setArgName("dist");
+      opt.setRequired( false );
+      options.addOption( opt );
+
       opt = new Option( OPT_PRINTDESC, false,
                "Causes the descriptor for describing each linear path in a molceule to be created");
       options.addOption( opt );
 
       opt = new Option( OPT_RGROUPTYPES, false,
                "treat RGroup attachement point ([U]) as atom type.");
+      options.addOption( opt );
+
+      opt = new Option( OPT_FEAT_FILE, true,
+            "Optional filename conataining SMARTS<tab>FEATURE_NAME.  Feature name should be short and maybe one character.  e.g. C=O<tab>X." );
+      opt.setRequired( false );
       options.addOption( opt );
 
       CommandLineParser parser = new PosixParser();
@@ -199,8 +212,20 @@ public class SDFCatsIndexer
          tagPrefix = "RG";
       }
 
+      if( cmd.hasOption(OPT_FEAT_FILE))
+      {  String featureFilename = cmd.getOptionValue( OPT_FEAT_FILE );
+         myTypes = CATSIndexer.featuresFromFile(featureFilename);
+         tagPrefix = "CF"; // custom features
+      }
+
+      int maxBondDist = 9;
+      if( cmd.hasOption(OPT_MAX_BOND_DIST) )
+      {
+         maxBondDist = Integer.parseInt(cmd.getOptionValue (OPT_MAX_BOND_DIST));
+      }
+
       if( cmd.hasOption(OPT_PRINTDESC) )
-      {  SDFCatsIndexer sdfIndexer = new SDFCatsIndexer(myTypes, tagPrefix);
+      {  SDFCatsIndexer sdfIndexer = new SDFCatsIndexer(myTypes, tagPrefix, maxBondDist);
          sdfIndexer.printDescriptors(inFile, outFile);
          sdfIndexer.close();
          return;
@@ -213,7 +238,7 @@ public class SDFCatsIndexer
       else
          normMeth.add(Normalization.CountsPerFeature);
 
-      SDFCatsIndexer sdfIndexer = new SDFCatsIndexer(myTypes, tagPrefix);
+      SDFCatsIndexer sdfIndexer = new SDFCatsIndexer(myTypes, tagPrefix, maxBondDist);
       sdfIndexer.run( inFile, outFile, normMeth );
       sdfIndexer.close();
    }

@@ -252,6 +252,7 @@ public class SdfRMSDNNFinder
 
       opt = new Option( OPT_MOLIdTag, true,
                "Name of the field containing the molecule identifier. " +
+               "Only conformations with same ID are compared." +
                " Assumption: Ref file uses the same field name.");
       opt.setRequired( true );
       options.addOption( opt );
