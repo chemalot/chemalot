@@ -16,10 +16,7 @@
 */
 package com.genentech.oechem.tools;
 
-import openeye.oechem.OEAtomBase;
-import openeye.oechem.OEAtomBaseVector;
-import openeye.oechem.OEBondBase;
-import openeye.oechem.OEBondStereo;
+import openeye.oechem.*;
 
 /**
  * static final helper methods for OEBonds
@@ -29,7 +26,7 @@ public class Bond {
    private Bond() {}
 
    /**
-    * remove stereo chemistry info from double bond bd.
+    * Remove stereo chemistry info from double bond bd.
     * bd must be a double bond having stereo chemistry.
     */
    public static final void removeDBStereo(OEBondBase bd) {
@@ -49,8 +46,52 @@ public class Bond {
       vec.delete();
    }
    
+   /**
+    * Get the bond representation composed of atomic names and bond type.
+    */
    public static final String bondToString(OEBondBase bd)
-   {  return String.format("%s %s %s",Atom.getAtomName(bd.GetBgn()), 
+   {  
+       if( bd == null )
+           return "null";
+
+       return String.format("%s %s %s",Atom.getAtomName(bd.GetBgn()), 
             bd.GetType()+bd.GetIntType(), Atom.getAtomName(bd.GetEnd()));
    }
+   
+   /*
+   * Get the string representation of a bond (OEBondBase) in the following format:
+   * begin atom, bond order symbol, end atom.
+   */
+   public static final String toString(OEBondBase bd) {
+       if( bd == null )
+           return "null";
+
+       String atomStrA = Atom.toString(bd.GetBgn(), false);
+       String atomStrB = Atom.toString(bd.GetEnd(), false);
+       String bondStr = "N/A";
+
+       switch( bd.GetOrder() ) {
+           case 1 : bondStr = " - "; break;
+           case 2 : bondStr = " = "; break;
+           case 3 : bondStr = " # "; break;
+       }
+       return atomStrA + bondStr + atomStrB;
+   }
+
+   /**
+    * Get the string representation of the bond in the following format:
+    * begin atom, bond order symbol, end atom.
+    */   
+   public static final String toString(OEBondBase bd, boolean props) { 
+       if( bd == null )
+           return "null";
+
+       if( props == false )
+           return toString(bd);
+
+       StringBuilder bondString = new StringBuilder(toString(bd)); 
+
+       return bondString.toString();
+   }
+
 }

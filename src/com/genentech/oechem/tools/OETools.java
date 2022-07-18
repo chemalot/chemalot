@@ -16,6 +16,8 @@
 */
 package com.genentech.oechem.tools;
 
+import java.util.ArrayList;
+
 import openeye.oechem.*;
 
 public class OETools
@@ -70,9 +72,30 @@ public class OETools
       return mol;
    }
 
+   
+   public static String smiToCanSmi( String smiles, boolean iso ) 
+   {  String canSmiles = null;
+      OEGraphMol mol= new OEGraphMol();
+      OETools.smiToMol( mol, smiles );
+      canSmiles = OETools.molToCanSmi( mol, iso );
+      mol.delete();
+      return canSmiles;
+   }
+   
+   
+   public static String stringToCanSmi( String molfile, boolean iso )
+   {  String canSmiles = null;
+      OEGraphMol mol = new OEGraphMol();
+      OETools.stringToMol( mol, molfile );
+      canSmiles = OETools.molToCanSmi( mol, iso );
+      mol.delete();
+      return canSmiles;
+   }
+   
+
    /**
     * convert a string containing an MDL molfile to a mol object.
-    *
+    *   
     * @return the same mol object as passed in on input, just for convenience
     */
    public static OEMolBase stringToMol(OEMolBase mol, String molStr)
@@ -130,6 +153,17 @@ public class OETools
          molStr = molStr.substring(0, sPos);
 
       return molStr;
+   }
+
+   /**
+    *  @param mol
+    *           molecule to convert to smiles
+    *  @return smiles wihtout modification to the moleucle, not canonical
+    */
+   public static String molToSmi(OEMolBase mol)
+   {   return oechem.OECreateSmiString(mol, 
+           OESMILESFlag.AtomMaps|OESMILESFlag.Isotopes|OESMILESFlag.RGroups|OESMILESFlag.AtomStereo|
+           OESMILESFlag.BondStereo|OESMILESFlag.Hydrogens);
    }
 
    // public static final void SuppressHydrogens(OEMolBase oeMol) {
@@ -199,6 +233,7 @@ public class OETools
          { baseMaxX + avrgBondLength / 1D - addMinX,
                   baseMinY - addMaxY - avrgBondLength / 1.8d, 0 });
 
+      String title = base.GetTitle();
       for (int i = 0; i < count; i++)
       { // Y translation
          oechem.OETranslate(toAdd, new double[]
@@ -206,6 +241,8 @@ public class OETools
 
          oechem.OEAddMols(base, toAdd);
       }
+      
+      base.SetTitle(title);
       return base;
    }
 
@@ -364,6 +401,19 @@ public class OETools
       at.SetFormalCharge(at.GetFormalCharge()-1);
    }
 
+   
+   public static OEAtomBase[] getMolAtoms(OEMolBase mol)
+   {  OEAtomBase[] atoms = new OEAtomBase[mol.NumAtoms()];
+      
+      OEAtomBaseIter ats = mol.GetAtoms();
+      int i = 0;
+      while( ats.hasNext())
+         atoms[i ++] = ats.next();
+      ats.delete();
+      
+      return atoms;
+       
+   }
 
    public static void main(String... args)
    {  OEGraphMol mol = new OEGraphMol();
@@ -398,3 +448,4 @@ public class OETools
       ifs.delete();
    }
 }
+

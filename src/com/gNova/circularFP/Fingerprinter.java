@@ -197,6 +197,8 @@ public class Fingerprinter
          oechem.OEWriteMolecule(ofs, mol);
          mol.Clear();
       }
+      ifs.close();
+      ofs.close();
    }
 
    private static List<String> readSmartsFile()
