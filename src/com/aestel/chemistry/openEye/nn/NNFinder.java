@@ -41,7 +41,7 @@ public class NNFinder<T, Y extends SimComparator<T>> extends AbstractNNFinder<T,
     *        the is closed upon calling {@link #close()}.
     * @param compFact for converting the input into a comparable and or comparator.
     * @param refFile file with reference molecules
-    * @param inFile file with input molecules each input molecule is copared to
+    * @param inFile file with input molecules each input molecule is compared to
     * all references
     * @param countSimilarityTheshold count compounds with similarity above this threshold
     */

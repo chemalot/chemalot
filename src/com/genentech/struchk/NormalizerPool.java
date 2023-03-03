@@ -62,13 +62,13 @@ public class NormalizerPool
     * @param gneStructFlag may be "" in which case the structure flag is guessed from the
     *        specified stereo centers.
     */
-   public GNEMolecule normalizeMol(String molStr, String gneStructFlag)
+   public GNEMolecule normalizeMol(String molStr, String gneStructFlag, int nNonTetrahedralChiral)
    {
       PooledNormalizer pnorm = null;
       try
       {
          pnorm = (PooledNormalizer) pool.borrowObject();
-         return pnorm.norm.normalizeMol(molStr, gneStructFlag);
+         return pnorm.norm.normalizeMol(molStr, gneStructFlag, nNonTetrahedralChiral);
       } catch (Exception e)
       {
          handleException(pnorm, e);
@@ -79,10 +79,12 @@ public class NormalizerPool
       }
    }
 
-   public String validateMol(String molStr, String structFlag,
+
+   public String validateMol(String molStr, String structFlag, int nNonTetrahedralChiral,
          String stereoComment)
    {
-      GNEMolecule gneMol = normalizeMol(molStr, structFlag);
+
+      GNEMolecule gneMol = normalizeMol(molStr, structFlag, nNonTetrahedralChiral);
       if (gneMol.hasError())
          return gneMol.getErrors();
 
@@ -96,13 +98,13 @@ public class NormalizerPool
       return null;
    }
 
-   public GNEMolecule normalizeSmi(String smi, String gneStructFlag)
+   public GNEMolecule normalizeSmi(String smi, String gneStructFlag, int nNonTetrahedralChiral)
    {
       PooledNormalizer pnorm = null;
       try
       {
          pnorm = (PooledNormalizer) pool.borrowObject();
-         return pnorm.norm.normalizeSmi(smi, gneStructFlag);
+         return pnorm.norm.normalizeSmi(smi, gneStructFlag, nNonTetrahedralChiral);
       } catch (Exception e)
       {
          handleException(pnorm, e);
@@ -116,13 +118,13 @@ public class NormalizerPool
    /**
     * Check a molfile.
     */
-   public GNEMolecule normalizeOEMol(OEGraphMol mol, String gneStructFlag)
+   public GNEMolecule normalizeOEMol(OEGraphMol mol, String gneStructFlag, int nNonTetrahedralChiral)
    {
       PooledNormalizer pnorm = null;
       try
       {
          pnorm = (PooledNormalizer) pool.borrowObject();
-         return pnorm.norm.normalizeOEMol(mol, gneStructFlag);
+         return pnorm.norm.normalizeOEMol(mol, gneStructFlag, nNonTetrahedralChiral);
       } catch (Exception e)
       {
          handleException(pnorm, e);
@@ -132,6 +134,51 @@ public class NormalizerPool
          returnToPool(pnorm);
       }
    }
+
+   /**
+    * Assumes 0 nNonTetrahedralChiral
+    *
+    * @deprecated use {@link #normalizeMol(String, String, int)}
+    */
+   @Deprecated
+   public GNEMolecule normalizeMol(String molStr, String gneStructFlag)
+   {  return normalizeMol(molStr, gneStructFlag, 0);
+   }
+
+
+   /**
+    * Assumes 0 nNonTetrahedralChiral
+    *
+    * @deprecated use {@link #validateMol(String, String, int, String)}
+    */
+   @Deprecated
+   public String validateMol(String molStr, String structFlag,
+         String stereoComment)
+   {  return validateMol(molStr, structFlag, 0, stereoComment);
+   }
+
+
+   /**
+    * Assumes 0 nNonTetrahedralChiral
+    *
+    * @deprecated use {@link #normalizeSmi(String, String, int)}
+    */
+   @Deprecated
+   public GNEMolecule normalizeSmi(String smi, String gneStructFlag)
+   {  return normalizeSmi(smi, gneStructFlag, 0);
+   }
+
+   /**
+    * Assumes 0 nNonTetrahedralChiral
+    *
+    * @deprecated use {@link #normalizeSmi(String, String, int)}
+    */
+   @Deprecated
+   public GNEMolecule normalizeOEMol(OEGraphMol mol, String gneStructFlag)
+   {  return normalizeOEMol(mol, gneStructFlag, 0);
+   }
+
+
 
    public void returnToPool(PooledNormalizer norm)
    {
@@ -156,12 +203,12 @@ public class NormalizerPool
    static class PooledNormalizer
    {
       public PooledNormalizer(Normalizer norm)
-      {
+      {  assert norm != null;
          this.norm = norm;
       }
 
-      Normalizer norm;
-      long checkOutTime = System.currentTimeMillis();
+      final Normalizer norm;
+      final long checkOutTime = System.currentTimeMillis();
    }
 
    static class NormalizerFactory extends BasePoolableObjectFactory

@@ -83,6 +83,8 @@ public class AtomValenceCheck extends AbstractStructureCheck {
 
          if(validValenceSet.contains(String.format("%d-%d-%d", atomNr, charge, valence)))
             continue;   // valid known valence
+         
+         if( hasTransitionMetalNeighbor(at)) continue;
 
          msgs.addMessage(new Message(String.format("Atom %s has invalid valence=%d charge=%d.",
                Atom.getAtomName(at), valence, charge),
@@ -93,6 +95,28 @@ public class AtomValenceCheck extends AbstractStructureCheck {
       aIt.delete();
 
       return ! hasError;
+   }
+
+
+   private static boolean hasTransitionMetalNeighbor(OEAtomBase at)
+   {  OEAtomBaseIter atIt = at.GetAtoms();
+      boolean hasTMNeighbor = false;
+      while( atIt.hasNext())
+      {  OEAtomBase neigh = atIt.next();
+         if( ! neigh.IsMetal() ) continue;
+         
+         if( com.aestel.chemistry.molecule.Atom.MAIN_GROUP[neigh.GetAtomicNum()] != 0)
+            continue;
+         
+         OEBondBase bd = at.GetBond(neigh);
+         bd.SetBoolData(OEStruchk.HYPERValentBond, true);
+         
+         hasTMNeighbor = true;
+         break;
+      }
+      atIt.delete();
+      
+      return hasTMNeighbor;
    }
 
 

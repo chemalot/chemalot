@@ -20,17 +20,23 @@ package com.aestel.chemistry.openEye.nn;
 import java.io.IOException;
 
 import openeye.oechem.OEMolBase;
+import openeye.oechem.oechem;
 
 import com.genentech.oechem.tools.OETools;
 
 public class NNMatrixFinderVTConsumer  implements NNMatrixFinderConsumerInterface
 {  private final MultiThreadedPrinter out;
+   private final String idTag;
 
 
-   public NNMatrixFinderVTConsumer(String outFile) throws IOException
+   public NNMatrixFinderVTConsumer(String outFile, String idTag) throws IOException
    {  out = new MultiThreadedPrinter(outFile);
+      this.idTag = idTag;
       try
-      {  out.println("inSmi\trefIdx2\tSim");
+      {  if( idTag == null )
+            out.println("inSmi\trefIdx2\tSim");
+         else
+            out.println("inIdx1\trefIdx2\tSim");
       } catch (InterruptedException e)
       {  throw new Error("output queue full imediatly: Should not happen!");
       }
@@ -42,9 +48,11 @@ public class NNMatrixFinderVTConsumer  implements NNMatrixFinderConsumerInterfac
     */
    public void consumeResult(OEMolBase mol, double maxSim, int nnIdx, int countSimilar)
       throws InterruptedException
-   {  String smi1 = OETools.molToCanSmi(mol, true);
+   {  String id1 = idTag == null ? 
+                       OETools.molToCanSmi(mol, true)
+                     : oechem.OEGetSDData(mol, idTag);
       String id2 = Integer.toString(nnIdx);
-      out.println(smi1 + '\t' + id2 + '\t' + String.format("%.4f",maxSim));
+      out.println(id1 + '\t' + id2 + '\t' + String.format("%.4f",maxSim));
    }
 
    public void close()

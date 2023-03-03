@@ -106,13 +106,20 @@ public class OEStruchk {
    /** tag to mark bonds and atoms on had stereochemistry in the before tautomerization. */
    public static final int HADStereoTag = oechem.OEGetTag("HADStereoTag");
 
+   /** tag metal atoms that have more than 4 bonds and some of those are wedges */
+   public static final int CHIRALMetal  = oechem.OEGetTag("CHIRALMetal");
+   
+   /** Dattive bond between main group atom and transition metal, to be removed from smiles
+    * to allow MGA to be aromatic. */
+   public static final int HYPERValentBond  = oechem.OEGetTag("HYPERValentBond");
+   
    /** tag to mark sp3 atoms which are in rings and therefore could bear stereo information
     * eg. in CC1CCC(C)CC1. Used by {@link CheckStructureFlag}. */
    public static final int NONChiralStereoAtomTag  = oechem.OEGetTag("NONChiralStereo");
    /** flag on whole molecule flagging a previous call to {@see #flagNonchiralStereoAtoms}*/
    public static final int NONChiralStereoAssignedTag = oechem.OEGetTag("NONChiralStereoMol");
 
-   /** flag on atoms and bonds if they are detected to be part of an atropisomeric cneter */
+   /** flag on atoms and bonds if they are detected to be part of an atropisomeric center */
    public static final int ATROPIsomericCenter = oechem.OEGetTag("AtropIsomeric");
 
 
@@ -150,6 +157,9 @@ public class OEStruchk {
 
    /** stores the chiral flag of the current molecule */
    private boolean hasChiralFlag;
+
+   /** number of non tetrahedral stereo centers on current molecules (eg. atropisomeric) */
+   private int nNonTetrahedralStereoCenter;
 
    /** true if the current molecule is empty and was replaced by "*" */
    private boolean isEmptyMol;
@@ -258,11 +268,13 @@ public class OEStruchk {
             hMode = HydrogenMode.SUPRRESSED;
 
          } else if("assignStructFlag".equals(ruleElement.getName())) {
-            sflagChk = new AssignStructureFlag(ruleElement, stereoFlagger);
+            sflagChk = new AssignStructureFlag(this, ruleElement, stereoFlagger);
+            keeperMap.put(sflagChk.getKeeperName(), sflagChk);
             rule = sflagChk;
 
          } else if("checkStructFlag".equals(ruleElement.getName())) {
-            sflagChk = new CheckStructureFlag(ruleElement, stereoFlagger);
+            sflagChk = new CheckStructureFlag(this, ruleElement, stereoFlagger);
+            keeperMap.put(sflagChk.getKeeperName(), sflagChk);
             rule = sflagChk;
 
          } else if("componentNormalizer".equals(ruleElement.getName())) {
@@ -324,15 +336,14 @@ public class OEStruchk {
     * @param mol input molecule which will be modified.
     * @param cdxml input molecule as cdxml, to be used for thick bond check, may be null.
     * @param structFlag StructureFlag for mol, null if mode is EXTERNAL
+    * @param nonTetrahedralStereo number of non tetrahedral stereo chenters eg. atropisomric centers.
     * @return false if any errors occur.
     */
-   public boolean applyRules(String mol, String cdxml, StructureFlag structFlag ) {
+   public boolean applyRules(String mol, String cdxml, StructureFlag structFlag, int nonTetrahedralStereo ) {
       boolean success = true;
 
       resetState();
-
-      for( StructureKeeperInterface sKeep : keeperMap.values())
-         sKeep.delete();
+      nNonTetrahedralStereoCenter = nonTetrahedralStereo;
 
       if( EMPTYMolPattern.matcher(mol).find()) {
 // Disabled empty mol check on request from Gina with OK from ROhan and Fred 2010/02/12
@@ -371,7 +382,7 @@ public class OEStruchk {
 //         success = false;
 //      }
 
-      return applyRules(success, structFlag );
+      return applyRules(success, structFlag, nonTetrahedralStereo );
    }
 
    /**
@@ -380,30 +391,46 @@ public class OEStruchk {
     * @param mol input molecule which will not be modified.
     * @return false if any errors occur.
     */
-   public boolean applyRules(OEGraphMol mol, StructureFlag inSFlag)
+   public boolean applyRules(OEGraphMol mol, StructureFlag inSFlag, int nonTetrahedralStereo)
    {  boolean success = true;
 
       resetState();
 
+      nNonTetrahedralStereoCenter = nonTetrahedralStereo;
       hasChiralFlag   = oechem.OEMDLHasParity( mol );
-
-      for( StructureKeeperInterface sKeep : keeperMap.values())
-         sKeep.delete();
 
       oechem.OEAddMols(oeMol, mol);
       oeMol.SetTitle( mol.GetTitle() );
 
-      return applyRules(success, inSFlag);
+      return applyRules(success, inSFlag, nonTetrahedralStereo);
+   }
+
+
+   /**
+    * @Deprecated Use {@link #applyRules(String, String, StructureFlag, int)} instead.
+    */
+   @Deprecated
+   public boolean applyRules(String mol, String cdxml, StructureFlag structFlag) {
+      return applyRules(mol, cdxml, structFlag, 0);
+   }
+
+   /**
+    * @Deprecated Use {OEStruchk{@link #applyRules(OEGraphMol, StructureFlag, int)} instead.
+    */
+   @Deprecated
+   public boolean applyRules(OEGraphMol mol, StructureFlag inSFlag ) {
+      return applyRules(mol, inSFlag, 0);
    }
 
    /**
     * Apply all rules to internally stored oeMol.
     * @param structFlag StructureFlag for this molecule, may be null for StruCheckMode = EXTERNAL.
+    * @param nonTetrahedralStereo number of non tetrahedral stereo chenters eg. atropisomric centers.
     *
     * @return false on error, all keepers will be set to empty molecules if
     *         a fatal error happens.
     */
-   private boolean applyRules(boolean success, StructureFlag structFlag) {
+   private boolean applyRules(boolean success, StructureFlag structFlag, int nonTetrahedralStereo) {
       if(! oeMol.IsValid()) {
          structMessages.addMessage(new Message("Invalid molecule.",Message.Level.ERROR, null));
 
@@ -472,6 +499,14 @@ public class OEStruchk {
    public String getTransformedMolfile(String keeperName) {
       tmpMol.Clear();
       oechem.OEAddMols(tmpMol, getTransformedMol(keeperName));
+      
+      /* This part could potentially be replaced by:
+         - either allways keeping explicit hydrogens that are relevant to stereo
+           This is an option in OESuppressHydrogens.
+           This needs through testing as some methods might rely on all H being implicit.
+         - Calling OEMDLPerceiveBondStereo to generate the correct wedge bond to a non H atom
+           This might not look as nice.  
+      */
       OEAtomBaseIter aIt = tmpMol.GetAtoms( atomHadExplicitHFunct );
       double[] coor = new double[3];
       while( aIt.hasNext() ) {
@@ -554,9 +589,25 @@ public class OEStruchk {
    {  return sflagChecker.getNChiral();
    }
 
-   /** return number of chiral atoms wiht specified stereo in last checked molecule */
+   /** return number of chiral atoms with specified stereo in last checked molecule */
    public int getNChiralSpecified()
    {  return sflagChecker.getNChiralSpecified();
+   }
+
+   /** return number of chiral centers which are not tetrahedral in last checked molecule.
+    * At this time this includes only Atropisomeric centers.
+    **/
+   public int getNChiralNonTetrahedral()
+   {  return sflagChecker.getNChiralNonTetrahedral();
+   }
+
+   /** return number of chiral centers which are not tetrahedral and were drawn
+    * using wedges in last checked molecule.
+    *
+    * At this time this includes only Atropisomeric centers.
+    **/
+   public int getNChiralNonTetrahedralSpecified()
+   {  return sflagChecker.getNChiralNonTetrahedralSpecified();
    }
 
    /** return number of non-chiral sp3 atoms in last checked molecule */
@@ -593,6 +644,15 @@ public class OEStruchk {
     */
    public boolean hasChiralFlag() {
       return hasChiralFlag;
+   }
+
+   /**
+    * @return the number of non-tetrahedral stereo centers for the last molecule
+    *         as passed to the {@link #applyRules}.
+    *
+    */
+   protected int getNNonTetrahedralStereoSupplied() {
+      return nNonTetrahedralStereoCenter;
    }
 
    /**
@@ -666,10 +726,15 @@ public class OEStruchk {
 
    private void resetState() {
       oeMol.Clear();
+      nNonTetrahedralStereoCenter = 0;
       structMessages.clear();
       if(componentNormalizer != null) componentNormalizer.reset();
       if(sflagChecker       != null) sflagChecker.reset();
       isEmptyMol = false;
+
+      for( StructureKeeperInterface sKeep : keeperMap.values())
+         sKeep.delete();
+
    }
 
    public static void main3(String[] args) throws JDOMException, IOException {
@@ -697,6 +762,7 @@ public class OEStruchk {
    /**
     * Command line interface to {@link OEStruchk}.
     */
+   @SuppressWarnings("resource")
    public static void main(String [] args) throws ParseException, JDOMException, IOException {
       long start = System.currentTimeMillis();
       int nMessages = 0;
@@ -773,7 +839,8 @@ public class OEStruchk {
          OEStruchk structFlagChecker = new OEStruchk(confFile,
                                                      CHECKConfig.CHECKStructFlag, errorsAsWarnings);
 
-         Pattern sFlagPat = Pattern.compile("<StructFlag>\\s*([^\\n\\r]+)");
+         Pattern sFlagPat   = Pattern.compile("<StructFlag>\\s*([^\\n\\r]+)");
+         Pattern nonTetraS = Pattern.compile("<NonTetrahedralChiral>\\s*(\\d+)");
          String line;
          boolean inMolFile = true;
          boolean atEnd = false;
@@ -790,16 +857,25 @@ public class OEStruchk {
 
             if( line.startsWith("$$$$")) {
 
-               OEStruchk oeStruchk;
+               OEStruchk oeStruchk = null;
                StructureFlag sFlag = null;
+
                Matcher mat = sFlagPat.matcher(data);
-               if(! mat.find()) {
-                  oeStruchk = structFlagAssigner;
-               }else {
+               if(mat.find()) {
                   oeStruchk = structFlagChecker;
                   sFlag = StructureFlag.fromString(mat.group(1));
                }
-               if(! oeStruchk.applyRules(mol.toString(), null, sFlag))
+               if( sFlag == null ) { // was not valid string e.g. empty
+                  oeStruchk = structFlagAssigner;
+               }
+
+               mat = nonTetraS.matcher(data);
+               int nonTetrahedralStereo = 0;
+               if(mat.find()) {
+                  nonTetrahedralStereo = Integer.parseInt(mat.group(1));
+               }
+
+               if(! oeStruchk.applyRules(mol.toString(), null, sFlag, nonTetrahedralStereo))
                   nErrors++;
 
                out.print(oeStruchk.getTransformedMolfile(null));
@@ -1016,14 +1092,18 @@ public class OEStruchk {
    private String countChiralCentersStr() {
       int nChiral          = sflagChecker.getNChiral();
       int nChiralSpecified = sflagChecker.getNChiralSpecified();
-      int nNonChiralSp3    = sflagChecker.getNNonChiralStereo();
+      int nNonChiralSp3          = sflagChecker.getNNonChiralStereo();
       int nNonChiralSp3Specified = sflagChecker.getNNonChiralStereoSpecified();
+      int nChiralNonTetrahedral          = sflagChecker.getNChiralNonTetrahedral();
+      int nChiralNonTetrahedralSpecified = sflagChecker.getNChiralNonTetrahedralSpecified();
 
-      return String.format("%s.%s.%s.%s",
-            nChiral               == 0 ? "" : Integer.toString(nChiral),
-            nChiralSpecified      == 0 ? "" : Integer.toString(nChiralSpecified),
-            nNonChiralSp3         == 0 ? "" : Integer.toString(nNonChiralSp3),
-            nNonChiralSp3Specified== 0 ? "" : Integer.toString(nNonChiralSp3Specified));
+      return String.format("%s.%s.%s.%s.%s.%s",
+            nChiral                        == 0 ? "" : Integer.toString(nChiral),
+            nChiralSpecified               == 0 ? "" : Integer.toString(nChiralSpecified),
+            nChiralNonTetrahedral          == 0 ? "" : Integer.toString(nChiralNonTetrahedral),
+            nChiralNonTetrahedralSpecified == 0 ? "" : Integer.toString(nChiralNonTetrahedralSpecified),
+            nNonChiralSp3                  == 0 ? "" : Integer.toString(nNonChiralSp3),
+            nNonChiralSp3Specified         == 0 ? "" : Integer.toString(nNonChiralSp3Specified));
    }
 
 

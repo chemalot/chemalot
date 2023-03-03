@@ -144,12 +144,18 @@ M  END]]></example>
 M  END]]></example>
    </cleanReactionCenter>
 
-   <clearBondStereo id='clearAmidineStereo'>
-        C=[NH]
+   <clearBondStereo id='clearAmidine1Stereo'>
+       C(=[NH])
        <message>Discarding cis/trans stereochemistry on C=NH.</message>
        <description>Discarding cis/trans stereo chemistry on C=NH.</description>
    </clearBondStereo>
 
+   <clearBondStereo id='clearAmidine2Stereo'>
+       C(=[NH])(-[!HD1])
+       <message>Discarding cis/trans stereochemistry on C(=NH)(-X).</message>
+       <description>Discarding cis/trans stereo chemistry on C(=NH)(-X).</description>
+   </clearBondStereo>
+    
    <removeHydrogens id='removeHydrogens'>
       <!--  stereo relevant hydrogens are not removed -->
       <description>Remove hydrogen atoms.</description>

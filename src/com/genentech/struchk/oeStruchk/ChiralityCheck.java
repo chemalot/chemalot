@@ -18,14 +18,23 @@ package com.genentech.struchk.oeStruchk;
 
 import java.util.HashSet;
 
-import openeye.oechem.*;
-
 import org.jdom.Element;
 
 import com.aestel.utility.Message;
 import com.aestel.utility.MessageList;
-import com.genentech.oechem.tools.*;
+import com.genentech.oechem.tools.Atom;
+import com.genentech.oechem.tools.BondHasDataFunctor;
+import com.genentech.oechem.tools.BondOrderFunctor;
 import com.genentech.struchk.oeStruchk.OEStruchk.StructureFlag;
+
+import openeye.oechem.OEAndBond;
+import openeye.oechem.OEAtomBase;
+import openeye.oechem.OEAtomBaseIter;
+import openeye.oechem.OEBondBase;
+import openeye.oechem.OEBondBaseIter;
+import openeye.oechem.OEGraphMol;
+import openeye.oechem.OEProperty;
+import openeye.oechem.oechem;
 
 /**
  * Structure checking rules which flags an input compound has wedge bonds which
@@ -39,7 +48,6 @@ public class ChiralityCheck extends AbstractStructureCheck{
    private final OEAndBond checkBondStereoFctr;
    private final BondOrderFunctor bdOrderFctr;
    private final HashSet<Integer> badAtoms = new HashSet<Integer>(20);
-   private final HashSet<Integer> atropBonds = new HashSet<Integer>(20);
 
    public ChiralityCheck(Element tElem) {
       super(tElem);
@@ -59,10 +67,9 @@ public class ChiralityCheck extends AbstractStructureCheck{
                                  MessageList msgs) {
       boolean hasError = false;
       badAtoms.clear();
-      atropBonds.clear();
 
       // check for bonds which had wedges but are not chiral and are not exocyclic singles
-      hasError = checkForAtropIsomers(in, msgs, hasError);
+      hasError = checkForAtropIsomersOrMetals(in, msgs, hasError);
 
       checkForUnsupportedChirality(in, msgs);
       checkForNonChiralAtoms(in, msgs);
@@ -78,17 +85,9 @@ public class ChiralityCheck extends AbstractStructureCheck{
       return true;
    }
 
-   /**
-    *
-    *  @return numnber of valid wedge bodnd flagging n atropisomeric bond in the
-    *          last checked molecule.
-    */
-   public int hasAtropIsomericCenter()
-   {  return atropBonds.size();
-   }
 
    // check for bonds which had wedges but are not chiral and are not exocyclic singles
-   private boolean checkForAtropIsomers(OEGraphMol in, MessageList msgs,
+   private boolean checkForAtropIsomersOrMetals(OEGraphMol in, MessageList msgs,
             boolean hasError) {
 
       oechem.OEFindRingAtomsAndBonds(in);
@@ -96,8 +95,13 @@ public class ChiralityCheck extends AbstractStructureCheck{
       while(bdIt.hasNext()) {
          OEBondBase bd = bdIt.next();
          OEAtomBase at = bd.GetBgn();
-
+         
          if( at.IsChiral() ) continue;
+         if( at.IsMetal() && at.GetDegree() > 4)
+         {  at.SetBoolData(OEStruchk.CHIRALMetal, true);
+            continue;
+         }
+         
          // we rely on openeye to remove stereo chemistry from atoms which do not have any
          if( at.GetBoolData(OEStruchk.NONChiralStereoAtomTag) ) continue; // exocyclic single bonds are included
 
@@ -129,7 +133,7 @@ public class ChiralityCheck extends AbstractStructureCheck{
    }
 
    /**
-    * Check to see if the wedgebd is a valid assuming that atropAt is atropisomeric.
+    * Check to see if the wedge bd is a valid assuming that atropAt is atropisomeric.
     *
     *  - atropAt must have 3 bonds (explicit to enfoce size restriction)
     *  - most have a single bond that connects it to annother atom with 3 bonds
@@ -146,6 +150,10 @@ public class ChiralityCheck extends AbstractStructureCheck{
       if( atropAt.GetImplicitHCount() == 0 && atropAt.GetExplicitDegree() != 3 ) return false;
 
       boolean isAtropIsomeric = false;
+
+      // Atropisomer must be between two sp2 atoms with 3 substituents
+      if( atropAt.GetHvyDegree() != 3 || atropAt.GetImplicitHCount() != 0)
+         return isAtropIsomeric;
 
       // check for AtropIsomer
       OEBondBaseIter bit2 = atropAt.GetBonds();
@@ -165,11 +173,12 @@ public class ChiralityCheck extends AbstractStructureCheck{
          }
 
          OEAtomBase at2 = b2.GetNbr(atropAt);
-         if( at2.GetImplicitHCount() == 0 && at2.GetExplicitDegree() == 3 ) {
+         // Atropisomer must be between two sp2 atoms with 3 substituents
+         if( at2.GetImplicitHCount() == 0 && at2.GetHvyDegree() == 3 ) {
 
             isAtropIsomeric = true;
 
-            // look for a wedge bond on the aother side of the atropIsomeirc bond (b2)
+            // look for a wedge bond on the other side of the atropIsomeirc bond (b2)
             // only one wedge is allowed specifying the stereo of an atropisomer
             OEBondBaseIter bit3 = at2.GetBonds();
             while(bit3.hasNext()) {
@@ -179,10 +188,11 @@ public class ChiralityCheck extends AbstractStructureCheck{
                if( b3.GetIntType() == 1 && b3.HasData(OEProperty.BondStereo) ) {
                   OEAtomBase at3 = b3.GetBgn();
                   if( at3.GetIdx() == at3.GetIdx() ) {
-                     // other side of atrop bond has alos a wedge bond
-                     // we consider this an errror since it makes identifing
+                     // other side of atrop bond has also a wedge bond
+                     // we consider this an error since it makes identifying
                      // the 3d geometry difficult
-
+                     // TODO: Add Message saying the two wedge bonds are not allowed across atropiisomeric centers
+                     //       This should not be a problem even when we have nighboring atrobisomeric bonds.
                      isAtropIsomeric = false;
                   }
                }
@@ -195,7 +205,6 @@ public class ChiralityCheck extends AbstractStructureCheck{
                at2.SetBoolData(OEStruchk.ATROPIsomericCenter, true);
                b2.SetBoolData(OEStruchk.ATROPIsomericCenter, true);
 
-               atropBonds.add(b2.GetIdx());
                break;
             }
          }

@@ -21,7 +21,7 @@ import openeye.oechem.*;
 import com.genentech.oechem.tools.*;
 
 
-class TautomerMolEvaluator {
+public class TautomerMolEvaluator {
    private static final int NONCHIRALNotSpecified  = 0;   // must be 0 because this is default
    private static final int CHIRALSpecified        = 1;
    private static final int CHIRALNotSpecified     = 2;
@@ -50,7 +50,7 @@ class TautomerMolEvaluator {
    /**
     * Be sure to call reset before using TautomerMolFunctor on a new molecule.
     */
-   public void evaluate(OEMolBase in)
+   public boolean evaluate(OEMolBase in)
    {  //System.err.println("evaluate: "+ oechem.OECreateIsoSmiString(in));
 
       tmpMol.Clear();
@@ -59,8 +59,8 @@ class TautomerMolEvaluator {
       //oechem.OEAssignMDLHydrogens(tmpMol);
 
       if( checkForStereoChanges(tmpMol))
-      {  //System.err.printf("Stereo Changed: %s\n", oechem.OECreateSmiString(tmpMol),OESMILESFlag.ISOMERIC);
-         return;
+      {  // System.err.printf("Stereo Changed: %s\n", oechem.OECreateSmiString(tmpMol),OESMILESFlag.ISOMERIC);
+         return false;
       }
 
       int aromaticCount = 0;
@@ -86,7 +86,7 @@ class TautomerMolEvaluator {
             || (chargesCount == bestChargeCount && aromaticCount >= bestAromaticCount)
             || molCount == 0 ) {
          String newSmi = oechem.OECreateIsoSmiString(tmpMol);
-//System.err.printf("newS=%s\tbestS=%s\n",newSmi, bestSmi);
+         // System.err.printf("newS=%s\tbestS=%s\n",newSmi, bestSmi);
          if( molCount == 0
              || chargesCount < bestChargeCount
              || aromaticCount > bestAromaticCount
@@ -94,62 +94,50 @@ class TautomerMolEvaluator {
             bestSmi = newSmi;
             bestMol.Clear();
             oechem.OEAddMols(bestMol, in);
-//System.err.printf("Keeping mol: %s\n", OETools.molToCanSmi(bestMol, true));
+            // System.err.printf("Keeping mol: %s\n", OETools.molToCanSmi(bestMol, true));
             bestAromaticCount  = aromaticCount;
             bestChargeCount = chargesCount;
             molCount++;
          }
       }
 
-//System.err.println("call: "+ (tautCount < maxStates) + " " + oechem.OECreateIsoSmiString(in));
-//printAtoms(in);
-      return;
+      // System.err.println("call: "+ (tautCount < maxStates) + " " + oechem.OECreateIsoSmiString(in));
+      // printAtoms(in);
+      return true;
    }
 
    private boolean checkForStereoChanges(OEMolBase in) {
       boolean stereoChanged = false;
 
-      // disregrad tautomers changing double bond stereochemsitry:
+      oechem.OEAssignAromaticFlags(in);
+      oechem.OEPerceiveChiral(in);
+      
+      // Disregard tautomers changing double bond stereochemistry:
       // C1(C2=NNC=C2)=CC=CN1>>C3(/C=CC=N3)=C4C=CNN/4
+      
       OEBondBaseIter bdIt = in.GetBonds();
       while( bdIt.hasNext() ) {
-         OEBondBase bd = bdIt.next();
-         if( bd.HasData(OEStruchk.HADStereoTag) ){
+          OEBondBase bd = bdIt.next();
 
-            if( bd.GetOrder() != 2 || ! bd.IsChiral() ) {
-               // bond changed to be non-chiral
-               stereoChanged = true;
-               break;
-            }
-
-            if(bd.GetBoolData(OEStruchk.HADStereoTag) != bd.HasStereoSpecified() ) {
-               // bond did have stereo specified and now lost it, or
-               //  the bond gained new stereo specification
-               stereoChanged = true;
-               in.SetBoolData(DUMMYTag, false);
-               break;
-            }
-         } else if( bd.GetOrder() == 2 && bd.IsChiral() ) {
-                 //bond is newly chiral
-            stereoChanged = true;
-            break;
-         }
-
+          int bdStereoType  = getStereoType(bd);
+          int orgStereoType = bd.GetIntData(OEStruchk.HADStereoTag);
+          if( bdStereoType != orgStereoType ) {
+              //System.err.printf("new=%s orig=%s bond=%s ism=%s\n",
+              //        stereoFragToString(bdStereoType), stereoFragToString(orgStereoType),
+              //        Bond.toString(bd), oechem.OEMolToSmiles(in));
+              stereoChanged = true;
+              break;
+          }
       }
       bdIt.delete();
       if( stereoChanged ) {
-//printAtoms(in);
          return true;
       }
-
+      
       // capture cases like this:
       // CC1=CC(C(C(C2=C(O)OC(C)=CC2=O)C)=C(O)O1)=O>>CC3=CC(O)=C(C(C4=C(O)C=C(C)OC4=O)C)C(O3)=O
       // the central atom is chiral on the left but not on the right
-//OEMolBase t = new OEGraphMol(in);
-//System.err.printf("%s\n", oechem.OECreateIsoSmiString(t));
-//t.delete();
-      oechem.OEAssignAromaticFlags(in);
-      oechem.OEPerceiveChiral(in);
+
       // flag atoms which had stereo on input
       OEAtomBaseIter aIt = in.GetAtoms();
       while( aIt.hasNext() ) {
@@ -158,11 +146,9 @@ class TautomerMolEvaluator {
          int atStereoType  = getStereoType(at);
          int orgStereoType = at.GetIntData(OEStruchk.HADStereoTag);
          if( atStereoType != orgStereoType ) {
-//OEGraphMol t = new OEGraphMol(in);
-//System.err.printf("%d %d %s %s\n", atStereoType, orgStereoType, Atom.getAtomName(at),
-//         oechem.OECreateIsoSmiString(t));
-//printAtoms(t);
-//t.delete();
+            //System.err.printf("new=%s orig=%s atom=%s ism=%s\n",
+            //        stereoFragToString(atStereoType), stereoFragToString(orgStereoType),
+            //        Atom.toString(at), oechem.OEMolToSmiles(in));
             stereoChanged = true;
             break;
          }
@@ -175,7 +161,7 @@ class TautomerMolEvaluator {
   /**
     * Setup flags for atoms and bonds with stereo so that we can recognize changes.
     */
-   void setupNewMol(OEMolBase in) {
+   public void setupNewMol(OEMolBase in) {
       oechem.OEPerceiveChiral(in);
       bestSmi = null;
       bestMol.Clear();
@@ -188,7 +174,12 @@ class TautomerMolEvaluator {
       OEBondBaseIter bdIt = in.GetBonds(chiralDBondFunct);
       while( bdIt.hasNext() ) {
          OEBondBase bd = bdIt.next();
-         bd.SetBoolData(OEStruchk.HADStereoTag, bd.HasStereoSpecified());
+
+         int bdStereoType = getStereoType(bd);
+         if( bdStereoType != NONCHIRALNotSpecified ) {
+            bd.SetIntData(OEStruchk.HADStereoTag, bdStereoType);
+            // System.err.printf("has bond stereo %s %s \n", Bond.toString(bd), stereoFragToString(bdStereoType));
+         }
       }
       bdIt.delete();
 
@@ -198,16 +189,38 @@ class TautomerMolEvaluator {
          OEAtomBase at = aIt.next();
 
          int atStereoType = getStereoType(at);
-         if( atStereoType != NONCHIRALNotSpecified )
+         if( atStereoType != NONCHIRALNotSpecified ) {
             at.SetIntData(OEStruchk.HADStereoTag, atStereoType);
+            // System.err.printf("has atom stereo %s %s \n", Atom.toString(at), stereoFragToString(atStereoType));
+         }
       }
       aIt.delete();
    }
 
+   private static int getStereoType(OEBondBase bd) {
+       if (bd.GetBoolData(OEStruchk.STEREOClearTag)) {
+           assert (! bd.HasStereoSpecified())
+           : "Bond stereo should have been removed!";
+           return 0;
+       }
+
+       int bdStereoType;
+       if (bd.IsChiral())
+           if (bd.HasStereoSpecified(OEBondStereo.CisTrans))
+               bdStereoType = CHIRALSpecified;
+           else
+               bdStereoType = CHIRALNotSpecified;
+       else if (bd.HasStereoSpecified(OEBondStereo.CisTrans))
+           bdStereoType = NONCHIRALSpecified;
+       else
+           bdStereoType = NONCHIRALNotSpecified;
+       return bdStereoType;
+   }
+   
    private static int getStereoType(OEAtomBase at) {
       if( at.GetBoolData(OEStruchk.STEREOClearTag) ) {
          assert (! at.HasStereoSpecified()) || at.GetBoolData(OEStruchk.ATROPIsomericCenter)
-               : "Stereo should have been removed!";
+               : "Atom stereo should have been removed!";
          return 0;
       }
 
@@ -251,6 +264,16 @@ class TautomerMolEvaluator {
       atomIsChiralFunct.delete();
    }
 
+   public static final String stereoFragToString(int stereoflag) {  
+       switch( stereoflag ) {
+           case NONCHIRALNotSpecified : return "NonChiralNoSpec";
+           case CHIRALSpecified       : return "ChiralSpec";
+           case CHIRALNotSpecified    : return "ChiralNotSpec";
+           case NONCHIRALSpecified    : return "NonChiralNotSpec";
+       }
+       return "Unknown";
+   }
+   
    final void printAtoms(OEMolBase mol)
    {  OEAtomBaseIter aIt = mol.GetAtoms();
       System.err.print("Atom:\t");

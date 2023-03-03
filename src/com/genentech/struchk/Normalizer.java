@@ -92,8 +92,22 @@ public class Normalizer {
 
    /**
     * Normalize structure from smiles string.
+    *
+    * @deprecated use {@link #normalizeSmi(String, String, int)}
     */
+   @Deprecated
    public GNEMolecule normalizeSmi(String ismi, String gneStructFlag) {
+      return normalizeSmi(ismi, gneStructFlag, 0);
+   }
+
+   /**
+    * Normalize structure from smiles string.
+    * @param gneStructFlag name of the {@link StructureFlag} if not null the 
+    *                      smiles must conform to the stereochemistry given, 
+    *                      if null the stereochemistry will be inferred from the available information
+    * @param nonTetrahedralStereo number of nonTetrahedral stereo centers i.e. atropisomeirc centers
+    */
+   public GNEMolecule normalizeSmi(String ismi, String gneStructFlag, int nonTetrahedralStereo) {
       currentMol.Clear();
       OETools.smiToMol( currentMol, ismi);
       boolean hasChiralFlag   = false;
@@ -110,7 +124,7 @@ public class Normalizer {
       }
 
       boolean hasError = false;
-      if(! checker.applyRules(currentMol, sFlag))
+      if(! checker.applyRules(currentMol, sFlag, nonTetrahedralStereo))
       {  hasError = true;
          nErrors++;
       }
@@ -135,8 +149,26 @@ public class Normalizer {
     * @param gneStructFlag if null the flag will be assigned assuming unspecified
     *                      centers are mixtures.
     * @return {@link GNEMolecule} containing transformed molecule and associated data.
+    * @Deprecated Use {@link #normalizeMol(String, String, StructureFlag, int)} instead.
     */
+   @Deprecated
    public GNEMolecule normalizeMol(String molStr, String gneStructFlag) {
+      return normalizeMol(molStr,gneStructFlag,0);
+   }
+
+
+   /**
+    * Strip the mol and return a stripped mol object with associated data in the
+    * SD tags.
+    *
+    * @param molStr input molfile.
+    * @param gneStructFlag if null the flag will be assigned assuming unspecified
+    *                      centers are mixtures.
+    * @param nonTetrahedralStereo number of non tetrahedral stereo centers eg. atropisomric centers.
+    *
+    * @return {@link GNEMolecule} containing transformed molecule and associated data.
+    */
+   public GNEMolecule normalizeMol(String molStr, String gneStructFlag, int nonTetrahedralStereo) {
       currentMol.Clear();
       OETools.stringToMol(currentMol, molStr);
       boolean hasChiralFlag   = oechem.OEMDLHasParity( currentMol );
@@ -153,7 +185,7 @@ public class Normalizer {
       }
 
       boolean hasError = (msg != null);
-      if(! checker.applyRules(molStr, null, sFlag))
+      if(! checker.applyRules(molStr, null, sFlag, nonTetrahedralStereo))
       {  hasError = true;
          nErrors++;
       }
@@ -173,6 +205,15 @@ public class Normalizer {
 
 
    /**
+    * @deprecated use {@link #normalizeOEMol(OEGraphMol, String, int) instead.
+    */
+   @Deprecated
+   public GNEMolecule normalizeOEMol(OEGraphMol mol, String gneStructFlag) {
+      return normalizeOEMol(mol, gneStructFlag, 0);
+   }
+
+
+   /**
     * Strip the mol and return a stripped mol object with associated data in the
     * SD tags.
     *
@@ -181,7 +222,7 @@ public class Normalizer {
     *                      centers are mixtures.
     * @return {@link GNEMolecule} containing transformed molecule and associated data.
     */
-   public GNEMolecule normalizeOEMol(OEGraphMol mol, String gneStructFlag) {
+   public GNEMolecule normalizeOEMol(OEGraphMol mol, String gneStructFlag, int nonTetrahedralStereo) {
       currentMol.Clear();
 
       OEStruchk checker = strchkAssignFlag;
@@ -196,7 +237,7 @@ public class Normalizer {
       }
 
       boolean hasError = false;
-      if(! checker.applyRules(mol, sFlag))
+      if(! checker.applyRules(mol, sFlag, nonTetrahedralStereo))
       {  hasError = true;
          nErrors++;
       }
@@ -238,7 +279,7 @@ public class Normalizer {
          .setParentMolFile(   checker.getTransformedMolfile("parent"))
          .setSubstanceMolFile(checker.getTransformedMolfile("substance"))
          .setSubstanceISmiles(checker.getTransformedIsoSmiles("substance"))
-         .setNChiral(checker.getNChiral(), checker.getNChiralSpecified())
+         .setNChiral(checker.getNChiral(), checker.getNChiralSpecified(), checker.getNChiralNonTetrahedral(), checker.getNChiralNonTetrahedralSpecified())
          .setNNonChiralSp3(checker.getNNonChiralSp3(), checker.getNNonChiralSp3Specified())
          .setNStereoDBond(checker.getNStereoDBond(), checker.getNStereoDBondSpecified());
 
@@ -271,7 +312,7 @@ public class Normalizer {
       String molStr;
       molStr = IOUtil.fileToString("c:/tmp", "t.sdf");
 //      GNEMolecule gMol = normalizer.normalizeSmi("CCOC.Cl", "No Stereo");
-      GNEMolecule gMol = normalizer.normalizeMol(molStr, "Single Known Stereoisomer");
+      GNEMolecule gMol = normalizer.normalizeMol(molStr, "Single Known Stereoisomer",0);
 
       if(gMol.hasError())
          System.err.println(gMol.getErrors());

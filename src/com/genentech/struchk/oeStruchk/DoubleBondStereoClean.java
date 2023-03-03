@@ -68,6 +68,11 @@ public class DoubleBondStereoClean extends AbstractStructureCheck{
                   Bond.removeDBStereo(bd);
                }
             }
+            else {
+                // to make sure that a single bond in a resonance functional group is not expected to have stereo 
+                // after tautomarization
+                bd.SetBoolData(OEStruchk.STEREOClearTag, true);
+            }
             match.delete();
          }
          mPairIt.delete();

@@ -84,7 +84,7 @@ public class CloseAtomsCheck extends AbstractStructureCheck{
             
             if(oechem.OEGetDistance2(in, atoms[i], atoms[j]) < minDistance2) {
                hasError = true;
-               msgs.addMessage(new Message(String.format("Atom %s is to close to atom %s, please clean your drawing.",
+               msgs.addMessage(new Message(String.format("Atom %s is too close to atom %s, please clean your drawing.",
                      Atom.getAtomName(atoms[i]), Atom.getAtomName(atoms[j])),
                      Message.Level.ERROR,
                            atoms[i]));

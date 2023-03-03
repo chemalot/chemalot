@@ -198,7 +198,7 @@ public class SDFFPNNFinder
       if( maxNeighbors > 1 || minSim > 0 )
       {  MultiNNMatrixFinderConsumerInterface c;
          if( "vTab".equalsIgnoreCase(tabOutput) )
-            c = new MultiNNMatrixFinderVTConsumer(outFile);
+            c = new MultiNNMatrixFinderVTConsumer(outFile, idTag);
          else if( "tab".equalsIgnoreCase(tabOutput) )
             c = new MultiNNMatrixFinderTabConsumer(outFile, idTag);
          else
@@ -212,7 +212,7 @@ public class SDFFPNNFinder
       }else
       {  NNMatrixFinderConsumerInterface c;
          if( "vTab".equalsIgnoreCase(tabOutput) )
-            c = new NNMatrixFinderVTConsumer(outFile);
+            c = new NNMatrixFinderVTConsumer(outFile, idTag);
          else
             c = new NNMatrixFinderConsumer(outFile, countAboveSimilarityStr);
 
@@ -245,7 +245,7 @@ public class SDFFPNNFinder
       if( maxNeighbors > 1 || minSim > 0 )
       {  NNMultiFinderConsumerInterface c;
          if( "vTab".equalsIgnoreCase(tabOutput) )
-            c = new NNMultiFinderVTConsumer(outFile, idTag != null);
+            c = new NNMultiFinderVTConsumer(outFile, idTag, idTag != null);
          else if( outputDuplicates )
             c = new NNMultiFinderDuplConsumer(outFile, idTag != null, countAboveSimilarityStr);
          else

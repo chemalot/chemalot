@@ -16,9 +16,19 @@
 */
 package com.genentech.oechem.tools;
 
-import java.util.ArrayList;
-
-import openeye.oechem.*;
+import openeye.oechem.OEAtomBase;
+import openeye.oechem.OEAtomBaseIter;
+import openeye.oechem.OEBondBase;
+import openeye.oechem.OEBondBaseIter;
+import openeye.oechem.OEElemNo;
+import openeye.oechem.OEFormat;
+import openeye.oechem.OEGraphMol;
+import openeye.oechem.OEMolBase;
+import openeye.oechem.OESMILESFlag;
+import openeye.oechem.OEUnaryAtomPred;
+import openeye.oechem.oechem;
+import openeye.oechem.oemolistream;
+import openeye.oechem.oemolostream;
 
 public class OETools
 {

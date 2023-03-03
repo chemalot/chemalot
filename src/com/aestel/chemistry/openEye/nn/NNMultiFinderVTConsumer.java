@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 import openeye.oechem.OEMolBase;
+import openeye.oechem.oechem;
 
 import com.genentech.oechem.tools.OETools;
 
@@ -32,14 +33,18 @@ import com.genentech.oechem.tools.OETools;
  */
 public class NNMultiFinderVTConsumer implements NNMultiFinderConsumerInterface
 {  private final MultiThreadedPrinter out;
-   private boolean printIds;
+   private final boolean printIds;
+   private final String idTag;
 
-   public NNMultiFinderVTConsumer(String outFile, boolean printIDs) throws IOException
+   public NNMultiFinderVTConsumer(String outFile, String idTag, boolean printIDs) throws IOException
    {  out = new MultiThreadedPrinter(outFile);
       this.printIds = printIDs;
-
+      this.idTag = idTag;
       try
-      {  out.println("inSmi\trefIdx2\tSim");
+      {  if( idTag == null )
+            out.println("inSmi\trefIdx2\tSim");
+         else
+            out.println("inIdx1\trefIdx2\tSim");
       } catch (InterruptedException e)
       {  throw new Error("output queue full imediatly: Should not happen!");
       }
@@ -53,14 +58,16 @@ public class NNMultiFinderVTConsumer implements NNMultiFinderConsumerInterface
    public void consumeResult(OEMolBase mol, TreeSet<Neighbor> nnSet, List<String> referenceIds, int countSim)
       throws InterruptedException
    {  for(Neighbor n : nnSet)
-      {  String smi1 = OETools.molToCanSmi(mol, true);
+      {  String id1 = idTag == null ?
+                          OETools.molToCanSmi(mol, true)
+                        : oechem.OEGetSDData(mol, idTag);
          String id2;
          if( ! printIds )
             id2  = Integer.toString(n.neighBorIdx);
          else
             id2 = referenceIds.get(n.neighBorIdx);
 
-         out.println(smi1 + '\t' + id2 + '\t' + String.format("%.4f",n.neighBorSim));
+         out.println(id1 + '\t' + id2 + '\t' + String.format("%.4f",n.neighBorSim));
       }
    }
 

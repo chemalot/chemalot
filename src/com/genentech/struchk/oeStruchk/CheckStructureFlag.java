@@ -16,10 +16,9 @@
 */
 package com.genentech.struchk.oeStruchk;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import openeye.oechem.*;
+
+import java.util.*;
 
 import org.jdom.Element;
 
@@ -176,8 +175,13 @@ public class CheckStructureFlag extends AbstractStructureFlagCheck {
 
    private boolean hasFlagError = false;
 
-   public CheckStructureFlag(Element elem, FlagNonChiralStereoCenters stereoAtomFlagger) {
-      super(elem, stereoAtomFlagger);
+   /** gurantee first bond is atropisomeric bond **/
+   private static final OESubSearch POSSIBLEAtropIsomer
+      = new OESubSearch("[X3](-!@[$([X3;D3]([!D1;!D2])[!D1;!D2]),$([X4;D3,D4][D4])])([!D1;!D2])([!D1;!D2])");
+
+
+   public CheckStructureFlag(OEStruchk checker, Element elem, FlagNonChiralStereoCenters stereoAtomFlagger) {
+      super(checker, elem, stereoAtomFlagger);
    }
 
 
@@ -196,11 +200,13 @@ public class CheckStructureFlag extends AbstractStructureFlagCheck {
       assert inFlag != null;
 
       nChiralSpecified = 0;
-      nChiralTotal = 0;
-      nNonChiralStereoTotal = 0;
+      nChiralTotal     = 0;
+      nNonChiralStereoTotal     = 0;
       nNonChiralStereoSpecified = 0;
       nStereoDBondSpecified = 0;
-      nStereoDBondTotal = 0;
+      nStereoDBondTotal     = 0;
+      nChiralNonTetrahedral          = 0;
+      nChiralNonTetrahedralSpecified = 0;
 
       // make sure all special non-chiral atoms are flagged
       stereoAtomFlagger.checkStructure(in, inFlag, msgs);
@@ -220,18 +226,20 @@ public class CheckStructureFlag extends AbstractStructureFlagCheck {
          if(at.GetAtomicNum() != 0) // ignore "*" atoms
             nAtoms++;
 
-//         // clear Nitrogen chirality
-//         if( at.IsNitrogen() && at.IsChiral() && ! at.GetBoolData(OEStruchk.ISChiralNotRecognized) ) {
-//            at.SetBoolData(OEStruchk.STEREOClearTag, true);
-//            continue;
-//         }
-
          // clear stereo on S+
-         if( at.IsSulfur() && at.IsChiral() &&  at.GetFormalCharge() != 0 ) {
+         if( at.IsSulfur() && at.IsChiral()  && (at.GetFormalCharge() != 0 || hasOOHNeighbor(at)) ) {
             at.SetBoolData(OEStruchk.STEREOClearTag, true);
+            
+            continue;
+         }
+          
+     	  // clear stereo on P, [HO]P=O
+        if( at.IsPhosphorus() && at.IsChiral() && (at.GetFormalCharge() != 0 || hasOOHNeighbor(at)) ) {
+        	   at.SetBoolData(OEStruchk.STEREOClearTag, true);
 
             continue;
          }
+
 
          // Flagged as cleared by struCheck because of unstable atom
          if(at.GetBoolData(OEStruchk.STEREOClearTag)) {
@@ -257,6 +265,8 @@ public class CheckStructureFlag extends AbstractStructureFlagCheck {
             nonChiralAtoms.add(at);
             if(at.HasStereoSpecified()) nNonChiralStereoSpecified++;
          }
+         
+         if( at.GetBoolData(OEStruchk.CHIRALMetal) ) nChiralNonTetrahedralSpecified++;
       }
       aIt.delete();
 
@@ -274,8 +284,39 @@ public class CheckStructureFlag extends AbstractStructureFlagCheck {
             nStereoDBondTotal++;
             if(bd.HasStereoSpecified()) nStereoDBondSpecified++;
          }
+
+         if( bd.GetBoolData(OEStruchk.ATROPIsomericCenter) ) nChiralNonTetrahedralSpecified++;
       }
       bIt.delete();
+
+      nChiralNonTetrahedral = parentChecker.getNNonTetrahedralStereoSupplied();
+      nChiralSpecified     += nChiralNonTetrahedralSpecified;
+      nChiralTotal         += nChiralNonTetrahedral;
+
+      if( nChiralNonTetrahedralSpecified > nChiralNonTetrahedral ) {
+         msgs.addMessage(new Message(String.format(
+                  "%d non tetrehedral chiral centers expected but %d are drawn.",
+                  nChiralNonTetrahedral, nChiralNonTetrahedralSpecified),
+               Message.Level.ERROR, null));
+         success = false;
+         hasFlagError = true;
+      }
+
+      if( nChiralNonTetrahedral > nChiralNonTetrahedralSpecified )
+      {  int possibleAtropIsomricBonds = countMaxAtropisomricBond(in);
+         int chiralMetals = highValenceMetals(in);
+
+         if( possibleAtropIsomricBonds + chiralMetals < nChiralNonTetrahedral )
+         {  msgs.addMessage(new Message(String.format(
+               "%d non tetrehedral chiral centers expected but only %d possible found.",
+               nChiralNonTetrahedral, possibleAtropIsomricBonds),
+                  Message.Level.ERROR, null));
+            nChiralTotal -= nChiralNonTetrahedral - possibleAtropIsomricBonds;
+            nChiralNonTetrahedral = possibleAtropIsomricBonds;
+            success = false;
+            hasFlagError = true;
+         }
+      }
 
       /* logic reproducing rules described in class javadoc */
       if(nChiralTotal == 0 && nStereoDBondTotal == 0 && nNonChiralStereoTotal == 0) {
@@ -364,6 +405,8 @@ public class CheckStructureFlag extends AbstractStructureFlagCheck {
          }
       }
 
+      keepSubstance(in, msgs);
+
       // If compound not pure stereoisomer remove stereo info from bonds and atoms
       if(inFlag != StructureFlag.SINGLEStereoisomer)
       {  removeChiralInfo(in);
@@ -377,7 +420,45 @@ public class CheckStructureFlag extends AbstractStructureFlagCheck {
       return success;
    }
 
-   private String getAtomList(List<OEAtomBase>... atomLists) {
+
+   private static int highValenceMetals(OEGraphMol in)
+   {  OEAtomBaseIter atIt = in.GetAtoms();
+      int highCount = 0;
+      while(atIt.hasNext())
+      {  OEAtomBase at = atIt.next();
+         if( at.IsMetal() )
+            if(at.GetDegree() > 4)
+            {  highCount++;
+            }
+      }
+      atIt.delete();
+      
+      return highCount;
+   }
+
+
+   /**
+    * Count the number of bonds that could be atropisomeric
+    */
+   private int countMaxAtropisomricBond(OEGraphMol in)
+   {  OEBondBaseIter bIt;
+      Set<Integer> atropBondSet = new HashSet<Integer>();
+
+         // find all bonds that could possbily be atropisomeric
+         OEMatchBaseIter mIt = POSSIBLEAtropIsomer.Match(in);
+         while( mIt.hasNext() )
+         {  OEMatchBase mb = mIt.next();
+
+            bIt = mb.GetTargetBonds();
+            atropBondSet.add(bIt.next().GetIdx());
+            bIt.delete();
+         }
+         mIt.delete();
+
+      return atropBondSet.size();
+   }
+
+   private String getAtomList(@SuppressWarnings("unchecked") List<OEAtomBase>... atomLists) {
       StringBuilder sb = new StringBuilder(50);
       for(List<OEAtomBase>alist : atomLists) {
          for(OEAtomBase at : alist) {

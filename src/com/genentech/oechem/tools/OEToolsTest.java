@@ -16,9 +16,9 @@
 */
 package com.genentech.oechem.tools;
 
+import org.testng.annotations.Test;
 import openeye.oechem.OEGraphMol;
 
-import org.testng.annotations.Test;
 
 public class OEToolsTest
 {

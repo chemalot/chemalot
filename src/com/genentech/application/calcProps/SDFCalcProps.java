@@ -16,6 +16,7 @@
 */
 package com.genentech.application.calcProps;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -32,6 +33,7 @@ import java.util.TreeSet;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
@@ -276,7 +278,7 @@ public class SDFCalcProps
    {
       String counterTag = "___sdfCalcProps_counter___";
       String savedTitleTag = "___sdfCalcProps_saved_title___";
-      String tempFileRoot =  "/tmp/sdfCalcProps.$$." + System.currentTimeMillis() ;
+      String tempFileRoot =  "$TMPDIR/sdfCalcProps.$$." + System.currentTimeMillis() ;
       String tempOrigFileName = tempFileRoot + ".orig.sdf";
       String filteredFileName = tempFileRoot + ".filtered.sdf";
 
@@ -411,23 +413,23 @@ public class SDFCalcProps
       }
 
 //      command = command + "; cat " + filteredFileName;
-      command = command + "; echo NCCO | babel -in .smi -out .sdf >> " + filteredFileName + "; cat " + filteredFileName;
+      command = command + "; echo NCCO | sdfTagTool.csh -in .smi -out .sdf >> " + filteredFileName + "; cat " + filteredFileName;
 
       if (ionizedCommand != null && neutralCommand !=null) {
       // merge temp file with the two tab files
          String mergeCommand =
-               "sdfTabMerger.csh -sdf " + tempOrigFileName + " -tab -  -mergeTag " + counterTag + " -mergeCol " + counterTag + " -out .sdf | " +
+               "sdfTabMerger.csh -outAll -addEmptyValues -sdf " + tempOrigFileName + " -tab -  -mergeTag " + counterTag + " -mergeCol " + counterTag + " -out .sdf | " +
                 cleanUpCommand;
          command = command + " | " + ionizedCommand +
-               " | sdfTabMerger.csh -tab - -sdf " + filteredFileName + " -mergeTag " + counterTag + " -mergeCol " + counterTag + "  -out .sdf | " +
+               " | sdfTabMerger.csh -outAll -addEmptyValues -tab - -sdf " + filteredFileName + " -mergeTag " + counterTag + " -mergeCol " + counterTag + "  -out .sdf | " +
                   neutralCommand +  " | " + mergeCommand;
       }else if (ionizedCommand == null && neutralCommand !=null) {
-         String mergeCommand = "sdfTabMerger.csh -sdf " + tempOrigFileName + " -tab - -mergeTag " +
+         String mergeCommand = "sdfTabMerger.csh -outAll -addEmptyValues -sdf " + tempOrigFileName + " -tab - -mergeTag " +
                counterTag + " -mergeCol " + counterTag + " -out .sdf | " + cleanUpCommand;
 
          command = command + " | " + neutralCommand + " | " + mergeCommand;
       }else if (ionizedCommand != null && neutralCommand ==null) {
-         String mergeCommand = "sdfTabMerger.csh -sdf " + tempOrigFileName + " -tab - -mergeTag " +
+         String mergeCommand = "sdfTabMerger.csh -outAll -addEmptyValues -sdf " + tempOrigFileName + " -tab - -mergeTag " +
                counterTag + " -mergeCol " + counterTag + " -out .sdf | " + cleanUpCommand;
 
          command = command + " | " + ionizedCommand + " | " + mergeCommand;
@@ -556,10 +558,17 @@ public class SDFCalcProps
       options.addOption("in", true, "inFile in OE formats: Ex: a.sdf or .sdf");
       options.addOption("out", true, "outputfile in OE formats. Ex: a.sdf or .sdf ");
       options.addOption("useExp", false, "Use experimental values, if available, in property calculations. False by default.");
+      
+      Option setEnvVarOpt = new Option("setEnvVar", false, "Specify a name=value environment variable that can be used by wrapped programs.  e.g. MOKA_DIR=/mydir/moka/ or MOKA_MODEL= to unset.  Multiple env vars should be set with multiple -setEnvVar options.");
+      setEnvVarOpt.setArgs(50);    // Max number of env vars to set.  Arbitrary, but needs to be > 1
+      options.addOption(setEnvVarOpt);
+      
       options.addOption("addMolIndex", false, "Creates a sd Tag called Mol_Index for each molecule where the values are 1 .. N");
       options.addOption("predictTautomer", false, "Run tauthor to predict the most likely tautomer and neutralize it. False by default.");
       options.addOption("print", false, "Do not run calculation, just print out the list of SD tags that will be produced. False by default");
       options.addOption("dontFilter", false, "Do not run filter to remove \"bad\" molecules. False by default.");
+      options.addOption("propertiesFile", true, "Use this file instead of the default file properties.xml; " +
+                        "it must be in the same folder as the default file, i.e. $AESTEL_DIR/config/properties");
       options.addOption("verbose", false, "Output verbose SD tags for each property. False by default.");
       options.addOption("debug", false, "Create a debug output SD file, not fully implemented. False by default.");
       options.addOption("showAll", false, "Print help for all properties, including non-public ones.");
@@ -577,7 +586,7 @@ public class SDFCalcProps
          if (cmd.hasOption("useExp") ) {
             useExp = true;
          }
-
+         
          boolean showAll =false;
          if (cmd.hasOption("showAll") ) {
             showAll = true;
@@ -612,11 +621,48 @@ public class SDFCalcProps
             addMolIndex = true;
          }
 
+         String setEnvVarCommand = "";
+         String[] envVarNameValuePairs = null;
+         if (cmd.hasOption("setEnvVar") ) {
+            envVarNameValuePairs = cmd.getOptionValues ("setEnvVar");
+            for (String envVarNameValuePair : envVarNameValuePairs) {
+               String[] envVarNameValue = envVarNameValuePair.split("=", 2);
+               if (envVarNameValue == null || envVarNameValue.length != 2)
+               {
+                  System.err.println("setEnvVar syntax should be -setEnvVar myVar=myValue.  Multiple env vars should be set with multiple -setEnvVar options.");
+                  exitWithHelp(usage, options);                  
+               }              
+               
+               System.err.println("Setting custom environment variable: " + envVarNameValue[0] + " = " + envVarNameValue[1]);
+               
+               // Assuming cshell
+               setEnvVarCommand += "setenv " + envVarNameValue[0] + " " + envVarNameValue[1] + ";";
+            }
+         }
+
          String filename = "properties.xml";
-         URL url = IOUtil.getConfigUrl(filename,Settings.AESTEL_INSTALL_PATH + "/config/properties",
+         String propertiesDir = Settings.AESTEL_INSTALL_PATH + "/config/properties";
+         
+         String propertiesFile = cmd.getOptionValue("propertiesFile");
+         if (propertiesFile != null && propertiesFile.length() > 0) {
+            if( ! propertiesFile.endsWith(".xml") )
+            {
+               System.err.println(propertiesFile + ": Properties files need to have xml file extension.");
+               System.exit(1);
+            }
+            filename = propertiesFile;
+         }
+         File file = new File(propertiesDir + "/" + filename);
+         if( ! file.exists() )
+         {
+            System.err.println(filename + ": Not found in " + propertiesDir);
+            System.exit(1);
+         }
+               
+         URL url = IOUtil.getConfigUrl(filename, propertiesDir,
                   "/com/genentech/application/calcProps", false);
          Element root = XMLUtil.getRootElement(url, true);
-
+         
          //get set of available calculators as defined in properties.xml
          Set <Calculator> availCALCS = readXML(root, useExp);
 
@@ -655,12 +701,15 @@ public class SDFCalcProps
             System.err.println();
          }
 
-
          String[] props = cmd.getArgs();
          String command = calculate(props, predictTautomer, dontFilter, verbose, debug, print, addMolIndex,
                   availCALCS, inFile, outFile);
+         
+         // Prepend any environment variables 
+         command = setEnvVarCommand + command;
+         
          System.out.println(command);
-
+                  
 
       } catch (ParseException e)
       {  // TODO print explanation
@@ -676,6 +725,7 @@ public class SDFCalcProps
          throw new Error(e);
       }
    }
+   
    private static boolean containInvalidProps(String[] props, Set<Calculator> calculators)
    {
       boolean invalidProp = false;

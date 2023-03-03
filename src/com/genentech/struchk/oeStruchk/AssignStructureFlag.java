@@ -37,8 +37,8 @@ public class AssignStructureFlag extends AbstractStructureFlagCheck {
    private boolean structFlagIsCertain;
 
 
-   public AssignStructureFlag(Element elem, FlagNonChiralStereoCenters stereoAtomFlagger) {
-      super(elem, stereoAtomFlagger);
+   public AssignStructureFlag(OEStruchk checker, Element elem, FlagNonChiralStereoCenters stereoAtomFlagger) {
+      super(checker, elem, stereoAtomFlagger);
    }
 
 
@@ -58,11 +58,13 @@ public class AssignStructureFlag extends AbstractStructureFlagCheck {
       flag = StructureFlag.NOStereo;
       structFlagIsCertain = false;
       nChiralSpecified = 0;
-      nChiralTotal = 0;
-      nNonChiralStereoTotal = 0;
+      nChiralTotal     = 0;
+      nNonChiralStereoTotal     = 0;
       nNonChiralStereoSpecified = 0;
       nStereoDBondSpecified = 0;
-      nStereoDBondTotal = 0;
+      nStereoDBondTotal     = 0;
+      nChiralNonTetrahedral          = 0;
+      nChiralNonTetrahedralSpecified = 0;
       int nAtoms = 0;
 
       // count atoms with stereo info and atoms which can have stereo info
@@ -72,16 +74,16 @@ public class AssignStructureFlag extends AbstractStructureFlagCheck {
          if(at.GetAtomicNum() != 0) // ignore "*" atoms
             nAtoms++;
 
-//         // clear Nitrogen chirality
-//         if( at.IsNitrogen() && at.IsChiral() && ! at.GetBoolData(OEStruchk.ISChiralNotRecognized) ) {
-//            at.SetBoolData(OEStruchk.STEREOClearTag, true);
-//
-//            continue;
-//         }
-//
          // clear stereo on S+
-         if( at.IsSulfur() && at.IsChiral() &&  at.GetFormalCharge() != 0 ) {
+         if( at.IsSulfur() && at.IsChiral()  && (at.GetFormalCharge() != 0 || hasOOHNeighbor(at)) ) {
             at.SetBoolData(OEStruchk.STEREOClearTag, true);
+            
+            continue;
+         }
+          
+     	// clear stereo on P, [HO]P=O
+        if( at.IsPhosphorus() && at.IsChiral() && (at.GetFormalCharge() != 0 || hasOOHNeighbor(at)) ) {
+        	   at.SetBoolData(OEStruchk.STEREOClearTag, true);
 
             continue;
          }
@@ -112,6 +114,7 @@ public class AssignStructureFlag extends AbstractStructureFlagCheck {
       }
       aIt.delete();
 
+
       // count double bonds with stereo info and double bonds which can have stereo info
       OEBondBaseIter bIt = in.GetBonds();
       while(bIt.hasNext()) {
@@ -126,8 +129,15 @@ public class AssignStructureFlag extends AbstractStructureFlagCheck {
             nStereoDBondTotal++;
             if(bd.HasStereoSpecified()) nStereoDBondSpecified++;
          }
+
+         if( bd.GetBoolData(OEStruchk.ATROPIsomericCenter) )
+            nChiralNonTetrahedralSpecified++;
       }
       bIt.delete();
+
+      nChiralNonTetrahedral = nChiralNonTetrahedralSpecified;
+      nChiralSpecified += nChiralNonTetrahedralSpecified;
+      nChiralTotal += nChiralNonTetrahedral;
 
       if(  nNonChiralStereoTotal != nNonChiralStereoSpecified
          ||nStereoDBondTotal     != nStereoDBondSpecified ) {
@@ -179,6 +189,8 @@ public class AssignStructureFlag extends AbstractStructureFlagCheck {
          }
       }
 
+      keepSubstance(in, msgs);
+
       // remove stereo centers for molecules which are not SINGLEStereoisomer
       if(flag != StructureFlag.SINGLEStereoisomer && flag != StructureFlag.NOStereo)
       {  removeChiralInfo(in);
@@ -193,7 +205,7 @@ public class AssignStructureFlag extends AbstractStructureFlagCheck {
    }
 
 
-   /* (non-Javadoc)
+/* (non-Javadoc)
     * @see StructFlagAnalysisInterface#getStereoInfo()
     */
    @Override

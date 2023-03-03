@@ -26,6 +26,7 @@ import org.jdom.JDOMException;
 
 import com.aestel.chemistry.depict.SmiTalk;
 import com.aestel.io.dataAccess.*;
+import com.aestel.io.dataAccess.Record;
 import com.aestel.utility.Message;
 import com.aestel.utility.MessageList;
 import com.aestel.utility.Message.Level;

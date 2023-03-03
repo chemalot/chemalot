@@ -36,8 +36,10 @@ import com.genentech.struchk.oeStruchk.OEStruchk.StructureFlag;
  */
 public class TautomerStandardizer extends AbstractStructureCheck {
    static final int MAX_TAUTOMER_ENUMERATION = 256;   //maximum number of tautomers to enumerate
+   static final int MAX_TAUTOMER_RETURN = 128;   //maximum number of tautomers to return
    private final TautomerMolEvaluator tEvaluator;
    private final OETautomerOptions tautomerOptions;
+   private final BondBoolDataFunctor hyperValentBondFunctor = new BondBoolDataFunctor(OEStruchk.HYPERValentBond, true);
 
    /**
     * Create a Transformer from the xml element.
@@ -47,6 +49,7 @@ public class TautomerStandardizer extends AbstractStructureCheck {
 
       tautomerOptions = new OETautomerOptions();
       tautomerOptions.SetMaxTautomersGenerated(MAX_TAUTOMER_ENUMERATION);
+      tautomerOptions.SetMaxTautomersToReturn(MAX_TAUTOMER_RETURN);
       tautomerOptions.SetApplyWarts(false);
       tautomerOptions.SetCarbonHybridization(false);
       tautomerOptions.SetLevel(0);
@@ -54,6 +57,7 @@ public class TautomerStandardizer extends AbstractStructureCheck {
       tautomerOptions.SetMaxZoneSize(35);
       tautomerOptions.SetRankTautomers(false);
       tautomerOptions.SetSaveStereo(true);
+      tautomerOptions.SetRankTautomers(true);
 
       tEvaluator = new TautomerMolEvaluator();
 
@@ -70,6 +74,14 @@ public class TautomerStandardizer extends AbstractStructureCheck {
       OEGraphMol tmpMol = new OEGraphMol(in);// work on copy Enumerate changes mol
 
       String preSmi = OETools.molToCanSmi(tmpMol, true);
+
+      // delete hypervalent (dative) bonds between transition metals and main group elements
+      OEBondBaseIter bdIt = tmpMol.GetBonds(hyperValentBondFunctor);
+      while( bdIt.hasNext())
+         deleteHyperValentBond(tmpMol, bdIt.next());
+      bdIt.delete();
+
+      oechem.OECanonicalOrderAtoms(tmpMol);
 
       // we could try to set save Stereo to true and rank to true to get better tautomers
       // this would allow us to remove code from TautomerMolEvaluator,
@@ -102,9 +114,21 @@ public class TautomerStandardizer extends AbstractStructureCheck {
       }
       tmpMol.delete();
 
-//System.err.printf("%s>>%s\n",preSmi,postSmi);
-//System.err.printf("After taut: %s\n", OETools.molToCanSmi(in, true));
+      //System.err.printf("%s>>%s\n",preSmi,postSmi);
+      //System.err.printf("After taut: %s\n", OETools.molToCanSmi(in, true));
       return true;
+   }
+
+
+   private void deleteHyperValentBond(OEGraphMol tmpMol, OEBondBase bd)
+   {  OEAtomBase at = bd.GetBgn();
+      if( com.aestel.chemistry.molecule.Atom.MAIN_GROUP[at.GetAtomicNum()] == 0)
+         at = bd.GetEnd();
+      tmpMol.DeleteBond(bd);
+      
+      int hCount = at.GetImplicitHCount();
+      if( hCount > 0 )
+         at.SetImplicitHCount(hCount-1);
    }
 
 
@@ -112,5 +136,27 @@ public class TautomerStandardizer extends AbstractStructureCheck {
    public void delete() {
       tEvaluator.delete();
       tautomerOptions.delete();
+   }
+}
+
+
+class BondBoolDataFunctor extends OEUnaryBondPred {
+
+   private boolean requiredState;
+   private int tag;
+
+   public BondBoolDataFunctor(int tag, boolean requiredState) {
+      this.tag = tag;
+      this.requiredState = requiredState;
+   }
+   
+   public boolean constCall(OEBondBase bd) {
+      return bd.GetBoolData(this.tag) == this.requiredState;
+   }
+   
+   public OEUnaryBondBoolFunc CreateCopy( ) {
+      BondBoolDataFunctor copy = new BondBoolDataFunctor(this.tag, this.requiredState);
+      copy.swigReleaseOwnership();
+      return copy;
    }
 }

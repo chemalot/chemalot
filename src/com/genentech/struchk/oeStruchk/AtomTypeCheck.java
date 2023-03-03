@@ -54,7 +54,7 @@ public class AtomTypeCheck extends AbstractStructureCheck {
       while( aIt.hasNext() ) {
          OEAtomBase at = aIt.next();
          
-         if(at.GetAtomicNum() == 0) {
+         if(at.GetAtomicNum() == 0 && inStereo != StructureFlag.UNCERTAINStructure ) {
             msgs.addMessage(new Message(
                   String.format("Atom %d has invalid atom type.", at.GetIdx()+1),
                   Message.Level.ERROR, at));

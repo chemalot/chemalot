@@ -28,6 +28,7 @@ import org.jdom.JDOMException;
 
 import com.aestel.Settings;
 import com.aestel.io.dataAccess.*;
+import com.aestel.io.dataAccess.Record;
 
 /**
  * SDFExporter Exports the output of a sql statement to an sd file

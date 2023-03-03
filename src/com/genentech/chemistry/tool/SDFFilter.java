@@ -27,7 +27,8 @@ import org.apache.commons.cli.*;
 
 public class SDFFilter
 {
-   private static int maxAtoms = 100;
+   // Recently increased to accompodate 12mer peptides
+   private static int maxAtoms = 180;
 
 //   private static boolean passFilters(OEGraphMol mol, OEFilter filter)
    private static boolean passFilters(OEGraphMol mol)
@@ -59,6 +60,11 @@ public class SDFFilter
          //ignore atoms greater than Iodine
          if (atom.GetAtomicNum() > 53) {
             System.err.println("Ignoring molecule name: " + mol.GetTitle() + ", it has an atomic number greater than 53 (Iodine): " + atom.GetName());
+            return false;
+         }
+         //ignore molecules with Neon
+         if (atom.GetAtomicNum() == 10) {
+            System.err.println("Ignoring molecule name: " + mol.GetTitle() + ", it has an atomic number 10 (Neon): " + atom.GetName());
             return false;
          }
       }

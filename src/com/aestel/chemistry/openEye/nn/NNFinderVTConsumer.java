@@ -20,6 +20,7 @@ package com.aestel.chemistry.openEye.nn;
 import java.io.IOException;
 
 import openeye.oechem.OEMolBase;
+import openeye.oechem.oechem;
 
 import com.genentech.oechem.tools.OETools;
 
@@ -39,7 +40,7 @@ public class NNFinderVTConsumer implements NNFinderConsumerInterface
       {  if( idTagName == null )
             out.println("inSmi\trefIdx2\tSim");
          else
-            out.println("inSmi\trefId2\tSim");
+            out.println("inIdx1\trefId2\tSim");
       } catch (InterruptedException e)
       {  throw new Error("output queue full imediatly: Should not happen!");
       }
@@ -52,15 +53,19 @@ public class NNFinderVTConsumer implements NNFinderConsumerInterface
     */
    @Override
    public void consumeResult(OEMolBase mol, double maxSim, int nnIdx, String nnId, int countSimilar)
-   {  String smi1 = OETools.molToCanSmi(mol, true);
+   {  String id1;
       String id2;
       if( idTagName != null )
-         id2 = nnId;
+      {  id1 = oechem.OEGetSDData(mol, idTagName);
+         id2 = nnId;     
+      }
       else
+      {  id1 = OETools.molToCanSmi(mol, true);
          id2 = Integer.toString(nnIdx);
+      }
 
       try
-      {  out.println(smi1 + '\t' + id2 + '\t' + String.format("%.4f",maxSim));
+      {  out.println(id1 + '\t' + id2 + '\t' + String.format("%.4f",maxSim));
       } catch (InterruptedException e)
       {  throw new Error("output queue full immediately: Should not happen!");
       }

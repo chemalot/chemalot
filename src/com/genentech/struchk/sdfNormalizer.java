@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-*/
+ */
 package com.genentech.struchk;
 
 import java.io.File;
@@ -27,6 +27,7 @@ import org.apache.commons.cli.*;
 import com.aestel.utility.Message;
 import com.genentech.struchk.oeStruchk.OEStruchk;
 import com.genentech.struchk.oeStruchk.StruChkHelper.CHECKConfig;
+import com.genentech.struchk.oeStruchk.StructFlagAnalysisInterface;
 
 /**
  * @author albertgo 2008
@@ -36,7 +37,9 @@ import com.genentech.struchk.oeStruchk.StruChkHelper.CHECKConfig;
 public class sdfNormalizer {
 
    enum OUTMolFormat
-   {  ORIGINAL, NORMALIZED, TAUTOMERIC }
+   {  ORIGINAL, NORMALIZED, TAUTOMERIC, STEREOPARENT }
+
+   private static final String NON_TETRAHEDRAL_CHIRAL_TAG = "NonTetrahedralChiral";
 
    public static void main(String [] args) {
       long start = System.currentTimeMillis();
@@ -54,7 +57,7 @@ public class sdfNormalizer {
       opt.setRequired(true);
       options.addOption(opt);
 
-      opt = new Option("mol",true, "molFile used for output: ORIGINAL(def)|NORMALIZED|TAUTOMERIC");
+      opt = new Option("mol",true, "molFile used for output: ORIGINAL(def)|STEREOPARENT|NORMALIZED|TAUTOMERIC");
       opt.setRequired(false);
       options.addOption(opt);
 
@@ -88,6 +91,8 @@ public class sdfNormalizer {
       OUTMolFormat outMol = OUTMolFormat.ORIGINAL;
       if( molOpt == null || "original".equalsIgnoreCase(molOpt) )
          outMol = OUTMolFormat.ORIGINAL;
+      else if( "STEREOPARENT".equalsIgnoreCase(molOpt) )
+         outMol = OUTMolFormat.STEREOPARENT;
       else if( "NORMALIZED".equalsIgnoreCase(molOpt) )
          outMol = OUTMolFormat.NORMALIZED;
       else if( "TAUTOMERIC".equalsIgnoreCase(molOpt) )
@@ -120,10 +125,18 @@ public class sdfNormalizer {
          OEGraphMol mol   = new OEGraphMol();
          StringBuilder sb = new StringBuilder(2000);
          while ( oechem.OEReadMolecule(ifs , mol ) ) {
-            if(! strchk.applyRules(mol, null))
+            int nNonTetrahedralChiral = 0;
+            String d = oechem.OEGetSDData(mol, NON_TETRAHEDRAL_CHIRAL_TAG);
+            if( d != null && d.length() > 0 ) nNonTetrahedralChiral = Integer.parseInt(d);
+
+            if(! strchk.applyRules(mol, null,nNonTetrahedralChiral))
                nErrors++;
 
             switch( outMol ) {
+               case STEREOPARENT:
+                  mol.Clear();
+                  oechem.OEAddMols(mol, strchk.getTransformedMol("parentAllStereo"));
+                  break;
                case NORMALIZED:
                   mol.Clear();
                   oechem.OEAddMols(mol, strchk.getTransformedMol("parent"));
@@ -139,6 +152,8 @@ public class sdfNormalizer {
             oechem.OESetSDData(mol, "CTISMILES", strchk.getTransformedIsoSmiles(null));
             oechem.OESetSDData(mol, "CTSMILES",  strchk.getTransformedSmiles(null));
             oechem.OESetSDData(mol, "CISMILES",  strchk.getTransformedIsoSmiles("parent"));
+            oechem.OESetSDData(mol, "CTSSMILES", strchk.getTransformedIsoSmiles(
+                                                   StructFlagAnalysisInterface.STEREONormalizedKeeper));
             oechem.OESetSDData(mol, "Strutct_Flag",  strchk.getStructureFlag().getName());
 
             List<Message> msgs = strchk.getStructureMessages(null);
@@ -148,7 +163,7 @@ public class sdfNormalizer {
             if( limitMessage ) sb.setLength( Math.min(sb.length(), 80));
 
             oechem.OESetSDData(mol, "NORM_MESSAGE",  sb.toString());
-
+            oechem.OEMDLPerceiveBondStereo(mol);
             oechem.OEWriteMolecule(ofs, mol);
 
             sb.setLength(0);

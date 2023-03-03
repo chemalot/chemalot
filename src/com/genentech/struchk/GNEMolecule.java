@@ -33,6 +33,8 @@ public class GNEMolecule {
    private final boolean hasError;
    private final int nChiral;
    private final int nChiralSpecified;
+   private final int nChiralNonTetrahedral;
+   private final int nChiralNonTetrahedralSpecified;
    private final int nNonChiralSp3;  // non chiral sp3 centers with stereo eg C[C@H]1C[C@H]1C
    private final int nNonChiralSp3Specified;
    private final int nStereoDBondSpecified;
@@ -88,6 +90,8 @@ public class GNEMolecule {
       this.nChiral = bldr.nChiral;
       this.nChiralSpecified = bldr.nChiralSpecified;
       this.nNonChiralSp3 = bldr.nNonChiralSp3;
+      this.nChiralNonTetrahedral = bldr.nChiralNonTetrahedral;
+      this.nChiralNonTetrahedralSpecified = bldr.nChiralNonTetrahedralSpecified;
       this.nNonChiralSp3Specified = bldr.nNonChiralSp3Specified;
       this.nStereoDBond = bldr.nStereoDBond;
       this.nStereoDBondSpecified = bldr.nStereoDBondSpecified;
@@ -245,18 +249,35 @@ public class GNEMolecule {
 
    /**
     * Return total number of chiral atom with specified or unspecified
-    *    r/s stereochemistry.
+    *    r/s stereochemistry including nontetrahedral Chiral centers.
     */
    public int getNChiral() {
       return nChiral;
    }
 
    /**
-    * Return number of chiral atom with specified r/s stereochemistry.
+    * Return number of chiral atom with specified r/s stereochemistry including nontetrahedral Chiral centers.
     */
    public int getNChiralSpecified() {
       return nChiralSpecified;
    }
+
+   /**
+    * Return number of chiral atom that are non tetrahedral eg. atropisomeirc centers.
+    */
+   public int getNChiralNonTetrahedral() {
+      return nChiralNonTetrahedral;
+   }
+
+
+   /**
+    * Return number of chiral atom that are non tetrahedral eg. atropisomeirc centers
+    * that are specified.
+    */
+   public int getNChiralNonTetrahedralSpecified() {
+      return nChiralNonTetrahedralSpecified;
+   }
+
 
    /**
     * Return total number of atoms with stereogenic exocyclic bonds which have
@@ -376,8 +397,11 @@ public class GNEMolecule {
     *
     */
    public static class Builder {
+
       int nChiral;
       int nChiralSpecified;
+      int nChiralNonTetrahedral;
+      int nChiralNonTetrahedralSpecified;
       int nNonChiralSp3;  // non chiral sp3 centers with stereo eg C[C@H]1C[C@H]1C
       int nNonChiralSp3Specified;
       int nStereoDBondSpecified;
@@ -416,11 +440,21 @@ public class GNEMolecule {
          hasError = hasErr;
          return this;
       }
-      public Builder setNChiral(int chiral, int chiralSpecified) {
-         nChiral = chiral;
-         nChiralSpecified = chiralSpecified;
+
+      public Builder setNChiral(int chiral, int chiralSpecified, int nChiralNonTetrahedral, int nChiralNonTetrahedralSpecified) {
+         this.nChiral = chiral;
+         this.nChiralSpecified = chiralSpecified;
+         this.nChiralNonTetrahedral = nChiralNonTetrahedral;
+         this.nChiralNonTetrahedralSpecified = nChiralNonTetrahedralSpecified;
+
+         assert nChiral >= nChiralNonTetrahedral :
+            "nchiral must include the nonTetraherals chiral centers: " + chiral + " " + nChiralNonTetrahedral;
+         assert nChiralSpecified >= nChiralNonTetrahedralSpecified :
+            "nchiralSpecified must include the nonTetraherals chiral centers: " + chiralSpecified + " " + nChiralNonTetrahedralSpecified;
+
          return this;
       }
+
       public Builder setNNonChiralSp3(int nonChiralSp3, int nonChiralSp3Specified) {
          nNonChiralSp3 = nonChiralSp3;
          nNonChiralSp3Specified = nonChiralSp3Specified;

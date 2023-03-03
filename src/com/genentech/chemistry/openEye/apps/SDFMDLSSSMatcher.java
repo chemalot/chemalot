@@ -150,7 +150,7 @@ public class SDFMDLSSSMatcher
 
 
    public static void main(String...args) throws IOException, InterruptedException
-   {  oechem.OEUseJavaHeap(false);  // remove this line if newer oechem toolkit does not include method
+   {  //oechem.OEUseJavaHeap(false);  // remove this line if newer oechem toolkit does not include method
 
       // create command line Options object
       Options options = new Options();

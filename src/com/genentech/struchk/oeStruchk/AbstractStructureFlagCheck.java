@@ -20,6 +20,7 @@ import org.jdom.Element;
 
 import openeye.oechem.*;
 
+import com.aestel.utility.MessageList;
 import com.genentech.oechem.tools.Atom;
 import com.genentech.oechem.tools.Bond;
 import com.genentech.struchk.oeStruchk.OEStruchk.StructureFlag;
@@ -27,6 +28,7 @@ import com.genentech.struchk.oeStruchk.OEStruchk.StructureFlag;
 abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
 {  protected final String checkName;
    protected final FlagNonChiralStereoCenters stereoAtomFlagger;
+   protected final OEStruchk parentChecker;
    protected StructureFlag flag;
    protected int nStereoDBondSpecified;
    protected int nStereoDBondTotal;
@@ -34,12 +36,16 @@ abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
    protected int nNonChiralStereoTotal;
    protected int nChiralSpecified;
    protected int nChiralTotal;
+   protected int nChiralNonTetrahedral;
+   protected int nChiralNonTetrahedralSpecified;
+   private OEGraphMol keeperSubstance;
+   private MessageList keeperMsgs;
 
-
-   protected AbstractStructureFlagCheck(Element elem, FlagNonChiralStereoCenters stereoAtomFlagger) {
+   protected AbstractStructureFlagCheck(OEStruchk checker, Element elem, FlagNonChiralStereoCenters stereoAtomFlagger) {
       checkName = elem.getName();
+      parentChecker = checker;
 
-      if( stereoAtomFlagger == null ) 
+      if( stereoAtomFlagger == null )
          throw new Error("CheckStructureFlag needs flagNonChiralAtoms");
 
       this.stereoAtomFlagger = stereoAtomFlagger;
@@ -51,13 +57,13 @@ abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
       OEAtomBaseIter aIt = in.GetAtoms();
       while( aIt.hasNext() )  {
          OEAtomBase at = aIt.next();
-   
+
          if( at.HasData( OEStruchk.ATOMExpHX )) {
             at.DeleteData(OEStruchk.ATOMExpHX );
             at.DeleteData(OEStruchk.ATOMExpHY );
             at.DeleteData(OEStruchk.ATOMExpHZ );
          }
-   
+
          if(!at.HasStereoSpecified() ) continue;
          if( ! at.IsChiral() )
          {  // some Nonchiral sp3 center depend on chiral center to be valid
@@ -65,33 +71,33 @@ abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
             // their stereo needs to be removed as well
             // the condition is that the ring system needs to have more than one
             // NONChiralStereoAtom
-            
-            if( at.IsInRing() && at.GetBoolData(OEStruchk.NONChiralStereoAtomTag ) ) 
+
+            if( at.IsInRing() && at.GetBoolData(OEStruchk.NONChiralStereoAtomTag ) )
             {  if( ringSysByAtom == null )
                {  ringSysByAtom = new int[in.GetMaxAtomIdx()];
-                  oechem.OEDetermineRingSystems(in, ringSysByAtom);   
+                  oechem.OEDetermineRingSystems(in, ringSysByAtom);
                }
-               
+
                int nNChiralInRing = 0;
                int at1RingSystem = ringSysByAtom[at.GetIdx()];
                OEAtomBaseIter atIt2 = in.GetAtoms();
                while( atIt2.hasNext() )
                {  OEAtomBase at2 = atIt2.next();
-                  if( ringSysByAtom[at2.GetIdx()] == at1RingSystem 
+                  if( ringSysByAtom[at2.GetIdx()] == at1RingSystem
                       && at2.GetBoolData(OEStruchk.NONChiralStereoAtomTag))
                      nNChiralInRing++;
                }
                atIt2.delete();
-                  
+
                if( nNChiralInRing > 1)
                   continue;   // this is a valid NONChiral sp3 atom as in CC1CC(C)C1
             }
          }
-         
+
          Atom.removeChiralInfo(at);
       }
       aIt.delete();
-      
+
       //nChiralSpecified = 0;
    }
 
@@ -99,10 +105,10 @@ abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
    {  OEAtomBaseIter aIt = in.GetAtoms();
       while( aIt.hasNext() )  {
          OEAtomBase at = aIt.next();
-   
+
          if(   ! at.HasStereoSpecified()
             || ! at.GetBoolData(OEStruchk.NONChiralStereoAtomTag) ) continue;
-   
+
          Atom.removeChiralInfo(at);
       }
       aIt.delete();
@@ -121,17 +127,53 @@ abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
       //nStereoDBondSpecified = 0;
    }
 
+   /** return true if at matches O=*-[O;H] */
+   static boolean hasOOHNeighbor(OEAtomBase at) {
+      boolean hasOH = false;
+      boolean hasdoubleO = false;
+      
+      OEBondBaseIter bdIt = at.GetBonds();
+      while(bdIt.hasNext()) {
+         OEBondBase bd = bdIt.next();
+         OEAtomBase oAt = bd.GetNbr(at);
+         
+         if( ! oAt.IsOxygen() ) continue;
+
+         int bdType = bd.GetIntType();
+         if(  bdType == 1) {
+            if( oAt.GetTotalHCount() > 0 ) {
+               hasOH = true;
+               if( hasdoubleO ) break;
+            }
+         } else if( bdType == 2 ) {
+            hasdoubleO = true;
+            if( hasOH ) break;
+         }
+      }   
+      bdIt.delete();
+      return hasOH && hasdoubleO;
+    }
+
+
 
    @Override
    public int getNChiral()
-   {
-      return nChiralTotal;
+   {  return nChiralTotal;
    }
 
    @Override
    public int getNChiralSpecified()
-   {
-      return nChiralSpecified;
+   {  return nChiralSpecified;
+   }
+
+   @Override
+   public int getNChiralNonTetrahedral()
+   {  return nChiralNonTetrahedral;
+   }
+
+   @Override
+   public int getNChiralNonTetrahedralSpecified()
+   {  return nChiralNonTetrahedralSpecified;
    }
 
    /**
@@ -140,8 +182,7 @@ abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
     */
    @Override
    public int getNNonChiralStereo()
-   {
-      return nNonChiralStereoTotal;
+   {  return nNonChiralStereoTotal;
    }
 
    /**
@@ -150,26 +191,22 @@ abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
     */
    @Override
    public int getNNonChiralStereoSpecified()
-   {
-      return nNonChiralStereoSpecified;
+   {  return nNonChiralStereoSpecified;
    }
 
    @Override
    public int getNStereoDBond()
-   {
-      return nStereoDBondTotal;
+   {  return nStereoDBondTotal;
    }
 
    @Override
    public int getNStereoDBondSpecified()
-   {
-      return nStereoDBondSpecified;
+   {  return nStereoDBondSpecified;
    }
 
    @Override
    public StructureFlag getStructureFlag()
-   {
-      return flag;
+   {  return flag;
    }
 
    @Override
@@ -181,13 +218,15 @@ abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
    @Override
    public void reset() {
       flag = StructureFlag.NOStereo;
+      nChiralNonTetrahedral = 0;
+      nChiralNonTetrahedralSpecified = 0;
       nChiralSpecified = 0;
       nChiralTotal = 0;
       nNonChiralStereoTotal = 0;
       nNonChiralStereoSpecified = 0;
       nStereoDBondSpecified = 0;
    }
-   
+
    @Override
    public String getDescriptionHTML() {
       return getDescription();
@@ -204,7 +243,40 @@ abstract class AbstractStructureFlagCheck implements StructFlagAnalysisInterface
       return null;
    }
 
-   @Override
-   public void delete() { /* nothing to do */ }
+   /** StructureKeeperInterface **/
 
+   void keepSubstance(OEGraphMol in, MessageList msgs) {
+      if( keeperSubstance != null)
+      {  keeperSubstance.delete();
+         keeperSubstance = null;
+      }
+      keeperSubstance = new OEGraphMol(in); // keep a copy so nobody can change it
+
+      oechem.OESuppressHydrogens(keeperSubstance,false,false,true);
+      oechem.OEPerceiveChiral(keeperSubstance);
+
+      this.keeperMsgs = new MessageList(msgs);
+   }
+
+   @Override
+   public OEGraphMol getMolecule() {
+      return keeperSubstance;
+   }
+
+   @Override
+   public String getKeeperName() {
+      return STEREONormalizedKeeper;
+   }
+
+
+   @Override
+   public MessageList getStructureMessages() {
+      return keeperMsgs;
+   }
+
+   @Override
+   public void delete() {
+      if( keeperSubstance != null) keeperSubstance.delete();
+      keeperSubstance = null;
+   }
 }

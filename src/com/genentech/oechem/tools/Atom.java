@@ -16,7 +16,11 @@
 */
 package com.genentech.oechem.tools;
 
-import openeye.oechem.*;
+import openeye.oechem.OEAtomBase;
+import openeye.oechem.OEAtomBaseIter;
+import openeye.oechem.OEAtomBaseVector;
+import openeye.oechem.OEAtomStereo;
+import openeye.oechem.oechem;
 
 /**
  * static final helper methods for OEAtoms
@@ -46,7 +50,7 @@ public class Atom {
        if( at == null )
            return "null";
 
-      return oechem.OEGetAtomicSymbol(at.GetAtomicNum()) + (at.GetIdx()+1);
+       return oechem.OEGetAtomicSymbol(at.GetAtomicNum()) + (at.GetIdx()+1);
    }
 
    /**
