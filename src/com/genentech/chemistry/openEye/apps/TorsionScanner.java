@@ -18,16 +18,39 @@ package com.genentech.chemistry.openEye.apps;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-
-import openeye.oechem.*;
-import openeye.oeszybki.*;
+import java.util.Set;
 
 import com.genentech.chemistry.openEye.MolSeparator;
 import com.genentech.chemistry.openEye.conformerSampler.ConformerSampler;
 import com.genentech.chemistry.openEye.util.AtomListFunctor;
 import com.genentech.oechem.tools.AtomIntPropertyFunctor;
 import com.genentech.oechem.tools.OETools;
+
+import openeye.oechem.OEAtomBase;
+import openeye.oechem.OEAtomBaseIter;
+import openeye.oechem.OEBondBase;
+import openeye.oechem.OEConfBase;
+import openeye.oechem.OEConfBaseIter;
+import openeye.oechem.OEGraphMol;
+import openeye.oechem.OEIsHeavy;
+import openeye.oechem.OEMCMolBase;
+import openeye.oechem.OEMCSMaxBondsCompleteCycles;
+import openeye.oechem.OEMCSSearch;
+import openeye.oechem.OEMCSType;
+import openeye.oechem.OEMatchBaseIter;
+import openeye.oechem.OEMol;
+import openeye.oechem.OEMolBase;
+import openeye.oechem.OEPartPredAtom;
+import openeye.oechem.oechem;
+import openeye.oechem.oemolithread;
+import openeye.oechem.oemolothread;
+import openeye.oeszybki.OEForceFieldType;
+import openeye.oeszybki.OESolventModel;
+import openeye.oeszybki.OESzybki;
+import openeye.oeszybki.OESzybkiResults;
 
 
 /**
@@ -284,6 +307,7 @@ public class TorsionScanner
          // Set the fixed atom SDF tag
          setTorsionAtomSDTag(inMol, torsionAtomsTag, getTorsionAtomIndices(inMol, torsionAtoms0));
 
+         // get atoms defining second torsion if more than four atoms are given
          OEAtomBase[] torsionAtoms1 = null;
          if( bondMols.length == 2 )
          {  torsionAtoms1 = getTorsionAtoms(inMol, bondMols[1], bondAtoms[1]);;
@@ -299,19 +323,22 @@ public class TorsionScanner
          //
          torsionConformers = generateScannedTorsionConformers (inMol, torsionAtoms0, torsionAtoms1);
 
+         HashSet<OEAtomBase> fixAtoms = new HashSet<OEAtomBase>(Arrays.asList(torsionAtoms0));
+         if( torsionAtoms1 != null ) fixAtoms.addAll(Arrays.asList(torsionAtoms1));
+
          // Possibly minimize or expand conformers
          if (this.nMaxConfsPerStep > 1)
          {
             // If nMaxConfsPerStep > 1,  generate more conformers at each rotatable bond outside the torsionAtoms bond.
             // These new confs will be written to torsionConformers
-            expandConformers (torsionConformers, torsionAtoms0, doMinimize);
+            expandConformers(torsionConformers, fixAtoms, doMinimize);
          }
          else
          {
             if (doMinimize)
             {
                // Minimize each conformer
-               minimizeConformers (torsionConformers, torsionAtoms0);
+               minimizeConformers (torsionConformers, fixAtoms);
             }
          }
 
@@ -338,8 +365,8 @@ public class TorsionScanner
    }
 
    /**
-    * Internal method to read a file containing four atoms defining
-    * the torsion bond.
+    * Internal method to read a file containing four to 8 atoms defining
+    * the torsion bond(s).
     * @param bondFilename filename of sdf file or mol with four torsion atoms
     * @return a mol object array containing the atoms for one or two torsions of 4 atoms
     * @throws Error
@@ -533,14 +560,14 @@ public class TorsionScanner
     * @param torsionConformers a set of torsion conformers to be minimized
     * @param torsionAtoms atoms to be held fixed
     */
-   private void minimizeConformers(OEMCMolBase torsionConformers, OEAtomBase[] torsionAtoms)
+   private void minimizeConformers(OEMCMolBase torsionConformers, HashSet<OEAtomBase> fixAtoms)
    {
       System.err.println(String.format("%d Conformers will be minimized at each step.  \n\tMinimizing...", torsionConformers.NumConfs()));
 
       for (OEConfBase torsionConf : torsionConformers.GetConfs())
       {
          oechem.OECopySDData(torsionConf, torsionConformers);
-         minimize(torsionConf, torsionAtoms);
+         minimize(torsionConf, fixAtoms);
       }
    }
 
@@ -548,10 +575,10 @@ public class TorsionScanner
    /*
     * Expand a set of conformers.  the input set will be changed to contain the expanded set
     * @torsionConformers an input set of conformers to be expanded
-    * @torsionAtoms  atoms to be held fixed
+    * @fixAtoms  atoms to be held fixed
     *
     */
-   private void expandConformers(OEMCMolBase torsionConformers, OEAtomBase[] torsionAtoms, boolean doMinimize)
+   private void expandConformers(OEMCMolBase torsionConformers, Set<OEAtomBase> fixAtoms, boolean doMinimize)
    {
       OEMCMolBase generatedConfs = null;
 
@@ -579,7 +606,7 @@ public class TorsionScanner
             // Add the original
             generatedConfs.NewConf(torsionConf);
 
-            OEConfBase singleLowEMol = getLowestEMinimizedConf (generatedConfs, torsionAtoms);
+            OEConfBase singleLowEMol = getLowestEMinimizedConf(generatedConfs, fixAtoms);
             addConformer(additionalConfs, singleLowEMol);
          }
          else
@@ -704,7 +731,7 @@ public class TorsionScanner
     * @param fixAtoms an array of atoms to be held fixed during minimization
     * @return a single conformer molecule
     */
-   private OEConfBase getLowestEMinimizedConf(OEMCMolBase mcMol, OEAtomBase[] fixAtoms)
+   private OEConfBase getLowestEMinimizedConf(OEMCMolBase mcMol, Set<OEAtomBase> fixAtoms)
    {
       double minE = Double.MAX_VALUE;
       OEConfBase lastMinEConf  = null;
@@ -736,8 +763,9 @@ public class TorsionScanner
     * @param fixAtoms atoms to hold fixed
     * @return energy of the minimized conformer
     */
-   private double minimize (OEConfBase newConf, OEAtomBase[] fixAtoms)
-   {  AtomListFunctor atFunct = new AtomListFunctor(fixAtoms);
+   private double minimize (OEConfBase newConf, Set<OEAtomBase> fixAtoms)
+   {  OEAtomBase[] fixed = fixAtoms.toArray(new OEAtomBase[fixAtoms.size()]);
+      AtomListFunctor atFunct = new AtomListFunctor(fixed);
 
       if (!szybki.FixAtoms(atFunct))
       {  atFunct.delete();

@@ -24,10 +24,9 @@ package com.genentech.chemistry.tool.sdfAggregator;
 
 import com.aestel.utility.DataFormat;
 
-public class mean extends AggFunction
+public class mean extends CachedAggFunction
 {  public static final String DESCRIPTION
          = "[outName[:format] = ] mean([distinct] Tag): returns the mean of tag 'Tag'.\n";
-
 
 
    public mean(String outTag, String resultFormat, String funcName, String funcArg)
@@ -35,26 +34,23 @@ public class mean extends AggFunction
    }
 
 
-
-   private String getResult(String fmtStr)
+   @Override
+   String getResult(String fmtStr)
    {  if( valueContainer.size() == 0 )
          return "";
 
-      double sum = 0D;
+      double avg = 0D;
+      int cntr = 0;
       for(String v : valueContainer)
       {  try
-         {  sum += Float.parseFloat(v);
+         {  double vd = Double.parseDouble(v);
+            avg += (vd-avg)/++cntr;
          } catch (NumberFormatException e)
          {  System.err.printf("Warning: %s for %s cannot be converted to float.\n",
                               v, getOutTagName());
          }
       }
 
-      return DataFormat.formatNumber(sum/valueContainer.size(), fmtStr);
-   }
-
-   @Override
-   public String getResult(int indxInGrp)
-   {  return getResult(resultFormat);
+      return DataFormat.formatNumber(avg, fmtStr);
    }
 }

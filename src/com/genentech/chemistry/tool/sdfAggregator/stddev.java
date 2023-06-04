@@ -16,19 +16,9 @@
 */
 package com.genentech.chemistry.tool.sdfAggregator;
 
-/**
- * This class implements the standard deviation function.
- * @author Ben Sellers Feb, 2015
- *
- */
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.aestel.utility.DataFormat;
 
-public class stddev extends AggFunction
+public class stddev extends CachedAggFunction
 {  public static final String DESCRIPTION
          = "[outName[:format] = ] stddev([distinct] Tag): returns the stddev of tag 'Tag'.\n";
 
@@ -39,60 +29,44 @@ public class stddev extends AggFunction
       super(outTag, resultFormat == null ? "si2" : resultFormat, funcName, funcArg);
    }
    
-   private String getResult(String fmtStr)
+   
+   @Override
+   String getResult(String fmtStr)
    {  
       if( valueContainer.size() < 2 )
          return "";
 
-      List<Double> numericValues = new ArrayList<Double>();
-      Iterator<String> it = valueContainer.iterator();
+      double sPrev;
+      double s = 0D;
+      double var = 0D;
+      double avgPrev;
+      double avg =0D;
+      int cntr = 0;
+      for(String v : valueContainer)
+      {  try
+         {  double vd = Double.parseDouble(v);
+            ++cntr;
 
-      //
-      // Parse
-      String val = "";
-      try
-      {
-         while (it.hasNext())
-         {  
-            val = it.next();
-            if(val.trim().length() > 0)
-               numericValues.add(Double.valueOf(val.trim()));
+           if (cntr == 1)
+           {   // Set the very first values.
+               avg = vd;
+           } else
+           {   // Save the previous values.
+               avgPrev = avg;
+               sPrev   = s;
+
+               // Update the current values.
+               avg = avgPrev + (vd - avgPrev) / cntr;
+               s   = sPrev   + (vd - avgPrev) * (vd - avg);
+               var = s / (cntr - 1);
+           }
+         } catch (NumberFormatException e)
+         {  System.err.printf("Warning: %s for %s cannot be converted to float.\n",
+                              v, getOutTagName());
          }
       }
-      catch (NumberFormatException e)
-      {  
-         System.err.printf("Warning: %s for %s cannot be converted to float.\n",
-                  val, getOutTagName());
-      }
-      
-      //
-      // Calc mean
-      double sum = 0D;
-      for(Double value : numericValues)
-      {     
-         sum += value;
-      }
-      double mean = sum/numericValues.size(); 
-      
-      //
-      // Calculate the variance
-      double sumOfSquaredDiffs = 0D;
-      double variance          = 0D;      
-      for(Double value : numericValues)
-      {       
-         sumOfSquaredDiffs += (value - mean) * (value - mean);
-      }
-      
-      
-      variance = sumOfSquaredDiffs / (numericValues.size()-1);
 
-      // Return sqrt of variance = mstdev
-      return DataFormat.formatNumber(Math.sqrt(variance), fmtStr);
-   }
-   
-
-   @Override
-   public String getResult(int indxInGrp)
-   {  return getResult(resultFormat);
+      // Return sqrt of variance = stdev
+      return DataFormat.formatNumber(Math.sqrt(var), fmtStr);
    }
 }

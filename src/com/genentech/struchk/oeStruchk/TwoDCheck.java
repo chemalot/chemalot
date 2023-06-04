@@ -18,11 +18,13 @@ package com.genentech.struchk.oeStruchk;
 
 import openeye.oechem.OEAtomBaseIter;
 import openeye.oechem.OEGraphMol;
+import openeye.oechem.oechem;
 
 import org.jdom.Element;
 
 import com.aestel.utility.Message;
 import com.aestel.utility.MessageList;
+import com.aestel.utility.WarnOnlyMessageList;
 import com.genentech.oechem.tools.OETools;
 import com.genentech.struchk.oeStruchk.OEStruchk.StructureFlag;
 
@@ -70,6 +72,18 @@ public class TwoDCheck extends AbstractStructureCheck{
       aIt.delete();
 
       double minD = Math.min(Math.min(maxX-minX, maxY-minY), maxZ-minZ);
+      
+      
+      if( minD > 0.00001 && msgs instanceof WarnOnlyMessageList ) {
+         // if 3D coordinates are given (even just a minimal third coordinate)
+         // oechem will perceive stereo chemistry from 3D instead of the parity.
+         // So if ERROR_AS_WARNING was given (bulk screening library registration)
+         // and we identify that this compound has 3D character we generate 2D coordinates
+         // with OEChem to wipe out the 3D character.
+         // Stereo will be perceived from parity according to our experiments
+         oechem.OEGenerate2DCoordinates(in);
+      }
+      
       if( minD > 0.05 ) {
          msgs.addMessage(new Message("Molecule has 3D coordinates, please enter 2D structure.",
                   Message.Level.ERROR, in));

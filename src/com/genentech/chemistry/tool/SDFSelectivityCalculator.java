@@ -285,12 +285,12 @@ public class SDFSelectivityCalculator
    {  // create command line Options object
       Options options = new Options();
       Option opt = new Option( OPT_INFILE, true, 
-               "input file oe-supported Use .sdf|.smi to specify the file type." );
+               "Input file oe-supported Use .sdf|.smi to specify the file type." );
       opt.setRequired( true );
       options.addOption( opt );
       
       opt = new Option( OPT_OUTFILE, true, 
-               "output file oe-supported. Use .sdf|.smi to specify the file type." );
+               "Output file oe-supported. Use .sdf|.smi to specify the file type." );
       opt.setRequired( true );
       options.addOption( opt );
       

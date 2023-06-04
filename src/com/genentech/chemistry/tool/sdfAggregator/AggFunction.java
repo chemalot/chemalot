@@ -87,6 +87,36 @@ abstract class AggFunction implements AggInterface
    public String getOutTagName ()
    {  return outTag;
    }
+}
 
+/**
+ * Aggregation function for functions that with output independent of indexInGroup.
+ * 
+ * The value is computed only once per group.
+ * 
+ * @author albertgo
+ *
+ */
+abstract class CachedAggFunction extends AggFunction
+{  String cachedValue = null;
+   
+   public CachedAggFunction(String outTag, String resultFormat, String funcName, String funcArg)
+   {  super(outTag, resultFormat == null ? "si2" : resultFormat, funcName, funcArg);
+   }
 
+   @Override
+   public void init()
+   {  valueContainer.clear();
+      cachedValue = null;
+   }
+
+   abstract String getResult(String fmtStr);
+   
+   @Override
+   public String getResult(int indxInGrp)
+   {  if( cachedValue == null ) 
+         cachedValue = getResult(resultFormat);
+   
+      return cachedValue;
+   }
 }

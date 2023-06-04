@@ -28,6 +28,7 @@ import org.apache.commons.pool.impl.GenericObjectPool.Config;
 
 import com.aestel.utility.LogHelper;
 import com.genentech.oechem.tools.OETools;
+import com.genentech.struchk.NormalizerPool.PooledNormalizer;
 import com.genentech.struchk.oeStruchk.StruChkHelper.CHECKType;
 
 /**
@@ -244,7 +245,8 @@ public class NormalizerPool
 
       @Override
       public boolean validateObject(Object obj)
-      {
+      {  if( obj == null ) return false;
+         if(((PooledNormalizer) obj).norm == null) return false;
          if (System.currentTimeMillis() - ((PooledNormalizer) obj).checkOutTime < 1000 * 3600 * 20)
             return false; // older than 12 hours
          return true;

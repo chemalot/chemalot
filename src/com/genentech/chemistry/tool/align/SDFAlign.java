@@ -100,7 +100,7 @@ public class SDFAlign
 
       opt = new Option("atomTypeTag", true, "tagName containing ',' separated list of atom types."
                  + " This is only used to verify that the atom types are in the same order as the atoms in the molecule."
-                 + " Thus valicdating that the values in atomMapTags are odred correctly." );
+                 + " Thus validating that the values in atomMapTags are ordered correctly." );
       options.addOption(opt);
       
 

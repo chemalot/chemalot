@@ -15,7 +15,7 @@
    limitations under the License.
 
 -->
-<StructureRules oechemVersion='20160209'>
+<StructureRules oechemVersion='20230104'>
 
    <atomLabelCheck id='atomLabelCheck'>
       <!-- This check is performed on the molfile not the molecule object -->
@@ -144,18 +144,6 @@ M  END]]></example>
 M  END]]></example>
    </cleanReactionCenter>
 
-   <clearBondStereo id='clearAmidine1Stereo'>
-       C(=[NH])
-       <message>Discarding cis/trans stereochemistry on C=NH.</message>
-       <description>Discarding cis/trans stereo chemistry on C=NH.</description>
-   </clearBondStereo>
-
-   <clearBondStereo id='clearAmidine2Stereo'>
-       C(=[NH])(-[!HD1])
-       <message>Discarding cis/trans stereochemistry on C(=NH)(-X).</message>
-       <description>Discarding cis/trans stereo chemistry on C(=NH)(-X).</description>
-   </clearBondStereo>
-    
    <removeHydrogens id='removeHydrogens'>
       <!--  stereo relevant hydrogens are not removed -->
       <description>Remove hydrogen atoms.</description>
@@ -289,6 +277,32 @@ M  END]]></example>
       <message>Enol converted to Keton.</message>
       <description>Transform Enol to Keton.</description>
    </transform>
+
+  <transform id='imidazole'>
+      [C:1][c:2]1[cH:3][nX2:4][c:5][nH:6]1>>[C:1][c:2]1[cH:3][nH:4][c:5][n:6]1
+      <example>c1c([nH]cn1)C[C@@H](C(=O)O)N</example>
+      <message>Tautomerize imidazole.</message>
+      <description>Tautomerize imidazole.</description>
+   </transform>
+
+  <transform id='guanidine'>
+      [C:1]-[NX2:2]=[CX3:3](-[NH2X3:4])(-[NH2X3:5])>>[C:1]-[Nh:2]-[C:3](=[Nh:4])(-[Nh2:5])
+      <example>C(C[C@@H](C(=O)O)N)CN=C(N)N</example>
+      <message>Tautomerize guanidine.</message>
+      <description>Tautomerize guanidine.</description>
+   </transform>
+
+   <clearBondStereo id='clearAmidine1Stereo'>
+       C(=[NH])
+       <message>Discarding cis/trans stereochemistry on C=NH.</message>
+       <description>Discarding cis/trans stereo chemistry on C=NH.</description>
+   </clearBondStereo>
+
+   <clearBondStereo id='clearAmidine2Stereo'>
+       C(=[NH])(-[!HD1])
+       <message>Discarding cis/trans stereochemistry on C(=NH)(-X).</message>
+       <description>Discarding cis/trans stereo chemistry on C(=NH)(-X).</description>
+   </clearBondStereo>
 
    <badSubstructure id='checkAromaticTautomer'>
       [O,S]=C1-[C,N]=[C,N]-[C,N]=[C,N]-[C!H0]1

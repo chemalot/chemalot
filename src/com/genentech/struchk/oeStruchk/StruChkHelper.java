@@ -51,6 +51,8 @@ public class StruChkHelper {
       perchloricAcid,
       sulfoxide,
       ketoEnol,
+      imidazole,
+      guanidine,
       checkAromaticTautomer,
       keepSubstance,
       dbComponentNormalizer,

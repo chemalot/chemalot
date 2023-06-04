@@ -95,7 +95,7 @@ public class SDFAggregator
             exitWithHelp(options);
          }
 
-         sb.append(desc);
+         sb.append(desc + "\n");
       }
       return sb.toString();
    }
@@ -125,7 +125,7 @@ public class SDFAggregator
       groups = new ArrayList<String>();
 
       String funcListStr = getAggregationFunctionDescriptions();
-      opt = new Option("function", true, "Aggregator function:\n" + funcListStr);
+      opt = new Option("function", true, "Aggregator function: [outTag [:format] = <function> ( args )\n" + funcListStr);
       opt.setRequired(true);
       options.addOption(opt);
 
@@ -269,6 +269,9 @@ public class SDFAggregator
 
          OEGraphMol mol2 = new OEGraphMol();
          int molCount = 0;
+         // @TODO for large groups and output-mode all this can be very slow as the 
+         // outputMol function calls the aggregation function for each member of the group
+         // although the results will mostly be identical for all members.
          while (oechem.OEReadMolecule(iss, mol2))
          {  if( outputMode == OUTPUTMODE.FIRST && molCount == 0 )
             {  outputMol(mol2, molCount);
